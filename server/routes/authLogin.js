@@ -16,13 +16,13 @@ router.post('/student/login', async (req, res) => {
     const [results] = await db.query(
       `
       SELECT u.* 
-      FROM Student s
+      FROM Students s
       JOIN Users u ON s.user_FK = u.user_PK
       WHERE s.roll_number = ?
       `,
       [rollno]
     );
-    // console.log("Results:", results);
+    console.log("Results:", results);
 
     if (results.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });

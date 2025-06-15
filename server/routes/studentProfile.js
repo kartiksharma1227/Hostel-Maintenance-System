@@ -25,7 +25,7 @@ router.get('/profile/:user_pk', async (req, res) => {
         s.room_FK,
         s.roll_number
       FROM Users u
-      JOIN Student s ON u.user_PK = s.user_FK
+      JOIN Students s ON u.user_PK = s.user_FK
       WHERE u.user_PK = ?
       `,
       [user_pk]

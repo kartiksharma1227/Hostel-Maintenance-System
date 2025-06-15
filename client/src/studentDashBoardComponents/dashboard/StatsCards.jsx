@@ -2,14 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaClipboardList, FaClock, FaSpinner, FaCheckCircle } from "react-icons/fa";
+import {
+  FaClipboardList,
+  FaClock,
+  FaSpinner,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 const StatsCards = () => {
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
     inProgress: 0,
-    resolved: 0
+    resolved: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,19 +27,24 @@ const StatsCards = () => {
         const complaints = res.data;
 
         // Log the status values for debugging
-        console.log("Complaint statuses:", complaints.map(c => c.status));
+        console.log(
+          "Complaint statuses:",
+          complaints.map((c) => c.status)
+        );
 
         // Normalize status to lowercase
-        const normalized = complaints.map(c => ({
+        const normalized = complaints.map((c) => ({
           ...c,
-          status: c.status.toLowerCase()
+          status: c.status.toLowerCase(),
         }));
 
         const total = normalized.length;
-        const pending = normalized.filter(c => c.status === "pending").length;
-      
-        const resolved = normalized.filter(c => c.status === "completed").length;
-        const inProgress = total-pending-resolved;
+        const pending = normalized.filter((c) => c.status === "pending").length;
+
+        const resolved = normalized.filter(
+          (c) => c.status === "completed"
+        ).length;
+        const inProgress = total - pending - resolved;
 
         setStats({ total, pending, inProgress, resolved });
       } catch (err) {
