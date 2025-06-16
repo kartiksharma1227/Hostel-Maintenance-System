@@ -8,6 +8,7 @@ import {
   FILE_UPLOAD_CONFIG,
 } from "../../utils/constants";
 import "../../styles/ComplaintForm.css";
+import { use } from "react";
 
 export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -71,27 +72,33 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
     e.preventDefault();
     // simple front-end validation
     const errs = {};
-    ["title", "category", "location", "description"].forEach((f) => {
+    ["title", "category", "description"].forEach((f) => {
       if (!formData[f]) errs[f] = "Required";
     });
     if (!formData.agreed) errs.agreed = "You must confirm accuracy";
     if (Object.keys(errs).length) {
+      console.warn("Validation errors:", errs); // Log validation errors
       setErrors(errs);
       return;
     }
 
+    const userPk = localStorage.getItem("user_PK");
+    const roll_number = localStorage.getItem("roll_number");
+    const room_FK = localStorage.getItem("room_FK");
+    const location = room_FK.toString()[0]
+
     // build payload
     const payload = {
-      room_FK: parseInt(formData.location, 10),
+      room_FK: room_FK,
       title: formData.title,
       category: formData.category,
       priority: formData.priority,
-      location: formData.location,
+      location: location,
       description: formData.description,
-      submitted_by: 1,
+      submitted_by: roll_number,
     };
 
-    console.log("Form data to be submitted:", payload);  // Log the form data
+    console.log("Form data to be submitted:", payload); // Log the form data
 
     try {
       const res = await fetch("http://localhost:4000/api/complaints", {
@@ -104,7 +111,7 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       if (!res.ok) throw new Error(res.statusText);
       const result = await res.json();
 
-      console.log("Complaint submitted successfully:", result);  // Log the successful response
+      console.log("Complaint submitted successfully:", result); // Log the successful response
 
       // success callback
       onSubmitSuccess && onSubmitSuccess(result);
@@ -155,7 +162,9 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
             className="input-enhanced"
             placeholder="Brief title"
           />
-          {errors.title && <span className="error-message">{errors.title}</span>}
+          {errors.title && (
+            <span className="error-message">{errors.title}</span>
+          )}
         </div>
 
         <div className="form-group">
@@ -170,15 +179,17 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
           >
             <option value="">--Select--</option>
             {COMPLAINT_CATEGORIES.map((c) => (
-              <option key={c.id} value={c.label}>
+              <option key={c.id} value={c.id}>
                 {c.label}
               </option>
             ))}
           </select>
-          {errors.category && <span className="error-message">{errors.category}</span>}
+          {errors.category && (
+            <span className="error-message">{errors.category}</span>
+          )}
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>
             Room Number <span className="required-badge">Required</span>
           </label>
@@ -194,7 +205,7 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
           {errors.location && (
             <span className="error-message">{errors.location}</span>
           )}
-        </div>
+        </div> */}
 
         <div className="form-divider">
           <span className="divider-text">Priority & Description</span>
@@ -242,7 +253,9 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
           />
           I confirm the information is accurate
         </div>
-        {errors.agreed && <span className="error-message">{errors.agreed}</span>}
+        {errors.agreed && (
+          <span className="error-message">{errors.agreed}</span>
+        )}
 
         <div className="form-actions enhanced">
           <button type="button" onClick={onCancel} className="cancel-btn">

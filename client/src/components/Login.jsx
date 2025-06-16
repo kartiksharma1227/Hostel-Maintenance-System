@@ -49,8 +49,11 @@ const Login = () => {
           }
         );
         if (res.status === 200) {
-          const { user_PK } = res.data.user;
+          const { user_PK ,room_FK} = res.data.user;
+          console.log('ROLL NO: ', rollno);
+          localStorage.setItem("roll_number", rollno);
           localStorage.setItem("user_PK", user_PK);
+          localStorage.setItem("room_FK", room_FK);
           navigate("/StudentDashboard");
           return;
         }

@@ -22,6 +22,18 @@ router.post('/student/login', async (req, res) => {
       `,
       [rollno]
     );
+    const [studentResults] = await db.query(
+      `
+      SELECT room_FK
+      FROM Students 
+      WHERE roll_number = ?
+      `,
+      [rollno]
+    );
+
+    console.log("Student Results:", studentResults);
+    
+
     console.log("Results:", results);
 
     if (results.length === 0) {
@@ -37,7 +49,9 @@ router.post('/student/login', async (req, res) => {
     // Send the user's data, including primary key (user_PK)
     res.json({
       message: 'Login successful',
-      user: { ...user, user_PK: user.user_PK },
+      // user: { ...user, roll_number: rollno },
+      user: { ...user, user_PK: user.user_PK ,room_FK: studentResults[0]?.room_FK },
+
     });
   } catch (err) {
     console.error('Login error:', err);

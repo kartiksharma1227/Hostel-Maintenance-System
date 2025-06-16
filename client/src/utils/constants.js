@@ -3,13 +3,13 @@
 import { FaBolt, FaWater, FaTools, FaSnowflake, FaBroom, FaNetworkWired } from 'react-icons/fa';
 
 export const COMPLAINT_CATEGORIES = [
-  { id: 'electrical', label: 'Electrical', icon: FaBolt },
-  { id: 'plumbing', label: 'Plumbing', icon: FaWater },
-  { id: 'carpentry', label: 'Carpentry', icon: FaTools },
-  { id: 'hvac', label: 'HVAC', icon: FaSnowflake },
-  { id: 'cleaning', label: 'Cleaning', icon: FaBroom },
-  { id: 'internet', label: 'Internet', icon: FaNetworkWired },
-  { id: 'others', label: 'Others', icon: FaTools }
+  { id: 'Electrical', label: 'Electrical', icon: FaBolt },
+  { id: 'Plumbing', label: 'Plumbing', icon: FaWater },
+  { id: 'Carpentry', label: 'Carpentry', icon: FaTools },
+  { id: 'HVAC', label: 'HVAC', icon: FaSnowflake },
+  { id: 'Cleaning', label: 'Cleaning', icon: FaBroom },
+  { id: 'Internet', label: 'Internet', icon: FaNetworkWired },
+  { id: 'Others', label: 'Others', icon: FaTools }
 ];
 
 export const COMPLAINT_STATUS = {

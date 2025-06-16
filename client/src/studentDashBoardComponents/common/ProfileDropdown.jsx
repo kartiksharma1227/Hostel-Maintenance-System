@@ -5,7 +5,7 @@ import { FaUser, FaSignOutAlt } from "react-icons/fa";
 
 const ProfileDropdown = ({ onClose }) => {
   const [profile, setProfile] = useState(null);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,13 +39,7 @@ const ProfileDropdown = ({ onClose }) => {
     );
   }
 
-  const {
-    name,
-    mail_UN: email,
-    role,
-    roll_number,
-    room_FK,
-  } = profile;
+  const { name, mail_UN: email, role, roll_number, room_FK } = profile;
 
   const handleLogout = () => {
     // 1) Remove any auth tokens / data

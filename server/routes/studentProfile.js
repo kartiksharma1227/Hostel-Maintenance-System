@@ -20,7 +20,7 @@ router.get('/profile/:user_pk', async (req, res) => {
         u.role,
         u.created_at,
         u.updated_at,
-        s.student_PK,
+
         s.user_FK,
         s.room_FK,
         s.roll_number
