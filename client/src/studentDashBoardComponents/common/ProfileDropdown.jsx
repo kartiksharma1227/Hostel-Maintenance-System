@@ -44,6 +44,8 @@ const ProfileDropdown = ({ onClose }) => {
   const handleLogout = () => {
     // 1) Remove any auth tokens / data
     localStorage.removeItem("user_PK");
+    localStorage.removeItem("roll_number");
+    localStorage.removeItem("room_FK");
     // (if you use cookies or other storage, clear them here too)
 
     // 2) Close the dropdown

@@ -136,6 +136,7 @@ const Header = () => {
               className="engineer-profile-action-btn engineer-logout"
               onClick={() => {
                 localStorage.removeItem("user_PK");
+                
                 window.location.href = "/login";
               }}
             >
