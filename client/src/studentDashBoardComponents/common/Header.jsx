@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaBell, FaUserCircle, FaQuestionCircle } from "react-icons/fa";
-// import NotificationsPanel from "./NotificationsPanel";
-import NotificationsWrapper from "./NotificationsWrapper";
+import NotificationsPanel from "./NotificationsPanel";
 import ProfileDropdown from "./ProfileDropdown";
 
-const mockNotifications = [ /* …your existing mock data… */ ];
+
+
 
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile]       = useState(false);
-  const [notifications, setNotifications]   = useState(mockNotifications);
+  
+  const [notifications, setNotifications] = useState([]);
+
 
   // ← Add this state to hold the fetched name
   const [studentName, setStudentName] = useState("");
@@ -31,19 +33,72 @@ const Header = () => {
       });
   }, []);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
 
-  const markAllNotificationsAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  
+
+const fetchNotifications = async () => {
+    try {
+      // const rollNumber = localStorage.getItem("roll_number");
+      const user_PK = localStorage.getItem("user_PK");
+
+      const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
+
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+      const data = await res.json();
+      setNotifications(data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
+const markAllNotificationsAsRead = async () => {
+   try {
+      // const rollNumber = localStorage.getItem("roll_number");
+      const user_PK = localStorage.getItem("user_PK");
+      const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("Failed to mark all as read");
+
+      // Update local state
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, read_status: true }))
+      );
+    } catch (err) {
+      console.error("Error marking all notifications as read:", err);
+    }
+};
+const markNotificationAsRead = async (notification_PK) => {
+  try {
+      const res = await fetch(`http://localhost:4000/api/notifications/markAsRead/${notification_PK}`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("Failed to mark as read");
+
+      // Update local state
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+        )
+      );
+    } catch (err) {
+      console.error("Error marking notification as read:", err);
+    }
+};
+useEffect(() => {
+  fetchNotifications();
+
+  const handleUpdate = () => {
+    fetchNotifications();
   };
 
-  const markNotificationAsRead = id => {
-    setNotifications(
-      notifications.map(n =>
-        n.id === id ? { ...n, read: true } : n
-      )
-    );
+  window.addEventListener("notificationsUpdated", handleUpdate);
+
+  return () => {
+    window.removeEventListener("notificationsUpdated", handleUpdate);
   };
+}, []);
+const unreadCount = notifications.filter((n) => !n.read_status).length;
+
 
   return (
     <header className="dashboard-header enhanced">
@@ -80,18 +135,14 @@ const Header = () => {
           </span>
         </div>
 
-        {/* <NotificationsPanel
-          notifications={notifications}
-          visible={showNotifications}
-          markAllNotificationsAsRead={markAllNotificationsAsRead}
-          markNotificationAsRead={markNotificationAsRead}
-         /> */}
-         <NotificationsWrapper
+        <NotificationsPanel
   notifications={notifications}
   visible={showNotifications}
-  markAllAsRead={markAllNotificationsAsRead}
-  markAsRead={markNotificationAsRead}
+  markAllNotificationsAsRead={markAllNotificationsAsRead}
+  markNotificationAsRead={markNotificationAsRead}
 />
+
+        
 
         {showProfile && (
           // You can still let ProfileDropdown fetch its own data,

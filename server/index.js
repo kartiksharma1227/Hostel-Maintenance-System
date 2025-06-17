@@ -56,6 +56,10 @@ app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent c
 //notifications route 
 app.use('/api/notifications', studentNotificationRoutes);
 
+
+
+
+// Authentication routes
  app.use('/api', authLogin); // Prefix `/api` for login routes
 
 
