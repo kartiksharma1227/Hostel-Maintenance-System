@@ -15,7 +15,7 @@ const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');
 const engineerProfileRoute  = require('./routes/engineerprofile');
 
-
+const recentComplaintsRouter = require('./routes/recentStudentComplaints'); // Import recent complaints route
 
 // Initialize the Express app
 const app = express();
@@ -43,6 +43,7 @@ app.use('/api/engineer', engineerProfileRoute);
 app.use('/api/student', studentProfileRoute);
 app.use('/api/feedback', feedbackRouter);
 app.use("/api/complaint-history", complainHistoryRoute);
+app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent complaints
 
 
 

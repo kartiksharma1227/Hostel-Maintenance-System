@@ -5,15 +5,25 @@ import { FaMapMarkerAlt, FaClock, FaChevronRight, FaEye } from "react-icons/fa";
 
 const RecentComplaints = ({ onComplaintClick }) => {
   const [complaints, setComplaints] = useState([]);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // Fetch complaints on mount
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/api/complaint-history");
+        const roll_number = localStorage.getItem("roll_number");
+        console.log(
+          "Fetching complaints for roll number on home page:",
+          roll_number
+        );
+
+        // const res = await axios.get("/api/complaint-history");
+        const res = await axios.get("/api/recent-complaints", {
+          params: { roll_number: roll_number },
+        });
+
         setComplaints(res.data);
       } catch (err) {
         console.error("Error fetching complaints:", err);
@@ -88,9 +98,7 @@ const RecentComplaints = ({ onComplaintClick }) => {
               onClick={() => onComplaintClick(complaint)}
             >
               <div className="card-header">
-                <div className="category-indicator">
-                  {complaint.category}
-                </div>
+                <div className="category-indicator">{complaint.category}</div>
                 <span className={getStatusBadgeClass(complaint.status)}>
                   {complaint.status}
                 </span>

@@ -23,7 +23,11 @@ const StatsCards = () => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/api/complaint-history");
+        // const res = await axios.get("/api/complaint-history");
+           const roll_number = localStorage.getItem("roll_number");
+        const res = await axios.get("/api/complaint-history", {
+          params: { roll_number: roll_number },
+        });
         const complaints = res.data;
 
         // Log the status values for debugging

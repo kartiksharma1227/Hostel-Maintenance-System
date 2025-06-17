@@ -27,8 +27,16 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
+        const roll_number = localStorage.getItem("roll_number");
+        console.log("Fetching complaints for roll number:", roll_number);
+        
         const response = await axios.get("/api/complaint-history", {
-          params: { status: "all", category: "all", search: "" },
+          params: { 
+            status: "all", 
+            category: "all", 
+            search: "" ,
+            roll_number: roll_number,
+          },
         });
         setComplaints(response.data);
       } catch (error) {
@@ -178,7 +186,10 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
                 {complaint.status === "completed" && !complaint.feedback && (
                   <button
                     className="action-btn feedback-btn"
-                    onClick={(e) => { e.stopPropagation(); onFeedback(complaint); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onFeedback(complaint);
+                    }}
                   >
                     <FaStar /> Feedback
                   </button>
@@ -186,7 +197,10 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
                 {complaint.status === "pending" && (
                   <button
                     className="action-btn delete-btn"
-                    onClick={(e) => { e.stopPropagation(); onDelete(complaint); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(complaint);
+                    }}
                   >
                     <FaTrash /> Cancel
                   </button>
