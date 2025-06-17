@@ -85,7 +85,20 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
     const userPk = localStorage.getItem("user_PK");
     const roll_number = localStorage.getItem("roll_number");
     const room_FK = localStorage.getItem("room_FK");
-    const location = room_FK.toString()[0]
+    // const location = room_FK.toString()[0]
+    const roomNumber = room_FK.toString();
+const blockCode = roomNumber[0]; // get 0th character
+
+let location = "";
+
+if (["1", "2", "3", "4", "5"].includes(blockCode)) {
+  location = `BH${blockCode}`;
+} else if (["6", "7", "8"].includes(blockCode)) {
+  const ghNumber = (parseInt(blockCode) - 5);
+  location = `GH${ghNumber}`;
+} else {
+  location = "unknown";
+}
 
     // build payload
     const payload = {
@@ -112,6 +125,9 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       const result = await res.json();
 
       console.log("Complaint submitted successfully:", result); // Log the successful response
+      
+    // ✅ This is where we add our custom event dispatch
+    window.dispatchEvent(new Event("notificationsUpdated"));
 
       // success callback
       onSubmitSuccess && onSubmitSuccess(result);

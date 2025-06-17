@@ -9,6 +9,8 @@ const studentProfileRoute = require('./routes/studentDashboardRoutes/studentProf
 const complainHistoryRoute = require('./routes/studentDashboardRoutes/studentComplaintsHistoryRoute');
 const recentComplaintsRouter = require('./routes/studentDashboardRoutes/studentRecentComplaintsRoute'); 
 const studentAddComplaintRoute = require('./routes/studentDashboardRoutes/studentAddComplaintRoute');
+const studentNotificationRoutes = require('./routes/studentDashboardRoutes/studentNotificationRoute');
+
 
 
 
@@ -34,7 +36,7 @@ const engineerRoutes = require('./routes/engineer'); // update path if needed
 
 
 
-const complaintsRouter = require('./routes/complaints');
+// const complaintsRouter = require('./routes/complaints');
 
 // Import the authentication routes
 const authLogin = require('./routes/authLogin');
@@ -80,6 +82,8 @@ app.use("/api/complaint-history", complainHistoryRoute);
 app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent complaints
 
 
+//notifications route 
+app.use('/api/notifications', studentNotificationRoutes);
 
 
 
