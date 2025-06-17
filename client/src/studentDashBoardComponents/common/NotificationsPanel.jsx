@@ -648,7 +648,7 @@ const NotificationsPanel = ({
               className={`notification-item ${
                 notification.read_status ? "read" : "unread"
               }`}
-              onClick={() => markNotificationAsRead(notification.notification_PK)}
+              onClick={() => {console.log("Clicked notification:", notification.notification_PK);markNotificationAsRead(notification.notification_PK)}}
             >
               <div className="read-status-icon">
                 {notification.read_status ? (

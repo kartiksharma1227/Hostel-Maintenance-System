@@ -24,7 +24,7 @@ exports.getNotifications = async (req, res) => {
 // Mark a notification as read
 exports.markAsRead = async (req, res) => {
   try {
-    const notificationId = req.params.id;
+    const notificationId = req.params.notification_PK;
 
     const [update] = await db.query(
       `UPDATE Notifications SET read_status = TRUE, updated_at = NOW() WHERE notification_PK = ?`,
