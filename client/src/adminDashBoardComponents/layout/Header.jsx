@@ -9,8 +9,8 @@ const Header = ({
   toggleProfileDropdown,
 }) => {
   return (
-    <header className="dashboard-header">
-      <div className="logo">
+    <header className="admin-dashboard-header">
+      <div className="admin-dashboard-logo">
         <h1>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,9 +30,9 @@ const Header = ({
           IIIT-A Maintenance
         </h1>
       </div>
-      <div className="header-controls">
+      <div className="admin-dashboard-header-controls">
         <button
-          className="notification-btn"
+          className="admin-dashboard-notification-btn"
           onClick={() => setNotificationPanelVisible(!notificationPanelVisible)}
           title="Notifications"
         >
@@ -69,19 +69,19 @@ const Header = ({
           )}
           {notifications.filter((n) => !n.read).length > 0 &&
             !notificationPanelVisible && (
-              <span className="notification-badge">
+              <span className="admin-dashboard-notification-badge">
                 {notifications.filter((n) => !n.read).length}
               </span>
             )}
         </button>
-        <div className="user-profile">
+        <div className="admin-dashboard-user-profile">
           <span>Admin Portal</span>
           <img
             src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
               adminProfile.name
             )}&background=3f51b5&color=fff&bold=true`}
             alt="Profile"
-            className="avatar"
+            className="admin-dashboard-avatar"
             onClick={toggleProfileDropdown}
           />
         </div>

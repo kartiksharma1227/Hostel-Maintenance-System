@@ -6,9 +6,9 @@ const AddEngineerForm = ({ onSubmit }) => {
     mail_UN: "",
     role: "engineer",
     phone_number: "",
-    availability: "1",             // keep as string for the <select>
+    availability: "1", // keep as string for the <select>
     specialization: "",
-    years_of_experience: "",       // keep as string for the <input>
+    years_of_experience: "", // keep as string for the <input>
     address: "",
   });
 
@@ -23,7 +23,7 @@ const AddEngineerForm = ({ onSubmit }) => {
     // Convert numeric fields before sending
     const payload = {
       ...formData,
-      availability: Number(formData.availability),
+      // availability: Number(formData.availability),
       years_of_experience: Number(formData.years_of_experience),
     };
 
@@ -31,102 +31,209 @@ const AddEngineerForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="add-engineer-form">
-      <div className="form-group">
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
+    <div className="admin-dashboard-add-engineer-container">
+      <div className="admin-dashboard-section-header">
+        <h2 className="admin-dashboard-section-title">Add New Engineer</h2>
+        <p className="admin-dashboard-section-subtitle">
+          Create a new maintenance engineer account
+        </p>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="mail_UN">Email</label>
-        <input
-          id="mail_UN"
-          name="mail_UN"
-          type="email"
-          value={formData.mail_UN}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+      <div className="admin-dashboard-card">
+        <form onSubmit={handleSubmit} className="admin-dashboard-form">
+          <div className="admin-dashboard-form-row">
+            <div className="admin-dashboard-form-group">
+              <label htmlFor="name" className="admin-dashboard-form-label">
+                Full Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                className="admin-dashboard-form-control"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Enter full name"
+                required
+              />
+            </div>
 
-      <div className="form-group">
-        <label htmlFor="role">Role</label>
-        <select id="role" name="role" value={formData.role} onChange={handleInputChange}>
-          <option value="engineer">Engineer</option>
-          <option value="admin">Admin</option>
-          <option value="staff">Staff</option>
-        </select>
-      </div>
+            <div className="admin-dashboard-form-group">
+              <label htmlFor="mail_UN" className="admin-dashboard-form-label">
+                Email Address
+              </label>
+              <input
+                id="mail_UN"
+                name="mail_UN"
+                type="email"
+                className="admin-dashboard-form-control"
+                value={formData.mail_UN}
+                onChange={handleInputChange}
+                placeholder="Enter email address"
+                required
+              />
+            </div>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="phone_number">Phone Number</label>
-        <input
-          id="phone_number"
-          name="phone_number"
-          value={formData.phone_number}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+          <div className="admin-dashboard-form-row">
+            {/* <div className="admin-dashboard-form-group">
+              <label htmlFor="role" className="admin-dashboard-form-label">
+                Role
+              </label>
+              <select
+                id="role"
+                name="role"
+                className="admin-dashboard-form-control"
+                value={formData.role}
+                onChange={handleInputChange}
+              >
+                <option value="engineer">Engineer</option>
+                <option value="admin">Admin</option>
+                <option value="staff">Staff</option>
+              </select>
+            </div> */}
+                  <div className="admin-dashboard-form-group">
+              <label
+                htmlFor="years_of_experience"
+                className="admin-dashboard-form-label"
+              >
+                Years of Experience
+              </label>
+              <input
+                id="years_of_experience"
+                name="years_of_experience"
+                type="number"
+                className="admin-dashboard-form-control"
+                min="0"
+                value={formData.years_of_experience}
+                onChange={handleInputChange}
+                placeholder="Enter years of experience"
+                required
+              />
+            </div>
 
-      <div className="form-group">
-        <label htmlFor="availability">Availability</label>
-        <select
-          id="availability"
-          name="availability"
-          value={formData.availability}
-          onChange={handleInputChange}
-        >
-          <option value="1">Available</option>
-          <option value="0">Not Available</option>
-        </select>
-      </div>
+            <div className="admin-dashboard-form-group">
+              <label
+                htmlFor="phone_number"
+                className="admin-dashboard-form-label"
+              >
+                Phone Number
+              </label>
+              <input
+                id="phone_number"
+                name="phone_number"
+                className="admin-dashboard-form-control"
+                value={formData.phone_number}
+                onChange={handleInputChange}
+                placeholder="Enter phone number"
+                required
+              />
+            </div>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="specialization">Specialization</label>
-        <input
-          id="specialization"
-          name="specialization"
-          value={formData.specialization}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+          <div className="admin-dashboard-form-row">
+            <div className="admin-dashboard-form-group">
+              <label
+                htmlFor="specialization"
+                className="admin-dashboard-form-label"
+              >
+                Specialization
+              </label>
+              <input
+                id="specialization"
+                name="specialization"
+                className="admin-dashboard-form-control"
+                value={formData.specialization}
+                onChange={handleInputChange}
+                placeholder="e.g. Electrical, Plumbing, etc."
+                required
+              />
+            </div>
 
-      <div className="form-group">
-        <label htmlFor="years_of_experience">Years of Experience</label>
-        <input
-          id="years_of_experience"
-          name="years_of_experience"
-          type="number"
-          min="0"
-          value={formData.years_of_experience}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+            {/* <div className="admin-dashboard-form-group">
+              <label
+                htmlFor="availability"
+                className="admin-dashboard-form-label"
+              >
+                Availability
+              </label>
+              <select
+                id="availability"
+                name="availability"
+                className="admin-dashboard-form-control"
+                value={formData.availability}
+                onChange={handleInputChange}
+              >
+                <option value="1">Available</option>
+                <option value="0">Not Available</option>
+              </select>
+            </div> */}
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="address">Address</label>
-        <textarea
-          id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+          {/* <div className="admin-dashboard-form-row">
+            <div className="admin-dashboard-form-group">
+              <label
+                htmlFor="years_of_experience"
+                className="admin-dashboard-form-label"
+              >
+                Years of Experience
+              </label>
+              <input
+                id="years_of_experience"
+                name="years_of_experience"
+                type="number"
+                className="admin-dashboard-form-control"
+                min="0"
+                value={formData.years_of_experience}
+                onChange={handleInputChange}
+                placeholder="Enter years of experience"
+                required
+              />
+            </div>
+          </div> */}
 
-      <button type="submit" className="submit-btn">
-        Add Engineer
-      </button>
-    </form>
+          <div className="admin-dashboard-form-group">
+            <label htmlFor="address" className="admin-dashboard-form-label">
+              Address
+            </label>
+            <textarea
+              id="address"
+              name="address"
+              className="admin-dashboard-form-control admin-dashboard-textarea"
+              value={formData.address}
+              onChange={handleInputChange}
+              placeholder="Enter full address"
+              rows="3"
+              required
+            />
+          </div>
+
+          <div className="admin-dashboard-form-actions">
+            <button
+              type="submit"
+              className="admin-dashboard-btn admin-dashboard-submit-btn"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ marginRight: "8px" }}
+              >
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Add Engineer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

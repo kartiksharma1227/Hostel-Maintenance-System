@@ -165,10 +165,6 @@
 
 // export default Login;
 
-
-
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -189,10 +185,22 @@ const Login = () => {
     }, 3000);
   };
   const allowedPrefixes = [
-  "IIT", "IIB", "IEC", "IMB", "IFI", "RSM",
-  "MML", "MDE", "MRM", "MSE", "MWC", "MHC",
-  "PMM", "PMD", "PMS"
-];
+    "IIT",
+    "IIB",
+    "IEC",
+    "IMB",
+    "IFI",
+    "RSM",
+    "MML",
+    "MDE",
+    "MRM",
+    "MSE",
+    "MWC",
+    "MHC",
+    "PMM",
+    "PMD",
+    "PMS",
+  ];
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -222,31 +230,31 @@ const Login = () => {
         }
       }
 
-      
+      const normalizedRollno = rollno.toUpperCase();
 
-const normalizedRollno = rollno.toUpperCase();
-
-// Check if roll number starts with any of the allowed prefixes
-if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
-  const res = await axios.post(
-    "http://localhost:4000/api/student/login",
-    {
-      rollno,  
-      password,
-    }
-  );
-  if (res.status === 200) {
-    const { user_PK, room_FK } = res.data.user;
-    console.log('ROLL NO: ', rollno);
-    localStorage.setItem("roll_number", rollno);
-    localStorage.setItem("user_PK", user_PK);
-    localStorage.setItem("room_FK", room_FK);
-    navigate("/StudentDashboard");
-    return;
-  }
-} else {
-  alert("Invalid roll number format!");
-}
+      // Check if roll number starts with any of the allowed prefixes
+      if (
+        allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
+      ) {
+        const res = await axios.post(
+          "http://localhost:4000/api/student/login",
+          {
+            rollno,
+            password,
+          }
+        );
+        if (res.status === 200) {
+          const { user_PK, room_FK } = res.data.user;
+          console.log("ROLL NO: ", rollno);
+          localStorage.setItem("roll_number", rollno);
+          localStorage.setItem("user_PK", user_PK);
+          localStorage.setItem("room_FK", room_FK);
+          navigate("/StudentDashboard");
+          return;
+        }
+      } else {
+        alert("Invalid roll number format!");
+      }
 
       setError("Invalid roll number or password");
     } catch (err) {
@@ -261,16 +269,26 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
       {/* Success Alert */}
       {showSuccess && (
         <div className="login_success-alert">
-          <svg viewBox="0 0 24 24" className="login_success-icon" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            viewBox="0 0 24 24"
+            className="login_success-icon"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="login_success-text">Login successful! Redirecting...</span>
+          <span className="login_success-text">
+            Login successful! Redirecting...
+          </span>
         </div>
       )}
 
       {/* Header Section */}
       <div className="login_welcome-header">
-        <h1 className="login_welcome-title">Welcome to IIT Maintenance System</h1>
+        <h1 className="login_welcome-title">
+          Welcome to IIT Maintenance System
+        </h1>
         <p className="login_welcome-subtitle">
           Your one-stop solution for hostel maintenance and facility management
         </p>
@@ -283,7 +301,13 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
           {/* Login Header */}
           <div className="login_login-header">
             <div className="login_login-logo-enhanced">
-              <svg viewBox="0 0 24 24" className="login_logo-icon-enhanced" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                viewBox="0 0 24 24"
+                className="login_logo-icon-enhanced"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
@@ -296,7 +320,13 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
           {/* Error Alert */}
           {error && (
             <div className="login_error-alert-enhanced">
-              <svg viewBox="0 0 24 24" className="login_error-icon-enhanced" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                viewBox="0 0 24 24"
+                className="login_error-icon-enhanced"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <span>{error}</span>
@@ -322,8 +352,8 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
                 <svg
                   viewBox="0 0 24 24"
                   className="login_input-icon-enhanced"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   strokeWidth="2"
                 >
                   <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
@@ -349,8 +379,8 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
                 <svg
                   viewBox="0 0 24 24"
                   className="login_input-icon-enhanced"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   strokeWidth="2"
                 >
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -363,7 +393,9 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
             <div className="login_form-footer-enhanced">
               <button
                 type="submit"
-                className={`login_login-button-enhanced ${loading ? "login_loading" : ""}`}
+                className={`login_login-button-enhanced ${
+                  loading ? "login_loading" : ""
+                }`}
                 disabled={loading}
               >
                 {loading ? (
@@ -374,13 +406,19 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
                 ) : (
                   <>
                     <span>Sign In</span>
-                    <svg viewBox="0 0 24 24" className="login_button-arrow" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="login_button-arrow"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </>
                 )}
               </button>
-              
+
               <a href="#" className="login_forgot-password-enhanced">
                 Forgot your password?
               </a>
@@ -394,7 +432,8 @@ if (allowedPrefixes.some(prefix => normalizedRollno.startsWith(prefix))) {
         <div className="login_footer-content">
           <h3 className="login_footer-title">IIT Maintenance Portal</h3>
           <p className="login_footer-subtitle">
-            Empowering efficient facility management • Contact IT Support: support@iit.ac.in
+            Empowering efficient facility management • Contact IT Support:
+            support@iit.ac.in
           </p>
         </div>
       </div>

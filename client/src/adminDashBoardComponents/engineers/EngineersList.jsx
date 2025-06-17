@@ -12,7 +12,10 @@ const EngineersList = ({ handleEngineerDetails }) => {
   useEffect(() => {
     const fetchEngineers = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/admin/engineers", { withCredentials: true });
+        const res = await axios.get(
+          "http://localhost:4000/api/admin/engineers",
+          { withCredentials: true }
+        );
         setEngineers(res.data);
       } catch (err) {
         console.error("Failed to fetch engineers:", err);
@@ -46,77 +49,168 @@ const EngineersList = ({ handleEngineerDetails }) => {
     setFilteredEngineers(results);
   }, [engineers, searchTerm, filterSpecialization, filterStatus]);
 
-  const specializations = [...new Set(engineers.map((e) => e.specialization))].filter(Boolean);
+  const specializations = [
+    ...new Set(engineers.map((e) => e.specialization)),
+  ].filter(Boolean);
   const statuses = [...new Set(engineers.map((e) => e.status))].filter(Boolean);
 
   return (
-    <div className="engineers-list-section bg-white p-8 rounded-lg shadow-xl">
-      <div className="filters flex flex-wrap gap-4 mb-8">
-        <input
-          type="text"
-          placeholder="Search by name or email"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-3 rounded-md border border-gray-300 w-full sm:w-1/3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <select
-          value={filterSpecialization}
-          onChange={(e) => setFilterSpecialization(e.target.value)}
-          className="p-3 rounded-md border border-gray-300 w-full sm:w-1/3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">Filter by Specialization</option>
-          {specializations.map((spec) => (
-            <option key={spec} value={spec}>
-              {spec}
-            </option>
-          ))}
-        </select>
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          className="p-3 rounded-md border border-gray-300 w-full sm:w-1/3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">Filter by Status</option>
-          {statuses.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
+    <div className="admin-dashboard-engineers-container">
+      <div className="admin-dashboard-section-header">
+        <h2 className="admin-dashboard-section-title">Maintenance Engineers</h2>
+        <p className="admin-dashboard-section-subtitle">
+          Manage your engineering staff and monitor their assignments
+        </p>
       </div>
 
-      {/* Display engineers in a table */}
-      <div className="overflow-x-auto shadow-md rounded-lg">
-        <table className="min-w-full table-auto text-gray-700 border-collapse bg-gray-50">
-          <thead>
-            <tr className="bg-indigo-600 text-white">
-              <th className="px-6 py-3 text-left font-semibold">Name</th>
-              <th className="px-6 py-3 text-left font-semibold">Email</th>
-              <th className="px-6 py-3 text-left font-semibold">Phone</th>
-              <th className="px-6 py-3 text-left font-semibold">Specialization</th>
-              <th className="px-6 py-3 text-left font-semibold">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEngineers.length > 0 ? (
-              filteredEngineers.map((engineer) => (
-                <tr key={engineer.id} className="hover:bg-indigo-50 transition duration-200">
-                  <td className="px-6 py-4 border-b">{engineer.name}</td>
-                  <td className="px-6 py-4 border-b">{engineer.email}</td>
-                  <td className="px-6 py-4 border-b">{engineer.phone}</td>
-                  <td className="px-6 py-4 border-b">{engineer.specialization}</td>
-                  <td className="px-6 py-4 border-b">{engineer.status}</td>
+      <div className="admin-dashboard-card">
+        <div className="admin-dashboard-card-header">
+          <h3 className="admin-dashboard-card-title">Engineers List</h3>
+        </div>
+
+        <div className="admin-dashboard-filters-container">
+          <div className="admin-dashboard-input-icon-wrapper">
+            <span className="admin-dashboard-input-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <input
+              type="text"
+              placeholder="Search by name or email"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="admin-dashboard-search-input"
+            />
+          </div>
+
+          <select
+            value={filterSpecialization}
+            onChange={(e) => setFilterSpecialization(e.target.value)}
+            className="admin-dashboard-filter-select"
+          >
+            <option value="">All Specializations</option>
+            {specializations.map((spec) => (
+              <option key={spec} value={spec}>
+                {spec}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="admin-dashboard-filter-select"
+          >
+            <option value="">All Statuses</option>
+            {statuses.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {filteredEngineers.length > 0 ? (
+          <div className="admin-dashboard-table-responsive">
+            <table className="admin-dashboard-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Specialization</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="px-6 py-4 text-center border-b text-gray-500">
-                  No engineers found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {filteredEngineers.map((engineer) => (
+                  <tr key={engineer.id}>
+                    <td>
+                      <div className="admin-dashboard-engineer-name">
+                        <div className="admin-dashboard-engineer-avatar">
+                          {engineer.name?.charAt(0).toUpperCase() || "E"}
+                        </div>
+                        <span>{engineer.name}</span>
+                      </div>
+                    </td>
+                    <td>{engineer.email}</td>
+                    <td>{engineer.phone}</td>
+                    <td>
+                      <span className="admin-dashboard-specialization-badge">
+                        {engineer.specialization}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`admin-dashboard-status-indicator ${
+                          engineer.status === "Available"
+                            ? "available"
+                            : "unavailable"
+                        }`}
+                      >
+                        {engineer.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="admin-dashboard-btn admin-dashboard-view-btn"
+                        onClick={() => handleEngineerDetails(engineer)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="admin-dashboard-empty-state">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ color: "#ccc", marginBottom: "1rem" }}
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <p className="admin-dashboard-empty-text">
+              No engineers found matching your search criteria
+            </p>
+            <button
+              className="admin-dashboard-btn"
+              onClick={() => {
+                setSearchTerm("");
+                setFilterSpecialization("");
+                setFilterStatus("");
+              }}
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

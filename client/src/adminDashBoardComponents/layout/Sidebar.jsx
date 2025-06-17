@@ -2,15 +2,17 @@ import React from "react";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
   return (
-    <aside className="sidebar">
-      <nav className="sidebar-nav">
+    <aside className="admin-dashboard-sidebar">
+      <nav className="admin-dashboard-sidebar-nav">
         <ul>
           <li>
             <button
-              className={activeSection === "dashboard" ? "active" : ""}
+              className={
+                activeSection === "dashboard" ? "admin-dashboard-active" : ""
+              }
               onClick={() => setActiveSection("dashboard")}
             >
-              <span className="nav-icon">
+              <span className="admin-dashboard-nav-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -33,10 +35,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           </li>
           <li>
             <button
-              className={activeSection === "complaints" ? "active" : ""}
+              className={
+                activeSection === "complaints" ? "admin-dashboard-active" : ""
+              }
               onClick={() => setActiveSection("complaints")}
             >
-              <span className="nav-icon">
+              <span className="admin-dashboard-nav-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -56,10 +60,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           </li>
           <li>
             <button
-              className={activeSection === "engineers" ? "active" : ""}
+              className={
+                activeSection === "engineers" ? "admin-dashboard-active" : ""
+              }
               onClick={() => setActiveSection("engineers")}
             >
-              <span className="nav-icon">
+              <span className="admin-dashboard-nav-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -82,10 +88,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           </li>
           <li>
             <button
-              className={activeSection === "add-engineer" ? "active" : ""}
+              className={
+                activeSection === "add-engineer" ? "admin-dashboard-active" : ""
+              }
               onClick={() => setActiveSection("add-engineer")}
             >
-              <span className="nav-icon">
+              <span className="admin-dashboard-nav-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"

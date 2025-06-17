@@ -7,9 +7,9 @@ const router = express.Router();
 // GET /api/admin/engineers
 router.get('/engineers', async (req, res, next) => {
     try {
+      console.log('⏳  GET /api/admin/engineers called');
         const [rows] = await pool.execute(`
-            SELECT e.engineer_PK AS id,
-                   u.name,
+          SELECT   u.name,
                    u.mail_UN AS email,
                    u.role,
                    e.phone_number AS phone,
@@ -43,9 +43,9 @@ router.post('/engineer', async (req, res, next) => {
       user_FK,
       name,
       mail_UN,
-      role,
+      // role,
       phone_number,
-      availability,
+      // availability,
       specialization,
       years_of_experience,
       address
@@ -61,7 +61,9 @@ router.post('/engineer', async (req, res, next) => {
 
     // Create new user if needed
     if (!user_FK) {
-      role = role || 'engineer';
+      role = 'engineer';
+      availability = 1; // Default availability to 1 (available)
+
       const now = new Date();
       const [userResult] = await conn.execute(
         `INSERT INTO Users (name, mail_UN, role, created_at, updated_at)

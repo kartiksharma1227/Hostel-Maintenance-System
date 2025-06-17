@@ -22,13 +22,17 @@ const AdminDashboard = () => {
   });
   const [activeSection, setActiveSection] = useState("dashboard");
   const [notifications, setNotifications] = useState([]);
-  const [notificationPanelVisible, setNotificationPanelVisible] = useState(false);
+  const [notificationPanelVisible, setNotificationPanelVisible] =
+    useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const profileDropdownRef = useRef(null);
 
   const [complaints, setComplaints] = useState([]);
   const [engineers, setEngineers] = useState([]);
-  const [successMessage, setSuccessMessage] = useState({ visible: false, message: "" });
+  const [successMessage, setSuccessMessage] = useState({
+    visible: false,
+    message: "",
+  });
 
   const [complaintDetailsModal, setComplaintDetailsModal] = useState({
     visible: false,
@@ -69,9 +73,17 @@ const AdminDashboard = () => {
       });
       if (!res.ok) throw new Error("Assignment failed");
       const updated = await res.json();
-      setComplaints((prev) => prev.map((c) => (c.id === complaintId ? updated : c)));
-      setSuccessMessage({ visible: true, message: "Engineer assigned successfully!" });
-      setTimeout(() => setSuccessMessage({ visible: false, message: "" }), 3000);
+      setComplaints((prev) =>
+        prev.map((c) => (c.id === complaintId ? updated : c))
+      );
+      setSuccessMessage({
+        visible: true,
+        message: "Engineer assigned successfully!",
+      });
+      setTimeout(
+        () => setSuccessMessage({ visible: false, message: "" }),
+        3000
+      );
       setAssignEngineerModal({ visible: false, complaintId: null });
     } catch (err) {
       alert(err.message);
@@ -85,11 +97,11 @@ const AdminDashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(engineerData),
       });
-  
+
       if (!res.ok) throw new Error("Add engineer failed");
-  
+
       const saved = await res.json();
-  
+
       // Create engineer object expected by EngineersList
       const newEngineer = {
         id: saved.engineerId || Math.random(),
@@ -101,18 +113,22 @@ const AdminDashboard = () => {
         assignedComplaints: 0,
         completedComplaints: 0,
       };
-  
+
       setEngineers((prev) => [...prev, newEngineer]);
       setActiveSection("engineers");
-  
-      setSuccessMessage({ visible: true, message: "Engineer added successfully!" });
-      setTimeout(() => setSuccessMessage({ visible: false, message: "" }), 3000);
+
+      setSuccessMessage({
+        visible: true,
+        message: "Engineer added successfully!",
+      });
+      setTimeout(
+        () => setSuccessMessage({ visible: false, message: "" }),
+        3000
+      );
     } catch (err) {
       alert(err.message);
     }
   };
-  
-  
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible((v) => !v);
@@ -121,7 +137,10 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target)) {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(e.target)
+      ) {
         setProfileDropdownVisible(false);
       }
     };
@@ -130,7 +149,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="admin-dashboard">
+    <div className="admin-dashboard-wrapper">
       <Header
         adminProfile={adminProfile}
         notifications={notifications}
@@ -140,65 +159,98 @@ const AdminDashboard = () => {
         toggleProfileDropdown={toggleProfileDropdown}
       />
 
-      <div className="dashboard-container">
-        <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <div className="admin-dashboard-container">
+        <Sidebar
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+        />
 
-        <main className="main-content">
+        <main className="admin-dashboard-main-content">
           {activeSection === "dashboard" && (
             <Dashboard
               complaints={complaints}
-              handleViewDetails={(c) => setComplaintDetailsModal({ visible: true, complaint: c })}
-              handleAssignEngineer={(id) => setAssignEngineerModal({ visible: true, complaintId: id })}
+              handleViewDetails={(c) =>
+                setComplaintDetailsModal({ visible: true, complaint: c })
+              }
+              handleAssignEngineer={(id) =>
+                setAssignEngineerModal({ visible: true, complaintId: id })
+              }
             />
           )}
 
           {activeSection === "complaints" && (
             <Complaints
               complaints={complaints}
-              handleViewDetails={(c) => setComplaintDetailsModal({ visible: true, complaint: c })}
-              handleAssignEngineer={(id) => setAssignEngineerModal({ visible: true, complaintId: id })}
+              handleViewDetails={(c) =>
+                setComplaintDetailsModal({ visible: true, complaint: c })
+              }
+              handleAssignEngineer={(id) =>
+                setAssignEngineerModal({ visible: true, complaintId: id })
+              }
             />
           )}
 
           {activeSection === "engineers" && (
-            <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
+            <EngineersList
+              engineers={engineers}
+              handleEngineerDetails={() => {}}
+            />
           )}
 
-          {activeSection === "add-engineer" && <AddEngineerForm onSubmit={handleAddEngineer} />}
+          {activeSection === "add-engineer" && (
+            <AddEngineerForm onSubmit={handleAddEngineer} />
+          )}
         </main>
 
         {notificationPanelVisible && (
-          <NotificationsPanel
-            notifications={notifications}
-            onMarkAsRead={(id) => {}}
-            onMarkAllAsRead={() => {}}
-          />
+          <div className="admin-dashboard-notification-panel-container">
+            <NotificationsPanel
+              notifications={notifications}
+              onMarkAsRead={(id) => {}}
+              onMarkAllAsRead={() => {}}
+            />
+          </div>
         )}
 
-        <ProfileDropdown
-          ref={profileDropdownRef}
-          adminProfile={adminProfile}
-          visible={profileDropdownVisible}
-          onLogout={() => console.log("logout")}
-        />
+        <div className="admin-dashboard-profile-dropdown-container">
+          <ProfileDropdown
+            ref={profileDropdownRef}
+            adminProfile={adminProfile}
+            visible={profileDropdownVisible}
+            onLogout={() => console.log("logout")}
+          />
+        </div>
 
         {complaintDetailsModal.visible && (
-          <ComplaintDetailsModal
-            complaint={complaintDetailsModal.complaint}
-            onClose={() => setComplaintDetailsModal({ visible: false, complaint: null })}
-          />
+          <div className="admin-dashboard-modal-overlay">
+            <ComplaintDetailsModal
+              complaint={complaintDetailsModal.complaint}
+              onClose={() =>
+                setComplaintDetailsModal({ visible: false, complaint: null })
+              }
+            />
+          </div>
         )}
 
         {assignEngineerModal.visible && (
-          <AssignComplaintModal
-            complaint={complaints.find((c) => c.id === assignEngineerModal.complaintId)}
-            engineers={engineers}
-            onAssign={handleAssignEngineerSubmit}
-            onClose={() => setAssignEngineerModal({ visible: false, complaintId: null })}
-          />
+          <div className="admin-dashboard-modal-overlay">
+            <AssignComplaintModal
+              complaint={complaints.find(
+                (c) => c.id === assignEngineerModal.complaintId
+              )}
+              engineers={engineers}
+              onAssign={handleAssignEngineerSubmit}
+              onClose={() =>
+                setAssignEngineerModal({ visible: false, complaintId: null })
+              }
+            />
+          </div>
         )}
 
-        <SuccessToast message={successMessage.message} visible={successMessage.visible} />
+        <SuccessToast
+          message={successMessage.message}
+          visible={successMessage.visible}
+        />
       </div>
     </div>
   );

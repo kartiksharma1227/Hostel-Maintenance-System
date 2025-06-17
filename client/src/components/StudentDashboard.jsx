@@ -257,7 +257,7 @@ const StudentDashboard = () => {
       case "history":
         return (
           <div className="complaint-history">
-            <h2>Complaint History</h2>
+            {/* <h2>Complaint History</h2> */}
             <ComplaintHistory
               onViewDetails={(complaint) => {
                 setSelectedComplaint(complaint);
