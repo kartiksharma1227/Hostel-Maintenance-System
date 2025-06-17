@@ -55,7 +55,8 @@ const createStudentComplaint = async (req, res, next) => {
       priority,
       location,
       description,
-      submitted_by
+      submitted_by,
+      user_PK
     } = req.body;
 
     if (!room_FK || !title || !category || !priority || !location || !description || !submitted_by) {
@@ -84,16 +85,16 @@ const createStudentComplaint = async (req, res, next) => {
     const complaintId = complaintResult.insertId;
 
     // Find user_PK via submitted_by roll number
-    const [userResult] = await pool.execute(
-      `SELECT u.user_PK 
-       FROM Students s 
-       JOIN Users u ON s.user_FK = u.user_PK 
-       WHERE s.roll_number = ?`,
-      [submitted_by]
-    );
+    // const [userResult] = await pool.execute(
+    //   `SELECT u.user_PK 
+    //    FROM Students s 
+    //    JOIN Users u ON s.user_FK = u.user_PK 
+    //    WHERE s.roll_number = ?`,
+    //   [submitted_by]
+    // );
 
-    if (userResult.length > 0) {
-      const userId = userResult[0].user_PK;
+    // if (userResult.length > 0) {
+      // const userI = userResult[0].user_PK;
 
       // Insert notification for student
       const notificationSql = `
@@ -104,8 +105,8 @@ const createStudentComplaint = async (req, res, next) => {
 
       const notificationMessage = `Your complaint titled '${title}' has been submitted with status 'Pending'.`;
 
-      await pool.execute(notificationSql, [notificationMessage, userId]);
-    }
+      await pool.execute(notificationSql, [notificationMessage, user_PK]);
+    // }
 
     // Respond success
     res.status(201).json({ complaintId });

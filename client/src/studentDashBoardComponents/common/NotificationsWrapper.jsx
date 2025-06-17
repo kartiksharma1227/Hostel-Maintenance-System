@@ -73,16 +73,116 @@
 // export default NotificationsWrapper;
 
 
-import React from "react";
+
+// import React from "react";
+// import NotificationsPanel from "./NotificationsPanel";
+
+// const NotificationsWrapper = ({
+//   notifications,
+//   visible,
+//   markAllAsRead,
+//   markAsRead,
+//   togglePanel
+// }) => {
+//   return (
+//     <div>
+//       <button className="notification-btn" onClick={togglePanel}>
+//         Notifications ({notifications.filter((n) => !n.read_status).length})
+//       </button>
+
+//       <NotificationsPanel
+//         notifications={notifications}
+//         visible={visible}
+//         markAllNotificationsAsRead={markAllAsRead}
+//         markNotificationAsRead={markAsRead}
+//       />
+//     </div>
+//   );
+// };
+
+// export default NotificationsWrapper;
+
+import React, { useEffect, useState } from "react";
 import NotificationsPanel from "./NotificationsPanel";
 
-const NotificationsWrapper = ({
-  notifications,
-  visible,
-  markAllAsRead,
-  markAsRead,
-  togglePanel
-}) => {
+const NotificationsWrapper = () => {
+  const [notifications, setNotifications] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  // Fetch notifications from backend
+  const fetchNotifications = async () => {
+    try {
+      // const rollNumber = localStorage.getItem("roll_number");
+      const user_PK = localStorage.getItem("user_PK");
+
+      const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
+
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+      const data = await res.json();
+      setNotifications(data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
+
+  // Toggle notification panel visibility
+  const togglePanel = () => {
+    setVisible((prev) => !prev);
+  };
+
+  // Mark all as read
+  const markAllAsRead = async () => {
+    try {
+      // const rollNumber = localStorage.getItem("roll_number");
+      const user_PK = localStorage.getItem("user_PK");
+      const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("Failed to mark all as read");
+
+      // Update local state
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, read_status: true }))
+      );
+    } catch (err) {
+      console.error("Error marking all notifications as read:", err);
+    }
+  };
+
+  // Mark a single notification as read
+  const markAsRead = async (notification_PK) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/notifications/markAsRead/${notification_PK}`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("Failed to mark as read");
+
+      // Update local state
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+        )
+      );
+    } catch (err) {
+      console.error("Error marking notification as read:", err);
+    }
+  };
+
+  // Load notifications on mount
+  useEffect(() => {
+    fetchNotifications();
+
+    // Listen for custom event to refresh on new complaint
+    const handleUpdate = () => {
+      fetchNotifications();
+    };
+    window.addEventListener("notificationsUpdated", handleUpdate);
+
+    return () => {
+      window.removeEventListener("notificationsUpdated", handleUpdate);
+    };
+  }, []);
+
   return (
     <div>
       <button className="notification-btn" onClick={togglePanel}>

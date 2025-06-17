@@ -82,7 +82,7 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       return;
     }
 
-    const userPk = localStorage.getItem("user_PK");
+    const userPK = localStorage.getItem("user_PK");
     const roll_number = localStorage.getItem("roll_number");
     const room_FK = localStorage.getItem("room_FK");
     // const location = room_FK.toString()[0]
@@ -109,6 +109,7 @@ if (["1", "2", "3", "4", "5"].includes(blockCode)) {
       location: location,
       description: formData.description,
       submitted_by: roll_number,
+      user_PK: userPK,
     };
 
     console.log("Form data to be submitted:", payload); // Log the form data
@@ -205,23 +206,7 @@ if (["1", "2", "3", "4", "5"].includes(blockCode)) {
           )}
         </div>
 
-        {/* <div className="form-group">
-          <label>
-            Room Number <span className="required-badge">Required</span>
-          </label>
-          <input
-            type="number"
-            name="location"
-            min="1"
-            value={formData.location}
-            onChange={handleChange}
-            className="input-enhanced"
-            placeholder="e.g., 201"
-          />
-          {errors.location && (
-            <span className="error-message">{errors.location}</span>
-          )}
-        </div> */}
+    
 
         <div className="form-divider">
           <span className="divider-text">Priority & Description</span>

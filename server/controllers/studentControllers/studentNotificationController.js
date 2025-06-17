@@ -3,7 +3,8 @@ const db = require('../../db/connection');
 // Fetch notifications for a user
 exports.getNotifications = async (req, res) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.params.user_PK;
+    console.log('Fetching notifications for user:', userId);
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
@@ -38,5 +39,27 @@ exports.markAsRead = async (req, res) => {
   } catch (err) {
     console.error('Notification update error:', err);
     res.status(500).json({ error: 'Database error', detail: err.message });
+  }
+};
+
+
+
+
+// PUT /api/notifications/markAllAsRead/:rollNumber
+exports.markAllAsRead = async (req, res) => {
+  const user_PK = req.params.user_PK;
+  console.log('Marking all notifications as read for user:', user_PK);
+
+  try {
+  
+    await db.execute(
+      `UPDATE notifications SET read_status = true WHERE user_FK = ?`,
+      [user_PK]
+    );
+
+    res.json({ message: "All notifications marked as read" });
+  } catch (err) {
+    console.error("Mark all as read error:", err);
+    res.status(500).json({ error: "Server error marking all notifications as read" });
   }
 };
