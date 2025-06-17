@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaBell, FaUserCircle, FaQuestionCircle } from "react-icons/fa";
-import NotificationsPanel from "./NotificationsPanel";
+// import NotificationsPanel from "./NotificationsPanel";
+import NotificationsWrapper from "./NotificationsWrapper";
 import ProfileDropdown from "./ProfileDropdown";
 
 const mockNotifications = [ /* …your existing mock data… */ ];
@@ -79,12 +80,18 @@ const Header = () => {
           </span>
         </div>
 
-        <NotificationsPanel
+        {/* <NotificationsPanel
           notifications={notifications}
           visible={showNotifications}
           markAllNotificationsAsRead={markAllNotificationsAsRead}
           markNotificationAsRead={markNotificationAsRead}
-        />
+         /> */}
+         <NotificationsWrapper
+  notifications={notifications}
+  visible={showNotifications}
+  markAllAsRead={markAllNotificationsAsRead}
+  markAsRead={markNotificationAsRead}
+/>
 
         {showProfile && (
           // You can still let ProfileDropdown fetch its own data,
