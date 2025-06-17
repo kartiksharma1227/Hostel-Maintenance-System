@@ -11,14 +11,24 @@ const RecentComplaints = ({
     .slice(0, 5);
 
   // Format date to readable string
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A";
+
+  // Convert "YYYY-MM-DD HH:mm:ss" → "YYYY-MM-DDTHH:mm:ss"
+  const isoString = dateString.replace(" ", "T");
+
+  const date = new Date(isoString);
+
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true, // Set to false if you prefer 24-hour format
+  });
+};
 
   return (
     <div className="complaints-section">
@@ -77,7 +87,7 @@ const RecentComplaints = ({
           <tbody>
             {recentComplaints.map((complaint) => (
               <tr key={complaint.id}>
-                <td>#{complaint.id}</td>
+                <td>{complaint.id}</td>
                 <td>{complaint.title}</td>
                 <td>
                   <span className="category-label">{complaint.category}</span>
@@ -91,7 +101,7 @@ const RecentComplaints = ({
                     {complaint.status}
                   </span>
                 </td>
-                <td>{formatDate(complaint.dateSubmitted)}</td>
+                <td>{formatDate(complaint.created_at)}</td>
                 <td>
                   <div className="action-buttons">
                     <button

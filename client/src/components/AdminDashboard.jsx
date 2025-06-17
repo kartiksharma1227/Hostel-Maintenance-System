@@ -45,7 +45,7 @@ const AdminDashboard = () => {
 
   // Fetch initial data
   useEffect(() => {
-    fetch(`${API_BASE}/complaints`)
+    fetch(`${API_BASE}/admin/complaints`)
       .then((res) => res.json())
       .then(setComplaints)
       .catch((err) => console.error(err));
@@ -64,31 +64,31 @@ const AdminDashboard = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleAssignEngineerSubmit = async ({ complaintId, engineerId }) => {
-    try {
-      const res = await fetch(`${API_BASE}/complaints/${complaintId}/assign`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ engineerId }),
-      });
-      if (!res.ok) throw new Error("Assignment failed");
-      const updated = await res.json();
-      setComplaints((prev) =>
-        prev.map((c) => (c.id === complaintId ? updated : c))
-      );
-      setSuccessMessage({
-        visible: true,
-        message: "Engineer assigned successfully!",
-      });
-      setTimeout(
-        () => setSuccessMessage({ visible: false, message: "" }),
-        3000
-      );
-      setAssignEngineerModal({ visible: false, complaintId: null });
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  // const handleAssignEngineerSubmit = async ({ complaintId, engineerId }) => {
+  //   try {
+  //     const res = await fetch(`${API_BASE}/complaints/${complaintId}/assign`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ engineerId }),
+  //     });
+  //     if (!res.ok) throw new Error("Assignment failed");
+  //     const updated = await res.json();
+  //     setComplaints((prev) =>
+  //       prev.map((c) => (c.id === complaintId ? updated : c))
+  //     );
+  //     setSuccessMessage({
+  //       visible: true,
+  //       message: "Engineer assigned successfully!",
+  //     });
+  //     setTimeout(
+  //       () => setSuccessMessage({ visible: false, message: "" }),
+  //       3000
+  //     );
+  //     setAssignEngineerModal({ visible: false, complaintId: null });
+  //   } catch (err) {
+  //     alert(err.message);
+  //   }
+  // };
 
   const handleAddEngineer = async (engineerData) => {
     try {
@@ -129,6 +129,45 @@ const AdminDashboard = () => {
       alert(err.message);
     }
   };
+
+
+const handleAssignEngineerSubmit = async ({ complaintId, engineerId, note }) => {
+  try {
+    const res = await fetch(`${API_BASE}/admin/assignments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        complaintId,
+        engineerId,
+        note,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Assignment failed");
+
+    const updated = await res.json();
+
+    // Update complaint list locally if needed
+    setComplaints((prev) =>
+      prev.map((c) => (c.id === complaintId ? updated : c))
+    );
+
+    setSuccessMessage({
+      visible: true,
+      message: "Engineer assigned successfully!",
+    });
+
+    setTimeout(() => {
+      setSuccessMessage({ visible: false, message: "" });
+    }, 3000);
+
+    setAssignEngineerModal({ visible: false, complaintId: null });
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible((v) => !v);

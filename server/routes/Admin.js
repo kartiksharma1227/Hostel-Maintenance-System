@@ -16,7 +16,8 @@ router.get('/engineers', async (req, res, next) => {
                    e.availability AS status,
                    e.specialization,
                    e.years_of_experience,
-                   e.address
+                   e.address,
+                   e.user_FK
             FROM Engineers e
             JOIN Users u ON e.user_FK = u.user_PK
           `);
@@ -112,5 +113,62 @@ router.post('/engineer', async (req, res, next) => {
     conn.release();
   }
 });
+
+
+
+
+router.get('/complaints', async (req, res, next) => {
+  try {
+    console.log('⏳  GET /api/admin/complaints called');
+    const [rows] = await pool.execute(`
+      SELECT *
+             
+      FROM Complaints c
+
+      ORDER BY c.created_at DESC
+    `);
+    
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Error fetching complaints:", err);
+    res.status(500).json({ error: "Internal Server Error", details: err.message });
+  }
+});
+
+
+
+// POST /api/assignments
+router.post("/assignments", async (req, res) => {
+  const { complaintId, engineerId, note } = req.body;
+  console.log('⏳  POST /api/admin/assignments body:', req.body);
+
+  if (!complaintId || !engineerId) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  try {
+    const [result] = await pool.execute(
+      `INSERT INTO assignments (complaint_FK, engineer_FK) VALUES (?, ?)`,
+      [complaintId, engineerId]
+    );
+
+    // // Optionally update complaint status to "In Progress"
+    // await db.execute(`UPDATE complaints SET status = ? WHERE id = ?`, [
+    //   "In Progress",
+    //   complaintId,
+    // ]);
+
+    res.status(201).json({ message: "Engineer assigned successfully" });
+  } catch (error) {
+    console.error("Assignment Error:", error);
+    res.status(500).json({ message: "Failed to assign engineer" });
+  }
+});
+
+
+
+
+
+
 
 module.exports = router;

@@ -40,15 +40,24 @@ const ComplaintsTable = ({
   });
 
   // Format date to readable string
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A";
+
+  // Convert "YYYY-MM-DD HH:mm:ss" → "YYYY-MM-DDTHH:mm:ss"
+  const isoString = dateString.replace(" ", "T");
+
+  const date = new Date(isoString);
+
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true, // Set to false if you prefer 24-hour format
+  });
+};
 
   return (
     <div className="admin-dashboard-complaints-section">
@@ -149,13 +158,14 @@ const ComplaintsTable = ({
               </tr>
             </thead>
             <tbody>
+              {/* This is the filter whoch gets applied to the json data backend is sending! */}
               {filteredComplaints.map((complaint) => (
                 <tr key={complaint.id}>
-                  <td>#{complaint.id}</td>
+                  <td>{complaint.id}</td>
                   <td className="admin-dashboard-title-cell">
                     {complaint.title}
                   </td>
-                  <td>{complaint.submittedBy?.name || "Unknown"}</td>
+                  <td>{complaint.submitted_by || "Unknown"}</td>
                   <td>
                     <span className="admin-dashboard-category-badge">
                       {complaint.category}
@@ -171,7 +181,7 @@ const ComplaintsTable = ({
                       {complaint.status}
                     </span>
                   </td>
-                  <td>{formatDate(complaint.dateSubmitted)}</td>
+                  <td>{formatDate(complaint.created_at)}</td>
                   <td>
                     <div className="admin-dashboard-action-buttons">
                       <button
