@@ -1,9 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const db = require('../db/connection');
+const db = require("../../db/connection");
 
-// GET /api/student/profile/:user_pk
-router.get('/profile/:user_pk', async (req, res) => {
+const getStudentProfile = async (req, res) => {
   const { user_pk } = req.params;
 
   if (!user_pk) {
@@ -20,7 +17,6 @@ router.get('/profile/:user_pk', async (req, res) => {
         u.role,
         u.created_at,
         u.updated_at,
-
         s.user_FK,
         s.room_FK,
         s.roll_number
@@ -40,6 +36,6 @@ router.get('/profile/:user_pk', async (req, res) => {
     console.error("Error fetching student profile:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-});
+};
 
-module.exports = router;
+module.exports = { getStudentProfile };

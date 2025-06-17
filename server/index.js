@@ -1,21 +1,50 @@
-
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// *******************************************************************************************
+// STUDENT DASHBOARD ROUTES
+
+const studentProfileRoute = require('./routes/studentDashboardRoutes/studentProfileRoute');
+const complainHistoryRoute = require('./routes/studentDashboardRoutes/studentComplaintsHistoryRoute');
+const recentComplaintsRouter = require('./routes/studentDashboardRoutes/studentRecentComplaintsRoute'); 
+const studentAddComplaintRoute = require('./routes/studentDashboardRoutes/studentAddComplaintRoute');
+
+
+
+
+
+// *******************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
 const updComplaintRoute = require('./routes/updComplaints');
 const engineerRoutes = require('./routes/engineer'); // update path if needed
-const studentProfileRoute = require('./routes/studentProfile');
+
+
+
+
 const complaintsRouter = require('./routes/complaints');
 
 // Import the authentication routes
 const authLogin = require('./routes/authLogin');
-const complainHistoryRoute = require('./routes/complaintHistory');
+
+
 const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');
 const engineerProfileRoute  = require('./routes/engineerprofile');
 
-const recentComplaintsRouter = require('./routes/recentStudentComplaints'); // Import recent complaints route
+
 
 // Initialize the Express app
 const app = express();
@@ -42,6 +71,11 @@ app.use("/api/compUpd", updComplaintRoute);
 app.use('/api/engineer', engineerProfileRoute);
 app.use('/api/student', studentProfileRoute);
 app.use('/api/feedback', feedbackRouter);
+
+
+
+
+
 app.use("/api/complaint-history", complainHistoryRoute);
 app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent complaints
 
@@ -54,7 +88,7 @@ app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent c
 app.use('/api', authLogin); // Prefix `/api` for login routes
 
 
-app.use('/api/complaints', complaintsRouter);
+app.use('/api/complaints', studentAddComplaintRoute);
 
 app.use('/api/admin', adminRouter); 
 app.use('/api', engineerRoutes);
