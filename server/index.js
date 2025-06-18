@@ -27,7 +27,10 @@ const studentAddComplaintRoute = require('./routes/studentDashboardRoutes/studen
 const studentNotificationRoutes = require('./routes/studentDashboardRoutes/studentNotificationRoute');
 
 // *******************************************************************************************
-
+// ADMIN DASHBOARD ROUTES
+const adminEngineerRoute = require('./routes/adminDashboardRoutes/adminEngineerRoute');
+const adminComplaintRoute = require('./routes/adminDashboardRoutes/adminComplaintRoute');
+const adminAssignmentRoute = require('./routes/adminDashboardRoutes/adminAssignmentRoute');
 
 const updComplaintRoute = require('./routes/updComplaints');
 const engineerRoutes = require('./routes/engineer'); // update path if needed
@@ -39,7 +42,17 @@ const engineerRoutes = require('./routes/engineer'); // update path if needed
 
 // Import the authentication routes
 const authLogin = require('./routes/authLogin');
-const adminRouter = require('./routes/Admin');
+
+// *******************************************************************************************
+// Admin routes
+app.use('/api/admin', adminEngineerRoute);
+app.use('/api/admin', adminComplaintRoute);
+app.use('/api/admin', adminAssignmentRoute); // Uncomment if you have assignment routes
+
+
+
+
+// const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');
 const engineerProfileRoute  = require('./routes/engineerprofile');
 
@@ -65,7 +78,7 @@ app.use('/api/notifications', studentNotificationRoutes);
 
 app.use('/api/complaints', studentAddComplaintRoute);
 
-app.use('/api/admin', adminRouter); 
+// app.use('/api/admin', adminRouter); 
 app.use('/api', engineerRoutes);
 
 
