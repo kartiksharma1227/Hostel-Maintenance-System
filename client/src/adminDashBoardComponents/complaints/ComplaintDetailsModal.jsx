@@ -52,6 +52,7 @@ const ComplaintDetailsModal = ({ complaint, onClose, onAssignEngineer }) => {
         ]
       : []),
   ].filter((event) => event.date); // Filter out events without dates
+  console.log('Complaints from all complaints',complaint);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
