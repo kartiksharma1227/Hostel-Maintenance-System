@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ComplaintDetailsModal from "./ComplaintDetailsModal";
+import ComplaintDetailsModal from "../modals/ComplaintDetailsModal";
 
 const ComplaintsTable = ({
   complaints,
@@ -221,7 +221,7 @@ const ComplaintsTable = ({
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          style={{ marginRight: "5px" }}
+                          // style={{ marginRight: "5px" }}
                         >
                           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                           <circle cx="12" cy="12" r="3"></circle>

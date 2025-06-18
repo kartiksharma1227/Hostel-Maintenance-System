@@ -5,4 +5,5 @@ const {getAllComplaints,getComplaintDetails} = require('../../controllers/adminC
 router.get('/complaints', getAllComplaints);
 router.get('/complaints/with-assignees/:id', getComplaintDetails);
 
+
 module.exports = router;
