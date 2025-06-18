@@ -55,20 +55,22 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+       <Route
           path="/AdminDashboard"
           element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            //   <AdminDashboard />
+            // </ProtectedRoute>
+            <AdminDashboard />
           }
         />
         <Route
           path="/EngineerDashboard"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
+            //   <EngineerDashboard />
+            // </ProtectedRoute>
               <EngineerDashboard />
-            </ProtectedRoute>
           }
         />
         <Route

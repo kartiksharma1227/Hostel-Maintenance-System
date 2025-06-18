@@ -261,9 +261,7 @@ const Login = () => {
                 )}
               </button>
 
-              <a href="#" className="login_forgot-password-enhanced">
-                Forgot your password?
-              </a>
+              
             </div>
           </form>
         </div>
