@@ -8,7 +8,7 @@ const app = express();
 const corsOptions = {
   origin: "http://localhost:5173", // your frontend origin
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type","Authorization"],
   credentials: true,
 };
 
