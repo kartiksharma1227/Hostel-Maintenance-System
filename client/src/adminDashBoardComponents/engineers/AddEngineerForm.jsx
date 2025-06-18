@@ -13,7 +13,7 @@ const AddEngineerForm = ({ onSubmit }) => {
     address: "",
     password: "",
   });
-   const [showPassword, setShowPassword] = useState(false); // ✅ add this line
+  const [showPassword, setShowPassword] = useState(false); // ✅ add this line
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -118,7 +118,7 @@ const AddEngineerForm = ({ onSubmit }) => {
           </div>
 
           <div className="admin-dashboard-form-row">
-            <div className="admin-dashboard-form-group">
+            {/* <div className="admin-dashboard-form-group">
               <label
                 htmlFor="specialization"
                 className="admin-dashboard-form-label"
@@ -134,29 +134,38 @@ const AddEngineerForm = ({ onSubmit }) => {
                 placeholder="e.g. Electrical, Plumbing, etc."
                 required
               />
-            </div>
-
-            {/* <div className="admin-dashboard-form-row">
+            </div> */}
+            <div className="admin-dashboard-form-row">
               <div className="admin-dashboard-form-group">
                 <label
-                  htmlFor="years_of_experience"
+                  htmlFor="specialization"
                   className="admin-dashboard-form-label"
                 >
-                  Years of Experience
+                  Specialization
                 </label>
-                <input
-                  id="years_of_experience"
-                  name="years_of_experience"
-                  type="number"
+                <select
+                  id="specialization"
+                  name="specialization"
                   className="admin-dashboard-form-control"
-                  min="0"
-                  value={formData.years_of_experience}
+                  value={formData.specialization}
                   onChange={handleInputChange}
-                  placeholder="Enter years of experience"
                   required
-                />
+                >
+                  <option value="" disabled>
+                    Select specialization
+                  </option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Plumbing">Plumbing</option>
+                  <option value="Carpentry">Carpentry</option>
+                  <option value="HVAC">HVAC</option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Internet">Internet</option>
+                  <option value="Others">Others</option>
+                </select>
               </div>
-            </div> */}
+            </div>
+
+           
             <div className="admin-dashboard-form-row">
               <div
                 className="admin-dashboard-form-group"
