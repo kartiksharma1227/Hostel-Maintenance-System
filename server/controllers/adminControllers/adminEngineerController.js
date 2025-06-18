@@ -9,6 +9,7 @@ const getAllEngineers = async (req, res, next) => {
              e.specialization, e.years_of_experience, e.address, e.user_FK
       FROM Engineers e
       JOIN Users u ON e.user_FK = u.user_PK
+      where e.isWorking = 1
     `);
     res.json(rows);
   } catch (err) {
@@ -193,9 +194,29 @@ const getEngineerById = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", details: err.message });
   }
 };
+const deactivateEngineer = async (req, res) => {
+  const { user_FK } = req.params;
+  console.log(`🔒 Deactivating engineer with user_FK: ${user_FK}`);
+  try {
+    const [result] = await db.query(
+      `UPDATE Engineers SET isWorking = 0 WHERE user_FK = ?`,
+      [user_FK]
+    );
+    console.log(result);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Engineer not found" });
+    }
+
+    res.json({ message: "Engineer successfully deactivated" });
+  } catch (err) {
+    console.error("Deactivate engineer error:", err);
+    res.status(500).json({ error: "Server error", detail: err.message });
+  }
+};
 
 // 👇 All exports at the end
 module.exports = {
   getAllEngineers,
-  addEngineer,getEngineerById
+  addEngineer,getEngineerById,deactivateEngineer,
 };

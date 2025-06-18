@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const EngineersList = ({ handleEngineerDetails }) => {
+const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast, refreshEngineers}) => {
   const [engineers, setEngineers] = useState([]);
   const [filteredEngineers, setFilteredEngineers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -197,6 +197,29 @@ const EngineersList = ({ handleEngineerDetails }) => {
                       >
                         View Details
                       </button>
+                    </td>
+                    <td>
+                       {/* <button
+    className="admin-dashboard-btn admin-dashboard-delete-btn"
+    style={{ marginLeft: '8px', backgroundColor: '#dc3545', color: '#fff' }}
+    onClick={() => handleDeleteEngineer(engineer.user_FK)}
+  >
+    Delete
+  </button> */}
+ <button
+  className="admin-dashboard-btn admin-dashboard-delete-btn"
+  style={{ marginLeft: '8px', backgroundColor: '#dc3545', color: '#fff' }}
+  onClick={async () => {
+    const success = await handleDeleteEngineer(engineer.user_FK);
+    if (success) {
+      showToast("Engineer deactivated successfully");
+      await refreshEngineers();
+    }
+  }}
+>
+  Delete
+</button>
+
                     </td>
                   </tr>
                 ))}

@@ -354,6 +354,7 @@ import SuccessToast from "../adminDashBoardComponents/common/SuccessToast";
 import ViewEngineerModal from "../adminDashBoardComponents/engineers/ViewEngineerModal";
 import "../styles/AdminDashboard.css";
 import "../styles/SuccessToast.css";
+import axios from "axios";
 
 const API_BASE = "http://localhost:4000/api";
 
@@ -368,6 +369,8 @@ const AdminDashboard = () => {
   const [notificationPanelVisible, setNotificationPanelVisible] = useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const profileDropdownRef = useRef(null);
+  const [toastMessage, setToastMessage] = useState("");
+const [toastVisible, setToastVisible] = useState(false);
 
   const [complaints, setComplaints] = useState([]);
   const [engineers, setEngineers] = useState([]);
@@ -403,10 +406,21 @@ const AdminDashboard = () => {
       console.error("Complaints fetch failed:", err);
     }
   };
+  
+  const fetchEngineers = async () => {
+  try {
+    const res = await axios.get("http://localhost:4000/api/admin/engineers", { withCredentials: true });
+    setEngineers(res.data);
+  } catch (err) {
+    console.error("Failed to fetch engineers:", err);
+  }
+};
+
+
 
   useEffect(() => {
     fetchComplaints();
-
+    fetchEngineers();
     fetch(`${API_BASE}/admin/engineers`)
       .then((res) => res.json())
       .then(setEngineers)
@@ -497,6 +511,31 @@ const handleViewEngineerDetails = async (engineerId) => {
     setEngineerDetailsModal({ visible: true, engineer: data });
   } catch (e) { alert(e.message); }
 };
+const handleDeleteEngineer = async (user_FK) => {
+  console.log("Deleting engineer with user_FK:", user_FK);
+  if (!window.confirm("Are you sure you want to deactivate this engineer?")) return;
+
+  try {
+    await axios.patch(
+      `http://localhost:4000/api/admin/engineers/${user_FK}/deactivate`
+    );
+    await fetchEngineers(); // ← re-fetches engineers after deletion
+
+    // Filter out the deactivated engineer or refetch list
+    setEngineers((prev) => prev.filter((eng) => eng.user_FK !== user_FK));
+  } catch (err) {
+    console.error("Failed to deactivate engineer:", err);
+    alert("Error while deactivating engineer");
+  }
+};
+
+
+const showToast = (message) => {
+  setToastMessage(message);
+  setToastVisible(true);
+  setTimeout(() => setToastVisible(false), 3000);
+};
+
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible((v) => !v);
@@ -565,7 +604,15 @@ const handleViewEngineerDetails = async (engineerId) => {
 
           {activeSection === "engineers" && (
             // <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
-            <EngineersList engineers={engineers} handleEngineerDetails={handleViewEngineerDetails} />
+            // <EngineersList engineers={engineers} handleEngineerDetails={handleViewEngineerDetails} handleDeleteEngineer={handleDeleteEngineer} />
+<EngineersList
+  handleEngineerDetails={handleViewEngineerDetails}
+  handleDeleteEngineer={handleDeleteEngineer}
+  showToast={showToast}
+  refreshEngineers={fetchEngineers}
+  engineers={engineers}
+/>
+
 
           )}
           {engineerDetailsModal.visible && (
