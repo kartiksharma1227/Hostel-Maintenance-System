@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ComplaintDetailsModal from "./ComplaintDetailsModal";
+import ComplaintDetailsModal from "../modals/ComplaintDetailsModal";
 
 const ComplaintsTable = ({
   complaints,
