@@ -57,7 +57,7 @@ const ComplaintDetailsModal = ({ complaint, onClose, onAssignEngineer }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Complaint #{complaint.id}</h2>
+          <h2>Complaint {complaint.id}</h2>
           <button className="close-button" onClick={onClose}>
             &times;
           </button>
@@ -106,7 +106,7 @@ const ComplaintDetailsModal = ({ complaint, onClose, onAssignEngineer }) => {
                 <div className="info-item">
                   <span className="info-label">Submitted By</span>
                   <span className="info-value">
-                    {complaint.submittedBy?.name || "Unknown"}
+                    {complaint.submitted_by || "Unknown"}
                   </span>
                 </div>
                 <div className="info-item">
@@ -122,7 +122,7 @@ const ComplaintDetailsModal = ({ complaint, onClose, onAssignEngineer }) => {
                 <div className="info-item">
                   <span className="info-label">Date Submitted</span>
                   <span className="info-value">
-                    {formatDate(complaint.dateSubmitted)}
+                    {formatDate(complaint.created_at)}
                   </span>
                 </div>
                 {complaint.assignedTo && (
