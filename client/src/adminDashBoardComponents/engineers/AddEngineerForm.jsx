@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react"; // or use any icon set you're using
 
 const AddEngineerForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,9 @@ const AddEngineerForm = ({ onSubmit }) => {
     specialization: "",
     years_of_experience: "", // keep as string for the <input>
     address: "",
+    password: "",
   });
+   const [showPassword, setShowPassword] = useState(false); // ✅ add this line
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,23 +78,7 @@ const AddEngineerForm = ({ onSubmit }) => {
           </div>
 
           <div className="admin-dashboard-form-row">
-            {/* <div className="admin-dashboard-form-group">
-              <label htmlFor="role" className="admin-dashboard-form-label">
-                Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                className="admin-dashboard-form-control"
-                value={formData.role}
-                onChange={handleInputChange}
-              >
-                <option value="engineer">Engineer</option>
-                <option value="admin">Admin</option>
-                <option value="staff">Staff</option>
-              </select>
-            </div> */}
-                  <div className="admin-dashboard-form-group">
+            <div className="admin-dashboard-form-group">
               <label
                 htmlFor="years_of_experience"
                 className="admin-dashboard-form-label"
@@ -149,47 +136,67 @@ const AddEngineerForm = ({ onSubmit }) => {
               />
             </div>
 
-            {/* <div className="admin-dashboard-form-group">
-              <label
-                htmlFor="availability"
-                className="admin-dashboard-form-label"
-              >
-                Availability
-              </label>
-              <select
-                id="availability"
-                name="availability"
-                className="admin-dashboard-form-control"
-                value={formData.availability}
-                onChange={handleInputChange}
-              >
-                <option value="1">Available</option>
-                <option value="0">Not Available</option>
-              </select>
+            {/* <div className="admin-dashboard-form-row">
+              <div className="admin-dashboard-form-group">
+                <label
+                  htmlFor="years_of_experience"
+                  className="admin-dashboard-form-label"
+                >
+                  Years of Experience
+                </label>
+                <input
+                  id="years_of_experience"
+                  name="years_of_experience"
+                  type="number"
+                  className="admin-dashboard-form-control"
+                  min="0"
+                  value={formData.years_of_experience}
+                  onChange={handleInputChange}
+                  placeholder="Enter years of experience"
+                  required
+                />
+              </div>
             </div> */}
-          </div>
-
-          {/* <div className="admin-dashboard-form-row">
-            <div className="admin-dashboard-form-group">
-              <label
-                htmlFor="years_of_experience"
-                className="admin-dashboard-form-label"
+            <div className="admin-dashboard-form-row">
+              <div
+                className="admin-dashboard-form-group"
+                style={{ position: "relative" }}
               >
-                Years of Experience
-              </label>
-              <input
-                id="years_of_experience"
-                name="years_of_experience"
-                type="number"
-                className="admin-dashboard-form-control"
-                min="0"
-                value={formData.years_of_experience}
-                onChange={handleInputChange}
-                placeholder="Enter years of experience"
-                required
-              />
+                <label
+                  htmlFor="password"
+                  className="admin-dashboard-form-label"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  className="admin-dashboard-form-control"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Enter password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    top: "74%",
+                    right: "12px",
+                    transform: "translateY(-50%)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
-          </div> */}
+          </div>
 
           <div className="admin-dashboard-form-group">
             <label htmlFor="address" className="admin-dashboard-form-label">

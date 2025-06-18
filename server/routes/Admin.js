@@ -49,7 +49,8 @@ router.post('/engineer', async (req, res, next) => {
       // availability,
       specialization,
       years_of_experience,
-      address
+      address,
+      password,
     } = req.body;
 
     // Basic required-field validation
@@ -67,9 +68,9 @@ router.post('/engineer', async (req, res, next) => {
 
       const now = new Date();
       const [userResult] = await conn.execute(
-        `INSERT INTO Users (name, mail_UN, role, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?)`,
-        [name, mail_UN, role, now, now]
+        `INSERT INTO Users (name, mail_UN, password, role, created_at, updated_at)
+         VALUES (?, ?,?, ?, ?, ?)`,
+        [name, mail_UN, password,role, now, now]
       );
       user_FK = userResult.insertId;
     }
