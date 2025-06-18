@@ -351,6 +351,7 @@ import AssignComplaintModal from "../adminDashBoardComponents/modals/AssignCompl
 import NotificationsPanel from "../adminDashBoardComponents/common/NotificationsPanel";
 import ProfileDropdown from "../adminDashBoardComponents/common/ProfileDropdown";
 import SuccessToast from "../adminDashBoardComponents/common/SuccessToast";
+import ViewEngineerModal from "../adminDashBoardComponents/engineers/ViewEngineerModal";
 import "../styles/AdminDashboard.css";
 import "../styles/SuccessToast.css";
 
@@ -481,6 +482,21 @@ const AdminDashboard = () => {
       alert(err.message);
     }
   };
+  
+  const [engineerDetailsModal, setEngineerDetailsModal] = useState({
+  visible: false,
+  engineer: null,
+});
+
+const handleViewEngineerDetails = async (engineerId) => {
+  try {
+    console.log("Fetching engineer details:", engineerId);
+    const res = await fetch(`${API_BASE}/admin/engineers/${engineerId}`);
+    if (!res.ok) throw new Error('Failed to fetch engineer');
+    const data = await res.json();
+    setEngineerDetailsModal({ visible: true, engineer: data });
+  } catch (e) { alert(e.message); }
+};
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible((v) => !v);
@@ -548,8 +564,18 @@ const AdminDashboard = () => {
           )}
 
           {activeSection === "engineers" && (
-            <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
+            // <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
+            <EngineersList engineers={engineers} handleEngineerDetails={handleViewEngineerDetails} />
+
           )}
+          {engineerDetailsModal.visible && (
+  <ViewEngineerModal
+    engineer={engineerDetailsModal.engineer}
+    onClose={() => setEngineerDetailsModal({ visible: false, engineer: null })}
+  />
+)}
+
+
 
           {activeSection === "add-engineer" && (
             <AddEngineerForm onSubmit={handleAddEngineer} />

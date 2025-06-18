@@ -193,7 +193,7 @@ const EngineersList = ({ handleEngineerDetails }) => {
                     <td>
                       <button
                         className="admin-dashboard-btn admin-dashboard-view-btn"
-                        onClick={() => handleEngineerDetails(engineer)}
+                        onClick={() => handleEngineerDetails(engineer.user_FK)}
                       >
                         View Details
                       </button>
@@ -224,6 +224,7 @@ const EngineersList = ({ handleEngineerDetails }) => {
             </svg>
             <p className="admin-dashboard-empty-text">
               No engineers found matching your search criteria
+
             </p>
             <button
               className="admin-dashboard-btn"

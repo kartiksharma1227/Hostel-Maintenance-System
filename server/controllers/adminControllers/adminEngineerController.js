@@ -73,8 +73,36 @@ const addEngineer = async (req, res, next) => {
   }
 };
 
+
+const getEngineerById = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(`🔍 Fetching engineer with ID: ${id}`);
+  try {
+    console.log(`🔍 GET /api/admin/engineers/${id} called`);
+    const [rows] = await db.execute(
+      `SELECT u.user_PK AS userFk, u.name AS fullName, u.mail_UN AS email,
+              e.phone_number AS phoneNumber, e.availability AS isAvailable,
+              e.specialization, e.years_of_experience AS yearsOfExperience,
+              e.address
+       FROM Engineers e
+       JOIN Users u ON e.user_FK = u.user_PK
+       WHERE e.user_FK = ?`,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Engineer not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(`❌ Error in GET /api/admin/engineers/${id}:`, err);
+    res.status(500).json({ error: "Internal Server Error", details: err.message });
+  }
+};
+
 // 👇 All exports at the end
 module.exports = {
   getAllEngineers,
-  addEngineer
+  addEngineer,getEngineerById
 };
