@@ -16,6 +16,7 @@ const EngineersList = ({ handleEngineerDetails }) => {
           "http://localhost:4000/api/admin/engineers",
           { withCredentials: true }
         );
+        console.log("Engineers fetched:", res.data);
         setEngineers(res.data);
       } catch (err) {
         console.error("Failed to fetch engineers:", err);
@@ -95,7 +96,7 @@ const EngineersList = ({ handleEngineerDetails }) => {
             />
           </div>
 
-          <select
+          {/* <select
             value={filterSpecialization}
             onChange={(e) => setFilterSpecialization(e.target.value)}
             className="admin-dashboard-filter-select"
@@ -106,9 +107,21 @@ const EngineersList = ({ handleEngineerDetails }) => {
                 {spec}
               </option>
             ))}
+          </select> */}
+          <select
+            value={filterSpecialization}
+            onChange={(e) => setFilterSpecialization(e.target.value)}
+            className="admin-dashboard-filter-select"
+          >
+            <option value="">All Specializations</option>
+            {specializations.map((spec, idx) => (
+              <option key={`${spec}-${idx}`} value={spec}>
+                {spec}
+              </option> // ✅ FIXED: Added unique key fallback
+            ))}
           </select>
 
-          <select
+          {/* <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="admin-dashboard-filter-select"
@@ -118,6 +131,19 @@ const EngineersList = ({ handleEngineerDetails }) => {
               <option key={status} value={status}>
                 {status}
               </option>
+            ))}
+          </select> */}
+
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="admin-dashboard-filter-select"
+          >
+            <option value="">All Statuses</option>
+            {statuses.map((status, idx) => (
+              <option key={`${status}-${idx}`} value={status}>
+                {status}
+              </option> // ✅ FIXED: Added unique key fallback
             ))}
           </select>
         </div>

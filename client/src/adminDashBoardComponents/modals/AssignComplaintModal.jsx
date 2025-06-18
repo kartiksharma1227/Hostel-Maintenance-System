@@ -31,7 +31,7 @@ const AssignComplaintModal = ({ complaint, engineers, onAssign, onClose }) => {
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             <div className="complaint-summary">
-              <h4>Complaint #{complaint.id}</h4>
+              <h4>Complaint {complaint.id}</h4>
               <p>{complaint.title}</p>
             </div>
 
@@ -40,7 +40,7 @@ const AssignComplaintModal = ({ complaint, engineers, onAssign, onClose }) => {
                 <span className="label-text">Select Engineer</span>
                 <span className="required-badge">Required</span>
               </label>
-              <select
+              {/* <select
                 id="engineer"
                 value={selectedEngineerId}
                 onChange={(e) => setSelectedEngineerId(e.target.value)}
@@ -54,7 +54,26 @@ const AssignComplaintModal = ({ complaint, engineers, onAssign, onClose }) => {
                     {engineer.assignedComplaints} active tasks)
                   </option>
                 ))}
+              </select> */}
+              
+              <select
+                id="engineer"
+                value={selectedEngineerId}
+                
+                onChange={(e) => setSelectedEngineerId(Number(e.target.value))} // Convert to number
+                required
+                className="select-enhanced"
+              >
+                {/* console.log(selectedEngineerId); */}
+                <option value="">Choose an engineer</option>
+                {filteredEngineers.map((engineer) => (
+                  <option key={engineer.user_FK} value={engineer.user_FK}>
+                    {engineer.name} - {engineer.specialization} (
+                    {engineer.assignedComplaints || 0} active tasks)
+                  </option>
+                ))}
               </select>
+
               {filteredEngineers.length === 0 && (
                 <p className="no-engineers-warning">
                   No engineers available for {complaint.category} category

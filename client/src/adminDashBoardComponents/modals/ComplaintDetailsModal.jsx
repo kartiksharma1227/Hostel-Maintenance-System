@@ -28,7 +28,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
       </span>
     );
   };
-
+console.log(complaint);
   // Tabs rendering function
   const renderTabContent = () => {
     switch (activeTab) {
@@ -77,7 +77,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
               <div className="detail-value">
                 <div className="submitter-info">
                   <div className="submitter-name">
-                    {complaint.submittedBy?.name || "Unknown"}
+                    {complaint.submitted_by || "Unknown"}
                   </div>
                   <div className="submitter-email">
                     {complaint.submittedBy?.email || "N/A"}

@@ -22,42 +22,64 @@ const ComplaintsTable = ({
     setSelectedComplaint(null);
   };
 
+  // const filteredComplaints = complaints.filter((complaint) => {
+  //   const matchesSearch =
+  //     complaint.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     complaint.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     complaint.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     (complaint.submitted_by &&
+  //       complaint.submitted_by
+  //         .toLowerCase()
+  //         .includes(searchQuery.toLowerCase()));
+
+  //   const matchesStatus =
+  //     statusFilter === "all" ||
+  //     complaint.status.toLowerCase().replace(" ", "-") === statusFilter;
+
+  //   return matchesSearch && matchesStatus;
+  // });
+
   const filteredComplaints = complaints.filter((complaint) => {
     const matchesSearch =
-      complaint.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      complaint.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      complaint.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (complaint.submittedBy?.name &&
-        complaint.submittedBy.name
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()));
+      (complaint.title || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (complaint.category || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (complaint.location || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (complaint.submitted_by || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" ||
-      complaint.status.toLowerCase().replace(" ", "-") === statusFilter;
+      (complaint.status || "").toLowerCase().replace(" ", "-") === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
 
   // Format date to readable string
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
 
-  // Convert "YYYY-MM-DD HH:mm:ss" → "YYYY-MM-DDTHH:mm:ss"
-  const isoString = dateString.replace(" ", "T");
+    // Convert "YYYY-MM-DD HH:mm:ss" → "YYYY-MM-DDTHH:mm:ss"
+    const isoString = dateString.replace(" ", "T");
 
-  const date = new Date(isoString);
+    const date = new Date(isoString);
 
-  return date.toLocaleString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true, // Set to false if you prefer 24-hour format
-  });
-};
+    return date.toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true, // Set to false if you prefer 24-hour format
+    });
+  };
 
   return (
     <div className="admin-dashboard-complaints-section">
@@ -174,11 +196,11 @@ const formatDate = (dateString) => {
                   <td>{complaint.location}</td>
                   <td>
                     <span
-                      className={`admin-dashboard-badge ${complaint.status
+                      className={`admin-dashboard-badge ${complaint.status ||""
                         .toLowerCase()
                         .replace(" ", "-")}`}
                     >
-                      {complaint.status}
+                      {complaint.status || "Unknown"}
                     </span>
                   </td>
                   <td>{formatDate(complaint.created_at)}</td>
