@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../styles/ComplaintDetailsModal.css";
 
 const ComplaintDetailsModal = ({ complaint, onClose }) => {
   const [activeTab, setActiveTab] = useState("details");
@@ -28,7 +29,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
       </span>
     );
   };
-console.log(complaint);
+  console.log(complaint);
   // Tabs rendering function
   const renderTabContent = () => {
     switch (activeTab) {
@@ -43,6 +44,8 @@ console.log(complaint);
             <div className="detail-row">
               <div className="detail-label">Location</div>
               <div className="detail-value">{complaint.location}</div>
+              <div className="detail-value">Room: {complaint.student_room_number
+}</div>
             </div>
 
             <div className="detail-row">
@@ -79,12 +82,12 @@ console.log(complaint);
                   <div className="submitter-name">
                     {complaint.submitted_by || "Unknown"}
                   </div>
-                  <div className="submitter-email">
+                  {/* <div className="submitter-email">
                     {complaint.submittedBy?.email || "N/A"}
-                  </div>
-                  <div className="submitter-phone">
+                  </div> */}
+                  {/* <div className="submitter-phone">
                     Phone: {complaint.submittedBy?.phone || "N/A"}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -92,20 +95,82 @@ console.log(complaint);
             <div className="detail-row">
               <div className="detail-label">Date Submitted</div>
               <div className="detail-value">
-                {formatDate(complaint.dateSubmitted)}
+                {formatDate(complaint.created_at)}
               </div>
             </div>
 
-            {complaint.assignedEngineer && (
-              <div className="detail-row">
+            {complaint.engineer_name && (
+              <div className="detail-row engineer-details">
                 <div className="detail-label">Assigned Engineer</div>
                 <div className="detail-value">
                   <div className="engineer-info">
-                    <div className="engineer-name">
-                      {complaint.assignedEngineer.name}
+                    <div className="engineer-avatar">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
                     </div>
-                    <div className="engineer-specialization">
-                      {complaint.assignedEngineer.specialization}
+                    <div className="engineer-details-container">
+                      <div className="engineer-name">
+                        {complaint.engineer_name || "Unknown"}
+                      </div>
+                      {/* <div className="engineer-specialization">
+                        {complaint.assignedEngineer.specialization || "N/A"}
+                      </div> */}
+                      <div className="engineer-contact">
+                        {/* <span>{complaint.assignedEngineer.email || "N/A"}</span> */}
+                        <span>{complaint.engineer_phone|| "N/A"}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {complaint.admin_name && (
+              <div className="detail-row admin-details">
+                <div className="detail-label">Admin Details</div>
+                <div className="detail-value">
+                  <div className="admin-info">
+                    <div className="admin-avatar">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                      </svg>
+                    </div>
+                    <div className="admin-details-container">
+                      <div className="admin-name">
+                        {complaint.admin_name|| "Unknown"}
+                      </div>
+                      {/* <div className="admin-role">
+                        {complaint.adminDetails.role || "Administrator"}
+                      </div> */}
+                      <div className="admin-contact">
+                        {/* <span>{complaint.adminDetails.email || "N/A"}</span> */}
+                        <span>{complaint.admin_phone|| "N/A"}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -329,7 +394,7 @@ console.log(complaint);
 
         return (
           <div className="complaint-feedback-content">
-            {complaint.feedback ? (
+            {complaint.feedback_text ? (
               <div className="feedback-details">
                 <div className="detail-row">
                   <div className="detail-label">Rating</div>
@@ -339,14 +404,14 @@ console.log(complaint);
                         <span
                           key={star}
                           className={`star ${
-                            star <= complaint.feedback.rating ? "filled" : ""
+                            star <= complaint.feedback_rating ? "filled" : ""
                           }`}
                         >
                           ★
                         </span>
                       ))}
                       <span className="rating-number">
-                        ({complaint.feedback.rating}/5)
+                        ({complaint.feedback_rating}/5)
                       </span>
                     </div>
                   </div>
@@ -355,14 +420,14 @@ console.log(complaint);
                 <div className="detail-row">
                   <div className="detail-label">Comments</div>
                   <div className="detail-value">
-                    {complaint.feedback.comments || "No comments provided"}
+                    {complaint.feedback_text || "No comments provided"}
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-label">Submitted On</div>
                   <div className="detail-value">
-                    {formatDate(complaint.feedback.date)}
+                    {formatDate(complaint.feedback_created_at)}
                   </div>
                 </div>
               </div>
