@@ -75,6 +75,8 @@ const Login = () => {
       if (
         allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
       ) {
+        console.log("rollno:", rollno);
+        console.log("password:", password);
         const res = await axios.post(
           "http://localhost:4000/api/student/login",
           {
@@ -86,7 +88,7 @@ const Login = () => {
           const { token } = res.data;
 
           localStorage.setItem("token", token);
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
           showSuccessAlert();
           navigate("/StudentDashboard");

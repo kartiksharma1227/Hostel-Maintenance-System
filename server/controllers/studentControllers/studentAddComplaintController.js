@@ -213,7 +213,7 @@ const createStudentComplaint = async (req, res, next) => {
     // Send complaint email to student
     await mailSender(
       user_email,
-      "Complaint Registered!!!",
+      "Complaint Registered ✔️",
       `<div style="font-family:Arial,sans-serif;font-size:14px;">
          <h3 style="color:#333;">Hi ${submitted_by},</h3>
          <p>Your complaint titled <strong>${title}</strong> has been successfully registered in the Hostel Maintenance System.</p>

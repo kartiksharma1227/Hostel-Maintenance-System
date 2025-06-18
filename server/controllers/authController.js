@@ -69,6 +69,8 @@ require('dotenv').config();
 exports.studentLogin = async (req, res) => {
   try {
     let { rollno, password } = req.body;
+    console.log('Login attempt with rollno:', rollno);
+    console.log('Login attempt with password:', password);
 
     if (!rollno || !password) {
       return res.status(400).json({ error: 'Roll number and password are required' });
@@ -86,7 +88,7 @@ exports.studentLogin = async (req, res) => {
       `,
       [rollno]
     );
-
+    console.log('Query results:', results);
     if (results.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
