@@ -1,4 +1,5 @@
-// src/EngineerDashBoardComponents/Schedule.jsx
+
+
 import { useState } from "react";
 
 const Schedule = ({
@@ -29,6 +30,19 @@ const Schedule = ({
     return new Date(year, month + 1, 0).getDate();
   };
 
+  const mapVisitsByDate = () => {
+    const map = {};
+    scheduledVisits.forEach((visit) => {
+      const visitDate = new Date(visit.date);
+      const key = `${visitDate.getFullYear()}-${visitDate.getMonth()}-${visitDate.getDate()}`;
+      if (!map[key]) map[key] = [];
+      map[key].push(visit);
+    });
+    return map;
+  };
+
+  const visitsByDate = mapVisitsByDate();
+
   const generateCalendarDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -38,16 +52,18 @@ const Schedule = ({
 
     const calendarDays = [];
 
-    // Add days from the previous month
+    // Previous month
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       calendarDays.push({
         day: daysInPreviousMonth - i,
         isCurrentMonth: false,
+        visits: [],
       });
     }
 
-    // Add days from the current month
+    // Current month
     for (let i = 1; i <= daysInMonth; i++) {
+      const key = `${year}-${month}-${i}`;
       calendarDays.push({
         day: i,
         isCurrentMonth: true,
@@ -55,15 +71,17 @@ const Schedule = ({
           i === currentDate.getDate() &&
           month === new Date().getMonth() &&
           year === new Date().getFullYear(),
+        visits: visitsByDate[key] || [],
       });
     }
 
-    // Add days from the next month to fill the calendar grid
-    const remainingDays = 42 - calendarDays.length; // 6 weeks * 7 days
+    // Next month
+    const remainingDays = 42 - calendarDays.length;
     for (let i = 1; i <= remainingDays; i++) {
       calendarDays.push({
         day: i,
         isCurrentMonth: false,
+        visits: [],
       });
     }
 
@@ -102,6 +120,7 @@ const Schedule = ({
             </button>
           </div>
         </div>
+
         <div className="engineer-calendar-grid">
           <div className="engineer-calendar-weekdays">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -114,15 +133,22 @@ const Schedule = ({
             {calendarDays.map((day, index) => (
               <div
                 key={index}
-                className={`engineer-day ${
-                  day.isCurrentMonth ? "" : "engineer-other-month"
-                } ${day.isToday ? "engineer-current-day" : ""}`}
+                className={`engineer-day ${day.isCurrentMonth ? "" : "engineer-other-month"} ${
+                  day.isToday ? "engineer-current-day" : ""
+                }`}
               >
-                {day.day}
+                <div className="engineer-day-number">{day.day}</div>
+
+                {day.visits && day.visits.length > 0 && (
+                  <div className="engineer-visit-marker" title={`${day.visits.length} visit(s)`}>
+                    📌
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
+
         <div className="engineer-scheduled-visits-list">
           <h3>Upcoming Visits</h3>
           {scheduledVisits.length === 0 ? (
