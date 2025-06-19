@@ -40,7 +40,7 @@ const Sidebar = ({ activeSection, setActiveSection, pendingComplaints }) => {
               onClick={() => setActiveSection("history")}
             >
               <span className="engineer-nav-icon">📜</span>
-              <span>Complaint History</span>
+              <span>Completed complaints</span>
             </button>
           </li>
           <li>

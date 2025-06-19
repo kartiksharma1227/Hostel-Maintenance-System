@@ -11,7 +11,7 @@ const formatDate = (dateString) => {
     hour12: true,
   });
 };
-const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedComplaints, scheduledVisits }) => {
+const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedComplaints, scheduledVisits,handleViewDetails,handleOpenUpdateModal }) => {
   // console.log('Total complaints',pendingComplaints);
   console.log('Assigned complaints',assignedComplaints);
   return (
@@ -96,10 +96,10 @@ const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedCom
                       <span className="engineer-complaint-date">{formatDate(complaint.assigned_date)}</span>
                     </div>
                     <div className="engineer-complaint-actions">
-                      <button className="engineer-view-details-btn" onClick={() => { /* Pass handler via props if needed */ }}>
+                      <button className="engineer-view-details-btn" onClick={() => {handleViewDetails(complaint) /* Pass handler via props if needed */ }}>
                         View Details
                       </button>
-                      <button className="engineer-update-status-btn" onClick={() => { /* Pass handler via props if needed */ }}>
+                      <button className="engineer-update-status-btn" onClick={() => { handleOpenUpdateModal(complaint.id)/* Pass handler via props if needed */ }}>
                         Update Status
                       </button>
                     </div>

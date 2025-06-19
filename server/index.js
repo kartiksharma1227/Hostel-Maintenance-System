@@ -37,9 +37,10 @@ const adminProfileRoute = require('./routes/adminDashboardRoutes/adminProfileRou
 const engineerDashboardRoutes = require('./routes/engineerDashboard');
 
 const updComplaintRoute = require('./routes/updComplaints');
-const engineerRoutes = require('./routes/engineer'); // update path if needed
+// const engineerRoutes = require('./routes/engineer'); // update path if needed
 const engineerComplaintRoute = require('./routes/engineerDashboardRoutes/engineerComplaintRoute'); // Engineer complaint routes
-
+const engineerProfileRoute = require('./routes/engineerDashboardRoutes/engineerProfileRoute'); // Engineer profile route
+const engineerScheduledVisitsRoute = require('./routes/engineerDashboardRoutes/engineerScheduledVisitsRoute'); // Engineer scheduled visits route
 
 
 
@@ -54,19 +55,24 @@ app.use('/api/admin', adminEngineerRoute);
 app.use('/api/admin', adminComplaintRoute);
 app.use('/api/admin', adminAssignmentRoute); // Uncomment if you have assignment routes
 app.use("/api/admin", adminProfileRoute);
+app.use("/api/admin", adminProfileRoute);
 
 
+
+// *******************************************************************************************
+// Engineer routes
+app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
+app.use('/api/engineer', engineerProfileRoute);
+app.use('/api/engineer', engineerScheduledVisitsRoute); // Engineer scheduled visits route
 // *******************************************************************************************
 // Engineer routes
 app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 
 // const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');
-const engineerProfileRoute  = require('./routes/engineerprofile');
 
 
 app.use("/api/compUpd", updComplaintRoute);
-app.use('/api/engineer', engineerProfileRoute);
 app.use('/api/student', studentProfileRoute);
 app.use('/api/feedback', feedbackRouter);
 
@@ -78,7 +84,6 @@ app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent c
 app.use('/api/notifications', studentNotificationRoutes);
 
 // Engineer Dashboard routes
-app.use('/api/engineer-dashboard', engineerDashboardRoutes);
 
 
 // Authentication routes
@@ -88,7 +93,7 @@ app.use('/api/engineer-dashboard', engineerDashboardRoutes);
 app.use('/api/complaints', studentAddComplaintRoute);
 
 // app.use('/api/admin', adminRouter); 
-app.use('/api', engineerRoutes);
+// app.use('/api', engineerRoutes);
 
 
 

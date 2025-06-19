@@ -2241,3 +2241,20 @@
   margin-top: 10px;
   cursor: pointer;
 }
+.engineer-day {
+  position: relative;
+  padding: 6px;
+  text-align: center;
+}
+
+.engineer-day-number {
+  font-weight: bold;
+}
+
+.engineer-visit-marker {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 0.75rem;
+  color: red;
+}

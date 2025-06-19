@@ -153,7 +153,7 @@ const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([
     const fetchScheduledVisits = async () => {
       try {
         const response = await axios.get(
-          `/api/engineer-dashboard/scheduled-visits/${engineerId}`
+          `/api/engineer/scheduled-visits/${engineerId}`
         );
         setScheduledVisits(response.data);
       } catch (err) {
@@ -207,27 +207,7 @@ const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([
   setFilteredAssignedComplaints(result);
 }, [statusFilter, searchQuery, assignedComplaints]);
 
-  // useEffect(() => {
-  //   let result = [...assignedComplaints];
-  //   if (statusFilter !== "all") {
-  //     result = result.filter(
-  //       (complaint) =>
-  //         complaint.status.toLowerCase().replace(" ", "-") === statusFilter
-  //     );
-  //   }
-  //   if (searchQuery.trim() !== "") {
-  //     const query = searchQuery.toLowerCase();
-  //     result = result.filter(
-  //       (complaint) =>
-  //         complaint.title.toLowerCase().includes(query) ||
-  //         complaint.description.toLowerCase().includes(query) ||
-  //         complaint.location.toLowerCase().includes(query) ||
-  //         complaint.category.toLowerCase().includes(query) ||
-  //         complaint.studentName.toLowerCase().includes(query)
-  //     );
-  //   }
-  //   setFilteredComplaints(result);
-  // }, [statusFilter, searchQuery, assignedComplaints]);
+  
 
 
 //filter completed complaints based on search query
@@ -593,6 +573,8 @@ useEffect(() => {
                   assignedComplaints={assignedComplaints}
                   completedComplaints={completedComplaints}
                   scheduledVisits={scheduledVisits}
+                  handleViewDetails={handleViewDetails}
+                  handleOpenUpdateModal={handleOpenUpdateModal}
                 />
               )}
 
@@ -607,38 +589,7 @@ useEffect(() => {
                 />
               )}
 
-              {/* {activeSection === "assigned" && (
-  <AssignedComplaints
-    complaints={assignedComplaints}
-    setStatusFilter={setStatusFilter}
-    statusFilter={statusFilter}
-    searchQuery={searchQuery}
-    setSearchQuery={setSearchQuery}
-    getPriorityIcon={getPriorityIcon}
-    getCategoryIcon={getCategoryIcon}
-    handleViewDetails={handleViewDetails}
-    handleOpenUpdateModal={handleOpenUpdateModal}
-  />
-)} */}
-
-              {/* {activeSection === "history" && (
-                <ComplaintHistory
-                  completedComplaints={completedComplaints}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  getCategoryIcon={getCategoryIcon}
-                  handleViewDetails={handleViewDetails}
-                />
-              )} */}
-              {/* {activeSection === "history" && (
-  <ComplaintHistory
-    completedComplaints={filteredComplaints}
-    searchQuery={searchQuery}
-    setSearchQuery={setSearchQuery}
-    getCategoryIcon={getCategoryIcon}
-    handleViewDetails={handleViewDetails}
-  />
-)} */}
+              
 {activeSection === "assigned" && (
   <AssignedComplaints
     complaints={filteredAssignedComplaints}
