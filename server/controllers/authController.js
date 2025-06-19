@@ -457,6 +457,7 @@ const login = async (req, res) => {
     `SELECT * FROM Users WHERE user_PK = ?`,
     [user_PK]
   );
+  console.log('User results:', userResults);
 
   if (userResults.length === 0 || userResults[0].password !== password) {
     return res.status(401).json({ error: 'Invalid credentials' });
@@ -466,15 +467,19 @@ const login = async (req, res) => {
 
   // Role should be stored in the Users table as either "Admin" or "Engineer"
   const role = user.role;
+  role = role ? role.toLowerCase() : null; // Normalize role to lowercase
+  console.log('User role:', role);
+  console.log(role !== "engineer")
+  console.log(role !== "admin" && role !== "engineer")
 
-  if (role !== "Admin" && role !== "Engineer") {
+  if (role !== "admin" && role !== "engineer") {
     return res.status(403).json({ error: "Unauthorized role" });
   }
 
   const token = jwt.sign(
     {
       user_PK: user.user_PK,
-      role,
+      role: user.role,
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRY || "1h" }

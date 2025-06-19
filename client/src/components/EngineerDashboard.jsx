@@ -12,6 +12,8 @@ import DetailsModal from "../EngineerDashBoardComponents/DetailsModal";
 import NotificationPanel from "../EngineerDashBoardComponents/NotificationPanel";
 import "../styles/EngineerDashboard.css";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+
 
 const EngineerDashboard = () => {
   // State for form and UI management
@@ -55,8 +57,20 @@ const EngineerDashboard = () => {
   const [error, setError] = useState(null);
 
   // Get the user ID from local storage or session
-  const engineerId =
-    localStorage.getItem("user_PK") || sessionStorage.getItem("userId");
+  
+   
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+    
+      if (!token) {
+        console.warn("No token found in localStorage.");
+        return;
+      }
+    
+      const decoded = jwtDecode(token);
+      console.log("Decoded token:", decoded);
+    
+      const engineerId  = decoded?.user_PK;
 
   // Fetch engineer profile data
   useEffect(() => {

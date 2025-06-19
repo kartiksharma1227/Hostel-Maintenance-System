@@ -1,6 +1,8 @@
 // src/EngineerDashboardComponents/Header.jsx
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+
 
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -9,14 +11,54 @@ const Header = () => {
 
   // Fetch engineer on mount
   useEffect(() => {
-    const userPk = localStorage.getItem("user_PK");
-    console.log("User PK:", userPk);
-    if (!userPk) return;
+    // const token = localStorage.getItem("token");
+    // console.log("Token:", token);
+    // if (token) {
+    //   const decoded = jwtDecode(token);
+    //   console.log(decoded); // { user_PK, role, exp, iat, ... }
 
-    axios
-      .get(`/api/engineer/profile/${userPk}`)
-      .then((res) => setEngineerProfile(res.data.profile))
-      .catch((err) => console.error("Could not load engineer profile:", err));
+    // }
+    // const userPk = decoded.user_PK;
+    // console.log("Decoded User PK:", userPk);
+    // console.log("User PK:", userPk);
+    // if (!userPk) return;
+
+    // axios
+    //   .get(`/api/engineer/profile/${userPk}`)
+    //   .then((res) => setEngineerProfile(res.data.profile))
+    //   .catch((err) => console.error("Could not load engineer profile:", err));
+    try {
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return;
+  }
+
+  const decoded = jwtDecode(token);
+  console.log("Decoded token:", decoded);
+
+  const userPk = decoded?.user_PK;
+
+  if (!userPk) {
+    console.warn("User PK not found in token.");
+    return;
+  }
+
+  axios
+    .get(`/api/engineer/profile/${userPk}`)
+    .then((res) => {
+      console.log("Engineer profile loaded:", res.data.profile);
+      setEngineerProfile(res.data.profile);
+    })
+    .catch((err) => {
+      console.error("Could not load engineer profile:", err);
+    });
+
+} catch (err) {
+  console.error("Error decoding token or fetching profile:", err);
+}
   }, []);
 
   // If still loading profile
@@ -108,7 +150,9 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">⏳</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Experience(year/(s)): </span>
+                <span className="engineer-detail-label">
+                  Experience(year/(s)):{" "}
+                </span>
                 <span className="engineer-detail-value">
                   {engineerProfile.experience}
                 </span>

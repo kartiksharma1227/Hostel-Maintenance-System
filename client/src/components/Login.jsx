@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -36,75 +34,7 @@ const Login = () => {
     "PMD",
     "PMS",
   ];
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setError(null);
-
-  //   try {
-  //     if (rollno === "Admin") {
-  //      const adminToken = "fake-admin-token"; // or fetch from API if applicable
-  //       localStorage.setItem("token", adminToken);
-  //       navigate("/AdminDashboard");
-  //       return;
-  //     }
-
-  //     // Engineer login
-  //     if (/^\d+$/.test(rollno)) {
-  //       const res = await axios.post(
-  //         "http://localhost:4000/api/engineer/login",
-  //         {
-  //           user_PK: rollno,
-  //           password,
-  //         }
-  //       );
-  //       if (res.status === 200) {
-  //        const { token } = res.data;
-
-  //         localStorage.setItem("token", token);
-  //         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  //         showSuccessAlert();
-  //         navigate("/EngineerDashboard");
-  //         return;
-  //       }
-  //     }
-
-  //     const normalizedRollno = rollno.toUpperCase();
-
-  //     // Check if roll number starts with any of the allowed prefixes
-  //     if (
-  //       allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
-  //     ) {
-  //       console.log("rollno:", rollno);
-  //       console.log("password:", password);
-  //       const res = await axios.post(
-  //         "http://localhost:4000/api/student/login",
-  //         {
-  //           rollno,
-  //           password,
-  //         }
-  //       );
-  //       if (res.status === 200) {
-  //         const { token } = res.data;
-
-  //         localStorage.setItem("token", token);
-  //         // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  //         showSuccessAlert();
-  //         navigate("/StudentDashboard");
-  //         return;
-  //       }
-  //     } else {
-  //       alert("Invalid roll number format!");
-  //     }
-
-  //     setError("Invalid roll number or password");
-  //   } catch (err) {
-  //     setError("Invalid roll number or password");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  // Function to handle form submission
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -132,71 +62,15 @@ const Login = () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         showSuccessAlert();
 
-        if (role === "Admin") {
+        if (role === "admin") {
           navigate("/AdminDashboard");
-        } else if (role === "Engineer") {
+        } else if (role === "engineer") {
           navigate("/EngineerDashboard");
         } else {
           setError("Unauthorized role");
         }
         return;
       }
-
-      // Engineer login
-      if (/^\d+$/.test(rollno)) {
-        const res = await axios.post(
-          "http://localhost:4000/api/engineer/login",
-          {
-            user_PK: rollno,
-            password,
-          }
-        );
-        if (res.status === 200) {
-         const { token } = res.data;
-
-          // localStorage.setItem("token", token);
-          localStorage.setItem("user_PK", rollno);
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          showSuccessAlert();
-          navigate("/EngineerDashboard");
-          return;
-        }
-      }
-
-      const normalizedRollno = rollno.toUpperCase();
-
-      // Check if roll number starts with any of the allowed prefixes
-      if (
-        allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
-      ) {
-        console.log("rollno:", rollno);
-        console.log("password:", password);
-        const res = await axios.post(
-          "http://localhost:4000/api/student/login",
-          {
-            rollno,
-            password,
-          }
-        );
-        if (res.status === 200) {
-          const { token } = res.data;
-
-          localStorage.setItem("token", token);
-          // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-          showSuccessAlert();
-          navigate("/StudentDashboard");
-          return;
-        }
-      } else {
-        alert("Invalid roll number format!");
-      }
-
-      setError("Invalid roll number or password");
-    } catch (err) {
-      setError("Invalid roll number or password");
-    } finally {
-      setLoading(false);
     }
 
     // 👉 Case 2: Student Login (roll number with prefix)
@@ -413,161 +287,3 @@ const Login = () => {
 
 export default Login;
 
-
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-
-// import "../styles/Login.css";
-
-// const Login = () => {
-//   const [rollno, setRollno] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const [showSuccess, setShowSuccess] = useState(false);
-//   const navigate = useNavigate();
-
-//   const allowedPrefixes = [
-//     "IIT", "IIB", "IEC", "IMB", "IFI", "RSM", "MML", "MDE",
-//     "MRM", "MSE", "MWC", "MHC", "PMM", "PMD", "PMS"
-//   ];
-
-//   const showSuccessAlert = () => {
-//     setShowSuccess(true);
-//     setTimeout(() => setShowSuccess(false), 2000);
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       // Admin login
-//       if (rollno === "Admin") {
-//         const adminToken = "fake-admin-token"; // or fetch from API if applicable
-//         localStorage.setItem("token", adminToken);
-//         navigate("/AdminDashboard");
-//         return;
-//       }
-
-//       const normalizedRollno = rollno.toUpperCase();
-
-//       // Engineer login
-//       if (/^\d+$/.test(rollno)) {
-//         const res = await axios.post("http://localhost:4000/api/engineer/login", {
-//           user_PK: rollno,
-//           password,
-//         });
-
-//         if (res.status === 200) {
-//           const { token } = res.data;
-
-//           localStorage.setItem("token", token);
-//           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-//           showSuccessAlert();
-//           navigate("/EngineerDashboard");
-//           return;
-//         }
-//       }
-
-//       // Student login
-//       if (allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))) {
-//         const res = await axios.post("http://localhost:4000/api/student/login", {
-//           rollno,
-//           password,
-//         });
-
-//         if (res.status === 200) {
-//           const { token } = res.data;
-
-//           localStorage.setItem("token", token);
-//           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-//           showSuccessAlert();
-//           navigate("/StudentDashboard");
-//           return;
-//         }
-//       } else {
-//         alert("Invalid roll number format!");
-//       }
-
-//       setError("Invalid roll number or password");
-//     } catch (err) {
-//       console.error("Login error:", err);
-//       setError("Invalid roll number or password");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="login_enhanced-login-container">
-//       {showSuccess && (
-//         <div className="login_success-alert">
-//           <svg viewBox="0 0 24 24" className="login_success-icon" fill="none" stroke="currentColor" strokeWidth="2">
-//             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-//           </svg>
-//           <span className="login_success-text">Login successful! Redirecting...</span>
-//         </div>
-//       )}
-
-//       <div className="login_welcome-header">
-//         <h1 className="login_welcome-title">Welcome to IIT Maintenance System</h1>
-//         <p className="login_welcome-subtitle">Your one-stop solution for hostel maintenance and facility management</p>
-//         <div className="login_welcome-divider"></div>
-//       </div>
-
-//       <div className="login_main-content">
-//         <div className="login_enhanced-login-card">
-//           <div className="login_login-header">
-//             <h2 className="login_login-title-enhanced">Secure Login</h2>
-//           </div>
-
-//           {error && (
-//             <div className="login_error-alert-enhanced">
-//               <span>{error}</span>
-//             </div>
-//           )}
-
-//           <form className="login_enhanced-login-form" onSubmit={handleSubmit}>
-//             <div className="login_form-group-enhanced">
-//               <label>Roll Number / Employee ID</label>
-//               <input
-//                 type="text"
-//                 value={rollno}
-//                 onChange={(e) => setRollno(e.target.value)}
-//                 required
-//                 placeholder="Enter your roll number or employee ID"
-//               />
-//             </div>
-
-//             <div className="login_form-group-enhanced">
-//               <label>Password</label>
-//               <input
-//                 type="password"
-//                 value={password}
-//                 onChange={(e) => setPassword(e.target.value)}
-//                 required
-//                 placeholder="Enter your password"
-//               />
-//             </div>
-
-//             <button
-//               type="submit"
-//               className={`login_login-button-enhanced ${loading ? "login_loading" : ""}`}
-//               disabled={loading}
-//             >
-//               {loading ? "Signing in..." : "Sign In"}
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
