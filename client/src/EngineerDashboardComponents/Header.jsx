@@ -29,7 +29,7 @@ const Header = () => {
     //   .catch((err) => console.error("Could not load engineer profile:", err));
     try {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
   if (!token) {
     console.warn("No token found in localStorage.");
@@ -37,7 +37,7 @@ const Header = () => {
   }
 
   const decoded = jwtDecode(token);
-  console.log("Decoded token:", decoded);
+  // console.log("Decoded token:", decoded);
 
   const userPk = decoded?.user_PK;
 
@@ -49,7 +49,7 @@ const Header = () => {
   axios
     .get(`/api/engineer/profile/${userPk}`)
     .then((res) => {
-      console.log("Engineer profile loaded:", res.data.profile);
+      // console.log("Engineer profile loaded:", res.data.profile);
       setEngineerProfile(res.data.profile);
     })
     .catch((err) => {

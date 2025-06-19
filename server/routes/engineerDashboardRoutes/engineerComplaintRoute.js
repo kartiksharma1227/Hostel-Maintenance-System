@@ -16,7 +16,7 @@ router.get('/complaints/completed/:id', getCompletedComplaints);
 // List pending assignments for engineer — without JWT
 router.get('/complaints/pending/:id', getPendingAssignmentsForEngineer);
 
-router.post('/complaints/accept/:id', acceptComplaint);
-router.post('/complaints/reject/:id', rejectComplaint);
+router.put('/complaints/accept/', acceptComplaint);
+router.put('/complaints/reject/', rejectComplaint);
 
 module.exports = router;

@@ -73,6 +73,7 @@ console.log(Array.isArray(assignments)); // Should log true
 // Function to accept a complaint assignment
 const acceptComplaint = async (req, res) => {
   const { complaintId, engineerId ,adminUserId} = req.body;
+  // console.log(req.body);
 
   try {
     // Update the assignment to Accepted
@@ -103,6 +104,7 @@ const acceptComplaint = async (req, res) => {
 
 const rejectComplaint = async (req, res) => {
   const { complaintId, engineerId,adminUserId } = req.body;
+  console.log(req.body);
 
   const conn = await db.getConnection();
   try {
@@ -138,5 +140,8 @@ const rejectComplaint = async (req, res) => {
 
 module.exports = {
   getAssignedComplaints,
-  getCompletedComplaints,getPendingAssignmentsForEngineer,acceptComplaint,rejectComplaint
+  getCompletedComplaints,
+  getPendingAssignmentsForEngineer,
+  acceptComplaint,
+  rejectComplaint
 };

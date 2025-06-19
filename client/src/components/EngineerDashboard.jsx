@@ -63,7 +63,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
   
    
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
+      // console.log("Token:", token);
     
       if (!token) {
         console.warn("No token found in localStorage.");
@@ -71,7 +71,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
       }
     
       const decoded = jwtDecode(token);
-      console.log("Decoded token:", decoded);
+      // console.log("Decoded token:", decoded);
     
       const engineerId  = decoded?.user_PK;
 
@@ -99,7 +99,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
         const response = await axios.get(
           `/api/engineer/complaints/pending/${engineerId}`
         );
-        console.log("Pending complaints response:", response.data.pendingAssignments);
+        // console.log("Pending complaints response:", response.data.pendingAssignments);
         setPendingComplaints(response.data.pendingAssignments );
       } catch (err) {
         console.error("Error fetching pending complaints:", err);
@@ -244,7 +244,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
 //   console.log("set FilteredPendingComplaints:", filteredPendingComplaints);
 // }, [searchQuery, pendingComplaints]);
 useEffect(() => {
-  console.log("isArray?", typeof(pendingComplaints));
+  // console.log("isArray?", typeof(pendingComplaints));
   let result = Array.isArray(pendingComplaints) ? [...pendingComplaints] : [];
 
   if (searchQuery.trim() !== "") {
@@ -258,12 +258,12 @@ useEffect(() => {
     );
   }
 
-  console.log("Setting filtered complaints to:", result);
+  // console.log("Setting filtered complaints to:", result);
   setFilteredPendingComplaints(result);
 }, [searchQuery, pendingComplaints]);
 
 useEffect(() => {
-  console.log("FilteredPendingComplaints UPDATED:", filteredPendingComplaints);
+  // console.log("FilteredPendingComplaints UPDATED:", filteredPendingComplaints);
 }, [filteredPendingComplaints]);
 
 
@@ -479,7 +479,7 @@ useEffect(() => {
       case "electronics":
         return "🖥️";
       default:
-        return "🔧";
+        return "📅";
     }
   };
 
@@ -497,10 +497,12 @@ useEffect(() => {
   };
 
   const handleAcceptComplaint = async (complaint) => {
+    // console.log("Accepting complaint:", complaint);
     try {
-      await axios.put("http://localhost:4000/api/engineer-dashboard/accept-complaint", {
-        complaintId: complaint.id,
+      await axios.put("http://localhost:4000/api/engineer/complaints/accept", {
+        complaintId: complaint.complaint_id,
         engineerId,
+        adminUserId: complaint.admin_FK,
       });
 
       // Update UI
@@ -544,9 +546,12 @@ useEffect(() => {
   };
 
   const handleRejectComplaint = async (complaint) => {
+    // console.log("Rejecting complaint:", complaint);
     try {
-      await axios.put("/api/engineer-dashboard/reject-complaint", {
-        complaintId: complaint.id,
+      await axios.put("http://localhost:4000/api/engineer/complaints/reject", {
+        complaintId: complaint.complaint_id,
+        engineerId,
+        adminUserId: complaint.admin_FK,
       });
 
       // Update UI
@@ -638,7 +643,7 @@ useEffect(() => {
               )}
 
               {activeSection === "new-complaints" && (
-                console.log("Filtered Pending Complaints:", filteredPendingComplaints),
+                // console.log("Filtered Pending Complaints:", filteredPendingComplaints),
                 <NewComplaints
                   // pendingComplaints={pendingComplaints}
                   pendingComplaints={filteredPendingComplaints}

@@ -13,7 +13,7 @@ export default function NewComplaints({
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const complaints = pendingComplaints || [];
-  console.log("Pending Complaints in New complaint:", complaints);
+  // console.log("Pending Complaints in New complaint:", complaints);
 
   // Format date to be more readable
   const formatDate = (dateString) => {
@@ -147,7 +147,9 @@ export default function NewComplaints({
               <div className="engineer-complaint-header">
                 <div className="engineer-complaint-title-container">
                   <h3 className="engineer-complaint-title">
-                    #{complaint.id}: {complaint.title || "Untitled Complaint"}
+                    {complaint.
+complaint_id
+}: {complaint.title || "Untitled Complaint"}
                   </h3>
                   <span
                     className={`engineer-priority-indicator ${
@@ -157,9 +159,9 @@ export default function NewComplaints({
                     {getPriorityIcon(complaint.priority)} {complaint.priority || "Unknown"}
                   </span>
                 </div>
-                <span className="engineer-complaint-date">
-                  {formatDate(complaint.updated_at || complaint.created_at)}
-                </span>
+                {/* <span className="engineer-complaint-date">
+                  {formatDate(complaint.assigned_date || complaint.created_at)}
+                </span> */}
               </div>
 
               <div className="engineer-complaint-content">
@@ -173,7 +175,7 @@ export default function NewComplaints({
                       <span className="engineer-info-icon">
                         {getCategoryIcon(complaint.category)}
                       </span>
-                      Category: {complaint.category || "Uncategorized"}
+                      Updated At: {formatDate(complaint.assigned_date) || "Uncategorized"}
                     </p>
 
                     <p className="engineer-complaint-location">
