@@ -141,6 +141,62 @@ const Login = () => {
         }
         return;
       }
+
+      // Engineer login
+      if (/^\d+$/.test(rollno)) {
+        const res = await axios.post(
+          "http://localhost:4000/api/engineer/login",
+          {
+            user_PK: rollno,
+            password,
+          }
+        );
+        if (res.status === 200) {
+         const { token } = res.data;
+
+          // localStorage.setItem("token", token);
+          localStorage.setItem("user_PK", rollno);
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          showSuccessAlert();
+          navigate("/EngineerDashboard");
+          return;
+        }
+      }
+
+      const normalizedRollno = rollno.toUpperCase();
+
+      // Check if roll number starts with any of the allowed prefixes
+      if (
+        allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
+      ) {
+        console.log("rollno:", rollno);
+        console.log("password:", password);
+        const res = await axios.post(
+          "http://localhost:4000/api/student/login",
+          {
+            rollno,
+            password,
+          }
+        );
+        if (res.status === 200) {
+          const { token } = res.data;
+
+          localStorage.setItem("token", token);
+          // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+          showSuccessAlert();
+          navigate("/StudentDashboard");
+          return;
+        }
+      } else {
+        alert("Invalid roll number format!");
+      }
+
+      setError("Invalid roll number or password");
+    } catch (err) {
+      setError("Invalid roll number or password");
+    } finally {
+      setLoading(false);
     }
 
     // 👉 Case 2: Student Login (roll number with prefix)

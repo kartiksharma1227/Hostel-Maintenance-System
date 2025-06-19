@@ -6,6 +6,7 @@ const db      = require('../db/connection');
 // GET /api/engineer/profile/:user_pk
 router.get('/profile/:user_pk', async (req, res) => {
   const { user_pk } = req.params;
+  console.log(`⏳  GET /api/engineer/profile/${user_pk} called`);
   if (!user_pk) {
     return res.status(400).json({ error: "Engineer ID is required" });
   }
@@ -19,7 +20,7 @@ router.get('/profile/:user_pk', async (req, res) => {
         u.mail_UN               AS email,
         u.role                  AS role,
 
-        e.engineer_PK           AS employeeId,          -- your primary key
+          
         e.user_FK               AS userFk,
 
         e.phone_number          AS contactNumber,       -- phone_number → contactNumber

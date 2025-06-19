@@ -1,12 +1,26 @@
 // src/EngineerDashBoardComponents/DashboardOverview.jsx
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A";
+  const date = new Date(dateString);
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
 const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedComplaints, scheduledVisits }) => {
+  // console.log('Total complaints',pendingComplaints);
+  console.log('Assigned complaints',assignedComplaints);
   return (
     <div className="engineer-dashboard-overview">
       <h2>Engineer Dashboard</h2>
       <div className="engineer-stats-cards">
         <div className="engineer-stat-card">
           <h3>New Complaints</h3>
-          <p className="engineer-stat-number">{pendingComplaints.length}</p>
+          <p className="engineer-stat-number">{assignedComplaints.length}</p>
           <span className="engineer-stat-icon">🔔</span>
         </div>
         <div className="engineer-stat-card">
@@ -68,18 +82,18 @@ const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedCom
             <div className="engineer-assigned-complaints-section">
               <div className="engineer-assigned-complaints-container">
                 {assignedComplaints.map((complaint) => (
-                  <div className="engineer-assigned-complaint-card" key={complaint.id}>
+                  <div className="engineer-assigned-complaint-card" key={complaint.complaint_FK}>
                     <div className="engineer-complaint-header">
-                      <span className="engineer-complaint-id">#{complaint.id}</span>
-                      <span className={`engineer-complaint-status ${complaint.status.toLowerCase().replace(" ", "-")}`}>
+                      <span className="engineer-complaint-id">#{complaint.complaint_FK}</span>
+                      <span className={`engineer-complaint-status ${String(complaint.status || "") .toLowerCase().replace(" ", "-")}`}>
                         {complaint.status}
                       </span>
                     </div>
                     <h4 className="engineer-complaint-title">{complaint.title}</h4>
-                    <p className="engineer-complaint-description">{complaint.description.substring(0, 100)}...</p>
+                    <p className="engineer-complaint-description">{(complaint.description || "").substring(0, 100)}...</p>
                     <div className="engineer-complaint-meta">
                       <span className="engineer-complaint-location">📍 {complaint.location}</span>
-                      <span className="engineer-complaint-date">{complaint.dateReported}</span>
+                      <span className="engineer-complaint-date">{formatDate(complaint.assigned_date)}</span>
                     </div>
                     <div className="engineer-complaint-actions">
                       <button className="engineer-view-details-btn" onClick={() => { /* Pass handler via props if needed */ }}>

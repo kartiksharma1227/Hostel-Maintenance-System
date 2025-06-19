@@ -32,6 +32,9 @@ const adminEngineerRoute = require('./routes/adminDashboardRoutes/adminEngineerR
 const adminComplaintRoute = require('./routes/adminDashboardRoutes/adminComplaintRoute');
 const adminAssignmentRoute = require('./routes/adminDashboardRoutes/adminAssignmentRoute');
 
+// ENGINEER DASHBOARD ROUTES
+const engineerDashboardRoutes = require('./routes/engineerDashboard');
+
 const updComplaintRoute = require('./routes/updComplaints');
 const engineerRoutes = require('./routes/engineer'); // update path if needed
 
@@ -69,7 +72,8 @@ app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent c
 //notifications route 
 app.use('/api/notifications', studentNotificationRoutes);
 
-
+// Engineer Dashboard routes
+app.use('/api/engineer-dashboard', engineerDashboardRoutes);
 
 
 // Authentication routes

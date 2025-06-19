@@ -215,7 +215,7 @@ const createStudentComplaint = async (req, res, next) => {
       user_email,
       "Complaint Registered ✔️",
       `<div style="font-family:Arial,sans-serif;font-size:14px;">
-         <h3 style="color:#333;">Hi ${submitted_by},</h3>
+         <h3 style="color:#333;">Dear ${submitted_by},</h3>
          <p>Your complaint titled <strong>${title}</strong> has been successfully registered in the Hostel Maintenance System.</p>
          <p><strong>Status:</strong> Pending</p>
          <p>Our team will address it shortly.</p>

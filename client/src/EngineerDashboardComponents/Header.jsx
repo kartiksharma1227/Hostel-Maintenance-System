@@ -10,12 +10,13 @@ const Header = () => {
   // Fetch engineer on mount
   useEffect(() => {
     const userPk = localStorage.getItem("user_PK");
+    console.log("User PK:", userPk);
     if (!userPk) return;
 
     axios
       .get(`/api/engineer/profile/${userPk}`)
-      .then(res => setEngineerProfile(res.data.profile))
-      .catch(err => console.error("Could not load engineer profile:", err));
+      .then((res) => setEngineerProfile(res.data.profile))
+      .catch((err) => console.error("Could not load engineer profile:", err));
   }, []);
 
   // If still loading profile
@@ -38,7 +39,7 @@ const Header = () => {
         </div>
         <div
           className="engineer-user-profile"
-          onClick={() => setShowProfile(v => !v)}
+          onClick={() => setShowProfile((v) => !v)}
         >
           <span>{engineerProfile.name}</span>
           <img
@@ -77,7 +78,7 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">📧</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Email</span>
+                <span className="engineer-detail-label">Email: </span>
                 <span className="engineer-detail-value">
                   {engineerProfile.email}
                 </span>
@@ -87,7 +88,7 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">⚡</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Specialization</span>
+                <span className="engineer-detail-label">Specialization: </span>
                 <span className="engineer-detail-value">
                   {engineerProfile.specialization}
                 </span>
@@ -97,7 +98,7 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">📱</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Contact</span>
+                <span className="engineer-detail-label">Contact: </span>
                 <span className="engineer-detail-value">
                   {engineerProfile.contactNumber}
                 </span>
@@ -107,7 +108,7 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">⏳</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Experience</span>
+                <span className="engineer-detail-label">Experience(year/(s)): </span>
                 <span className="engineer-detail-value">
                   {engineerProfile.experience}
                 </span>
@@ -120,7 +121,7 @@ const Header = () => {
             <div className="engineer-detail-item">
               <span className="engineer-detail-icon">🏢</span>
               <div className="engineer-detail-content">
-                <span className="engineer-detail-label">Staff Quarters</span>
+                {/* <span className="engineer-detail-label">Staff Quarters</span> */}
                 <span className="engineer-detail-value">
                   {engineerProfile.address}
                 </span>
@@ -129,14 +130,14 @@ const Header = () => {
           </div>
 
           <div className="engineer-profile-actions">
-            <button className="engineer-profile-action-btn">
+            {/* <button className="engineer-profile-action-btn">
               <span className="engineer-btn-icon">⚙️</span> Edit Profile
-            </button>
+            </button> */}
             <button
               className="engineer-profile-action-btn engineer-logout"
               onClick={() => {
                 localStorage.removeItem("user_PK");
-                
+
                 window.location.href = "/login";
               }}
             >
