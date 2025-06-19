@@ -2258,3 +2258,27 @@
   font-size: 0.75rem;
   color: red;
 }
+.engineer-complaint-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.engineer-accept-btn,
+.engineer-reject-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.engineer-accept-btn {
+  background-color: #10b981; /* green */
+  color: white;
+}
+
+.engineer-reject-btn {
+  background-color: #ef4444; /* red */
+  color: white;
+}

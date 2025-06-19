@@ -49,7 +49,7 @@ const EngineerDashboard = () => {
   // const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [filteredAssignedComplaints, setFilteredAssignedComplaints] = useState([]);
 const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([]);
-
+const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
   const [successMessage, setSuccessMessage] = useState({
     visible: false,
     message: "",
@@ -97,9 +97,10 @@ const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([
     const fetchPendingComplaints = async () => {
       try {
         const response = await axios.get(
-          `/api/engineer-dashboard/pending-complaints/${engineerId}`
+          `/api/engineer/complaints/pending/${engineerId}`
         );
-        setPendingComplaints(response.data);
+        console.log("Pending complaints response:", response.data.pendingAssignments);
+        setPendingComplaints(response.data.pendingAssignments );
       } catch (err) {
         console.error("Error fetching pending complaints:", err);
       }
@@ -207,7 +208,65 @@ const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([
   setFilteredAssignedComplaints(result);
 }, [statusFilter, searchQuery, assignedComplaints]);
 
-  
+  // Filter pending complaints based on search query
+//   useEffect(() => {
+//     console.log("Pending complaints:", pendingComplaints);
+//   let result = [...pendingComplaints];
+//   if (searchQuery.trim() !== "") {
+//     const query = searchQuery.toLowerCase();
+//     result = result.filter(
+//       (complaint) =>
+//         complaint.title.toLowerCase().includes(query) ||
+//         complaint.description.toLowerCase().includes(query) ||
+//         complaint.location.toLowerCase().includes(query) ||
+//         complaint.category.toLowerCase().includes(query) ||
+//         complaint.studentName?.toLowerCase().includes(query)
+//     );
+//   }
+//   setFilteredPendingComplaints(result);
+// }, [searchQuery, pendingComplaints]);
+// useEffect(() => {
+//   console.log("Pending complaints latest:", pendingComplaints);
+//   let result = Array.isArray(pendingComplaints) ? [...pendingComplaints] : [];
+//   if (searchQuery.trim() !== "") {
+//     const query = searchQuery.toLowerCase();
+//     result = result.filter(
+//       (complaint) =>
+//         complaint.title.toLowerCase().includes(query) ||
+//         complaint.description.toLowerCase().includes(query) ||
+//         complaint.location.toLowerCase().includes(query) ||
+//         complaint.category.toLowerCase().includes(query) ||
+//         complaint.studentName?.toLowerCase().includes(query)
+//     );
+//   }
+
+//   setFilteredPendingComplaints(result);
+//   console.log("set FilteredPendingComplaints:", filteredPendingComplaints);
+// }, [searchQuery, pendingComplaints]);
+useEffect(() => {
+  console.log("isArray?", typeof(pendingComplaints));
+  let result = Array.isArray(pendingComplaints) ? [...pendingComplaints] : [];
+
+  if (searchQuery.trim() !== "") {
+    const query = searchQuery.toLowerCase();
+    result = result.filter((complaint) =>
+      (complaint.title || "").toLowerCase().includes(query) ||
+      (complaint.description || "").toLowerCase().includes(query) ||
+      (complaint.location || "").toLowerCase().includes(query) ||
+      (complaint.category || "").toLowerCase().includes(query) ||
+      (complaint.studentName || "").toLowerCase().includes(query)
+    );
+  }
+
+  console.log("Setting filtered complaints to:", result);
+  setFilteredPendingComplaints(result);
+}, [searchQuery, pendingComplaints]);
+
+useEffect(() => {
+  console.log("FilteredPendingComplaints UPDATED:", filteredPendingComplaints);
+}, [filteredPendingComplaints]);
+
+
 
 
 //filter completed complaints based on search query
@@ -408,7 +467,7 @@ useEffect(() => {
   };
 
   const getCategoryIcon = (category) => {
-    switch (category.toLowerCase()) {
+    switch (category) {
       case "plumbing":
         return "🚿";
       case "electrical":
@@ -579,8 +638,10 @@ useEffect(() => {
               )}
 
               {activeSection === "new-complaints" && (
+                console.log("Filtered Pending Complaints:", filteredPendingComplaints),
                 <NewComplaints
-                  pendingComplaints={pendingComplaints}
+                  // pendingComplaints={pendingComplaints}
+                  pendingComplaints={filteredPendingComplaints}
                   getPriorityIcon={getPriorityIcon}
                   getCategoryIcon={getCategoryIcon}
                   handleViewDetails={handleViewDetails}
