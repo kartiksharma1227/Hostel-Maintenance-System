@@ -31,6 +31,7 @@ const studentNotificationRoutes = require('./routes/studentDashboardRoutes/stude
 const adminEngineerRoute = require('./routes/adminDashboardRoutes/adminEngineerRoute');
 const adminComplaintRoute = require('./routes/adminDashboardRoutes/adminComplaintRoute');
 const adminAssignmentRoute = require('./routes/adminDashboardRoutes/adminAssignmentRoute');
+const adminProfileRoute = require('./routes/adminDashboardRoutes/adminProfileRoute'); // Admin profile route
 
 // ENGINEER DASHBOARD ROUTES
 const engineerDashboardRoutes = require('./routes/engineerDashboard');
@@ -51,6 +52,7 @@ const authLogin = require('./routes/authLogin');
 app.use('/api/admin', adminEngineerRoute);
 app.use('/api/admin', adminComplaintRoute);
 app.use('/api/admin', adminAssignmentRoute); // Uncomment if you have assignment routes
+app.use("/api/admin", adminProfileRoute);
 
 
 

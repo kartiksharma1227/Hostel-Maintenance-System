@@ -667,14 +667,19 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        <div className="admin-dashboard-profile-dropdown-container">
-          <ProfileDropdown
-            ref={profileDropdownRef}
-            adminProfile={adminProfile}
-            visible={profileDropdownVisible}
-            onLogout={() => console.log("logout")}
-          />
-        </div>
+        {profileDropdownVisible && (
+          <div className="admin-dashboard-profile-dropdown-container">
+            <ProfileDropdown
+              ref={profileDropdownRef}
+              adminProfile={adminProfile}
+              visible={profileDropdownVisible}
+              onLogout={() => {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+              }}
+            />
+          </div>
+        )}
 
         {/* {complaintDetailsModal.visible && (
           <div className="admin-dashboard-modal-overlay">

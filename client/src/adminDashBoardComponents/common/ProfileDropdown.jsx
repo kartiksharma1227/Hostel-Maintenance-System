@@ -1,52 +1,161 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const ProfileDropdown = forwardRef(
   ({ adminProfile, visible, onLogout }, ref) => {
+    const [adminData, setAdminData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      if (!visible) return;
+
+      const fetchAdminProfile = async () => {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem("token");
+          if (!token) {
+            setError("No authentication token found");
+            setLoading(false);
+            return;
+          }
+
+          let decodedToken;
+          try {
+            decodedToken = jwtDecode(token);
+          } catch (err) {
+            setError("Invalid authentication token");
+            setLoading(false);
+            return;
+          }
+
+          // Use the user_PK from token to fetch admin details
+          const userPk = decodedToken.user_PK;
+          console.log("Decoded User PK:", userPk);
+
+          // Check if we already have the admin data passed as a prop
+          // if (adminProfile && adminProfile.name && adminProfile.email) {
+          //   setAdminData({
+          //     ...adminProfile,
+          //     role: "Administrator",
+          //   });
+          //   setLoading(false);
+          //   return;
+          // }
+
+          // If not, fetch from server (your API endpoint might be different)
+          const response = await axios.get(
+            `http://localhost:4000/api/admin/profile/${userPk}`
+          );
+          console.log("Admin profile fetched:", response.data);
+          setAdminData(
+            response.data.profile || {
+              name: "Admin User",
+              email: "admin@iiita.ac.in",
+              role: "Administrator",
+            }
+          );
+          setLoading(false);
+        } catch (err) {
+          console.error("Error fetching admin profile:", err);
+          // Fallback to the passed prop or default values if fetch fails
+          setAdminData(
+            adminProfile || {
+              name: "Admin User",
+              email: "admin@iiita.ac.in",
+              role: "Administrator",
+            }
+          );
+          setLoading(false);
+        }
+      };
+
+      fetchAdminProfile();
+    }, [visible, adminProfile]);
+
     if (!visible) return null;
 
+    if (loading) {
+      return (
+        <div className="admin-profile-dropdown" ref={ref}>
+          <div className="admin-profile-dropdown-loading">
+            <p>Loading profile...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="admin-profile-dropdown" ref={ref}>
+          <div className="admin-profile-dropdown-error">
+            <p>{error}</p>
+          </div>
+        </div>
+      );
+    }
+
+    const profile = adminData || adminProfile;
+
     return (
-      <div className="profile-dropdown" ref={ref}>
-        <div className="profile-dropdown-header">
-          <h4 className="profile-name">{adminProfile.name}</h4>
-          <p className="profile-email">{adminProfile.email}</p>
+      <div className="admin-profile-dropdown" ref={ref}>
+        <div className="admin-profile-dropdown-header">
+          <div className="admin-profile-dropdown-avatar">
+            <img
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                profile.name
+              )}&background=3f51b5&color=fff&bold=true`}
+              alt="Admin Profile"
+            />
+          </div>
+          <div className="admin-profile-dropdown-info">
+            <h4 className="admin-profile-dropdown-name">{profile.name}</h4>
+            {/* <p className="admin-profile-dropdown-role">Adminis trator</p> */}
+            {/* <p className="admin-profile-dropdown-email">{profile.email}</p> */}
+          </div>
         </div>
 
-        <div className="profile-dropdown-body">
-          <div className="dropdown-item">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            My Profile
+        <div className="admin-profile-dropdown-body">
+          <div className="admin-profile-dropdown-item">
+               <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
+            <p className="admin-profile-dropdown-email">{profile.email}</p>
+
           </div>
-          <div className="dropdown-item">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-            Settings
+          <div className="admin-profile-dropdown-item">
+               <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+    >
+      <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.88 19.88 0 0 1-8.63-3.11A19.5 19.5 0 0 1 3.11 10.8 19.88 19.88 0 0 1 0 2.18 2 2 0 0 1 2.18 0H6.28a2 2 0 0 1 2 1.72 12.11 12.11 0 0 0 .7 2.85 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 8 8l2.23-1.43a2 2 0 0 1 2.11-.45 12.11 12.11 0 0 0 2.85.7 2 2 0 0 1 1.72 2z"></path>
+    </svg>
+            <p className="admin-profile-dropdown-email">{profile.phone}</p>
+
           </div>
-          <div className="dropdown-item logout" onClick={onLogout}>
+          <div
+            className="admin-profile-dropdown-item logout"
+            onClick={onLogout}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -66,6 +175,7 @@ const ProfileDropdown = forwardRef(
           </div>
         </div>
       </div>
+      
     );
   }
 );
