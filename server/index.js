@@ -37,10 +37,11 @@ const adminProfileRoute = require('./routes/adminDashboardRoutes/adminProfileRou
 const engineerDashboardRoutes = require('./routes/engineerDashboard');
 
 const updComplaintRoute = require('./routes/updComplaints');
-
+// const engineerRoutes = require('./routes/engineer'); // update path if needed
 const engineerComplaintRoute = require('./routes/engineerDashboardRoutes/engineerComplaintRoute'); // Engineer complaint routes
-const engineerProfileRoute  = require('./routes/engineerDashboardRoutes/engineerProfileRoute'); // Engineer profile route
+const engineerProfileRoute = require('./routes/engineerDashboardRoutes/engineerProfileRoute'); // Engineer profile route
 const engineerScheduledVisitsRoute = require('./routes/engineerDashboardRoutes/engineerScheduledVisitsRoute'); // Engineer scheduled visits route
+
 
 
 // const complaintsRouter = require('./routes/complaints');
@@ -54,6 +55,8 @@ app.use('/api/admin', adminEngineerRoute);
 app.use('/api/admin', adminComplaintRoute);
 app.use('/api/admin', adminAssignmentRoute); // Uncomment if you have assignment routes
 app.use("/api/admin", adminProfileRoute);
+app.use("/api/admin", adminProfileRoute);
+
 
 
 // *******************************************************************************************
@@ -61,6 +64,9 @@ app.use("/api/admin", adminProfileRoute);
 app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 app.use('/api/engineer', engineerProfileRoute);
 app.use('/api/engineer', engineerScheduledVisitsRoute); // Engineer scheduled visits route
+// *******************************************************************************************
+// Engineer routes
+app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 
 // const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');

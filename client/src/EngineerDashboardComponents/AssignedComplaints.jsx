@@ -28,7 +28,6 @@ export default function AssignedComplaints({
     return matchesStatus && matchesSearch;
   });
 
-
   return (
     
     <div className="engineer-assigned-complaints">

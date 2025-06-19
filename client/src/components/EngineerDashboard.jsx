@@ -207,7 +207,7 @@ const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([
   setFilteredAssignedComplaints(result);
 }, [statusFilter, searchQuery, assignedComplaints]);
 
- 
+  
 
 
 //filter completed complaints based on search query
@@ -589,7 +589,7 @@ useEffect(() => {
                 />
               )}
 
-  
+              
 {activeSection === "assigned" && (
   <AssignedComplaints
     complaints={filteredAssignedComplaints}
