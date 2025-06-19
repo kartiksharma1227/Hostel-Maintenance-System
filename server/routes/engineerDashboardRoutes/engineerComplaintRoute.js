@@ -3,7 +3,7 @@ const express = require('express');
 const {
   getAssignedComplaints,
   getCompletedComplaints,getPendingAssignmentsForEngineer
-} = require('../../controllers/engineerControllers/engineerComplaintController');
+,acceptComplaint,rejectComplaint} = require('../../controllers/engineerControllers/engineerComplaintController');
 
 const router = express.Router();
 
@@ -15,5 +15,8 @@ router.get('/complaints/completed/:id', getCompletedComplaints);
 
 // List pending assignments for engineer — without JWT
 router.get('/complaints/pending/:id', getPendingAssignmentsForEngineer);
+
+router.post('/complaints/accept/:id', acceptComplaint);
+router.post('/complaints/reject/:id', rejectComplaint);
 
 module.exports = router;
