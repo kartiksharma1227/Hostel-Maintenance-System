@@ -38,6 +38,7 @@ const engineerDashboardRoutes = require('./routes/engineerDashboard');
 
 const updComplaintRoute = require('./routes/updComplaints');
 const engineerRoutes = require('./routes/engineer'); // update path if needed
+const engineerComplaintRoute = require('./routes/engineerDashboardRoutes/engineerComplaintRoute'); // Engineer complaint routes
 
 
 
@@ -55,7 +56,9 @@ app.use('/api/admin', adminAssignmentRoute); // Uncomment if you have assignment
 app.use("/api/admin", adminProfileRoute);
 
 
-
+// *******************************************************************************************
+// Engineer routes
+app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 
 // const adminRouter = require('./routes/Admin');
 const feedbackRouter = require('./routes/feedback');

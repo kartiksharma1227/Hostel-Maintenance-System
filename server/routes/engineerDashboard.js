@@ -175,7 +175,9 @@ router.get('/completed-complaints/:engineerId', async (req, res) => {
 
 // GET /api/engineer-dashboard/scheduled-visits/:engineerId
 router.get('/scheduled-visits/:engineerId', async (req, res) => {
+
   const { engineerId } = req.params;
+  console.log('Fetching scheduled visits for engineer:', engineerId);
   try {
     // Get scheduled visits for this engineer
     const [rows] = await db.query(`

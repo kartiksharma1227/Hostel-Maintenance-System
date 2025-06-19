@@ -46,7 +46,10 @@ const EngineerDashboard = () => {
   });
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredComplaints, setFilteredComplaints] = useState([]);
+  // const [filteredComplaints, setFilteredComplaints] = useState([]);
+  const [filteredAssignedComplaints, setFilteredAssignedComplaints] = useState([]);
+const [filteredCompletedComplaints, setFilteredCompletedComplaints] = useState([]);
+
   const [successMessage, setSuccessMessage] = useState({
     visible: false,
     message: "",
@@ -112,7 +115,7 @@ const EngineerDashboard = () => {
     const fetchAssignedComplaints = async () => {
       try {
         const response = await axios.get(
-          `/api/engineer-dashboard/assigned-complaints/${engineerId}`
+          `/api/engineer/complaints/assigned/${engineerId}`
         );
         setAssignedComplaints(response.data);
         setLoading(false);
@@ -132,7 +135,7 @@ const EngineerDashboard = () => {
     const fetchCompletedComplaints = async () => {
       try {
         const response = await axios.get(
-          `/api/engineer-dashboard/completed-complaints/${engineerId}`
+          `/api/engineer/complaints/completed/${engineerId}`
         );
         setCompletedComplaints(response.data);
       } catch (err) {
@@ -183,26 +186,68 @@ const EngineerDashboard = () => {
 
   // Filter assigned complaints based on status and search query
   useEffect(() => {
-    let result = [...assignedComplaints];
-    if (statusFilter !== "all") {
-      result = result.filter(
-        (complaint) =>
-          complaint.status.toLowerCase().replace(" ", "-") === statusFilter
-      );
-    }
-    if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (complaint) =>
-          complaint.title.toLowerCase().includes(query) ||
-          complaint.description.toLowerCase().includes(query) ||
-          complaint.location.toLowerCase().includes(query) ||
-          complaint.category.toLowerCase().includes(query) ||
-          complaint.studentName.toLowerCase().includes(query)
-      );
-    }
-    setFilteredComplaints(result);
-  }, [statusFilter, searchQuery, assignedComplaints]);
+  let result = [...assignedComplaints];
+  if (statusFilter !== "all") {
+    result = result.filter(
+      (complaint) =>
+        complaint.status.toLowerCase().replace(" ", "-") === statusFilter
+    );
+  }
+  if (searchQuery.trim() !== "") {
+    const query = searchQuery.toLowerCase();
+    result = result.filter(
+      (complaint) =>
+        complaint.title.toLowerCase().includes(query) ||
+        complaint.description.toLowerCase().includes(query) ||
+        complaint.location.toLowerCase().includes(query) ||
+        complaint.category.toLowerCase().includes(query) ||
+        complaint.studentName?.toLowerCase().includes(query)
+    );
+  }
+  setFilteredAssignedComplaints(result);
+}, [statusFilter, searchQuery, assignedComplaints]);
+
+  // useEffect(() => {
+  //   let result = [...assignedComplaints];
+  //   if (statusFilter !== "all") {
+  //     result = result.filter(
+  //       (complaint) =>
+  //         complaint.status.toLowerCase().replace(" ", "-") === statusFilter
+  //     );
+  //   }
+  //   if (searchQuery.trim() !== "") {
+  //     const query = searchQuery.toLowerCase();
+  //     result = result.filter(
+  //       (complaint) =>
+  //         complaint.title.toLowerCase().includes(query) ||
+  //         complaint.description.toLowerCase().includes(query) ||
+  //         complaint.location.toLowerCase().includes(query) ||
+  //         complaint.category.toLowerCase().includes(query) ||
+  //         complaint.studentName.toLowerCase().includes(query)
+  //     );
+  //   }
+  //   setFilteredComplaints(result);
+  // }, [statusFilter, searchQuery, assignedComplaints]);
+
+
+//filter completed complaints based on search query
+useEffect(() => {
+  let result = [...completedComplaints];
+  if (searchQuery.trim() !== "") {
+    const query = searchQuery.toLowerCase();
+    result = result.filter(
+      (complaint) =>
+        complaint.title.toLowerCase().includes(query) ||
+        complaint.description.toLowerCase().includes(query) ||
+        complaint.location.toLowerCase().includes(query) ||
+        complaint.category.toLowerCase().includes(query) ||
+        complaint.studentName?.toLowerCase().includes(query)
+    );
+  }
+  setFilteredCompletedComplaints(result);
+}, [searchQuery, completedComplaints]);
+
+
 
   // Handle click outside profile dropdown
   useEffect(() => {
@@ -562,21 +607,21 @@ const EngineerDashboard = () => {
                 />
               )}
 
-              {activeSection === "assigned" && (
-                <AssignedComplaints
-                  filteredComplaints={filteredComplaints}
-                  setStatusFilter={setStatusFilter}
-                  statusFilter={statusFilter}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  getPriorityIcon={getPriorityIcon}
-                  getCategoryIcon={getCategoryIcon}
-                  handleViewDetails={handleViewDetails}
-                  handleOpenUpdateModal={handleOpenUpdateModal}
-                />
-              )}
+              {/* {activeSection === "assigned" && (
+  <AssignedComplaints
+    complaints={assignedComplaints}
+    setStatusFilter={setStatusFilter}
+    statusFilter={statusFilter}
+    searchQuery={searchQuery}
+    setSearchQuery={setSearchQuery}
+    getPriorityIcon={getPriorityIcon}
+    getCategoryIcon={getCategoryIcon}
+    handleViewDetails={handleViewDetails}
+    handleOpenUpdateModal={handleOpenUpdateModal}
+  />
+)} */}
 
-              {activeSection === "history" && (
+              {/* {activeSection === "history" && (
                 <ComplaintHistory
                   completedComplaints={completedComplaints}
                   searchQuery={searchQuery}
@@ -584,7 +629,41 @@ const EngineerDashboard = () => {
                   getCategoryIcon={getCategoryIcon}
                   handleViewDetails={handleViewDetails}
                 />
-              )}
+              )} */}
+              {/* {activeSection === "history" && (
+  <ComplaintHistory
+    completedComplaints={filteredComplaints}
+    searchQuery={searchQuery}
+    setSearchQuery={setSearchQuery}
+    getCategoryIcon={getCategoryIcon}
+    handleViewDetails={handleViewDetails}
+  />
+)} */}
+{activeSection === "assigned" && (
+  <AssignedComplaints
+    complaints={filteredAssignedComplaints}
+    setStatusFilter={setStatusFilter}
+    statusFilter={statusFilter}
+    searchQuery={searchQuery}
+    setSearchQuery={setSearchQuery}
+    getPriorityIcon={getPriorityIcon}
+    getCategoryIcon={getCategoryIcon}
+    handleViewDetails={handleViewDetails}
+    handleOpenUpdateModal={handleOpenUpdateModal}
+  />
+)}
+
+{activeSection === "history" && (
+  <ComplaintHistory
+    completedComplaints={filteredCompletedComplaints}
+    searchQuery={searchQuery}
+    setSearchQuery={setSearchQuery}
+    getCategoryIcon={getCategoryIcon}
+    handleViewDetails={handleViewDetails}
+  />
+)}
+
+
 
               {activeSection === "schedule" && (
                 <Schedule

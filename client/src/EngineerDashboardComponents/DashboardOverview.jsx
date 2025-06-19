@@ -82,9 +82,9 @@ const DashboardOverview = ({ pendingComplaints, assignedComplaints, completedCom
             <div className="engineer-assigned-complaints-section">
               <div className="engineer-assigned-complaints-container">
                 {assignedComplaints.map((complaint) => (
-                  <div className="engineer-assigned-complaint-card" key={complaint.complaint_FK}>
+                  <div className="engineer-assigned-complaint-card" key={complaint.id}>
                     <div className="engineer-complaint-header">
-                      <span className="engineer-complaint-id">#{complaint.complaint_FK}</span>
+                      <span className="engineer-complaint-id">#{complaint.id}</span>
                       <span className={`engineer-complaint-status ${String(complaint.status || "") .toLowerCase().replace(" ", "-")}`}>
                         {complaint.status}
                       </span>
