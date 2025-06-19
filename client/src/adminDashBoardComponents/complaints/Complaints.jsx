@@ -1,20 +1,73 @@
+// import React, { useState } from "react";
+// import ComplaintsTable from "./ComplaintsTable";
+
+// const Complaints = ({
+//   complaints,
+//   handleViewDetails,
+//   handleAssignEngineer,
+// }) => {
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [statusFilter, setStatusFilter] = useState("all");
+
+//   return (
+//     <div className="admin-dashboard-complaints-container">
+//       <div className="admin-dashboard-section-header">
+//         <h2 className="admin-dashboard-section-title">
+//           Maintenance Complaints
+//         </h2>
+//         <p className="admin-dashboard-section-subtitle">
+//           Manage and track all maintenance requests from students
+//         </p>
+//       </div>
+
+//       <div className="admin-dashboard-card">
+//         <ComplaintsTable
+//           complaints={complaints}
+//           handleViewDetails={handleViewDetails}
+//           handleAssignEngineer={handleAssignEngineer}
+//           searchQuery={searchQuery}
+//           statusFilter={statusFilter}
+//           onSearchChange={setSearchQuery}
+//           onStatusFilterChange={setStatusFilter}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Complaints;
+
+
 import React, { useState } from "react";
 import ComplaintsTable from "./ComplaintsTable";
+import ComplaintDetailsModal from "../modals/ComplaintDetailsModal";
+import axios from "axios";
 
-const Complaints = ({
-  complaints,
-  handleViewDetails,
-  handleAssignEngineer,
-}) => {
+const Complaints = ({ complaints, handleAssignEngineer }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [complaintDetailsModal, setComplaintDetailsModal] = useState({
+    visible: false,
+    complaint: null,
+  });
+// /complaints/with-assignees/:id
+  const handleViewComplaintDetails = async (complaintId) => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/admin/complaints/with-assignees/${complaintId}`);
+      setComplaintDetailsModal({
+        visible: true,
+        complaint: response.data,
+      });
+      console.log("Complaint details fetched successfully:", response.data);
+    } catch (error) {
+      console.error("Failed to fetch complaint details:", error);
+    }
+  };
 
   return (
     <div className="admin-dashboard-complaints-container">
       <div className="admin-dashboard-section-header">
-        <h2 className="admin-dashboard-section-title">
-          Maintenance Complaints
-        </h2>
+        <h2 className="admin-dashboard-section-title">Maintenance Complaints</h2>
         <p className="admin-dashboard-section-subtitle">
           Manage and track all maintenance requests from students
         </p>
@@ -23,7 +76,7 @@ const Complaints = ({
       <div className="admin-dashboard-card">
         <ComplaintsTable
           complaints={complaints}
-          handleViewDetails={handleViewDetails}
+          handleViewDetails={handleViewComplaintDetails}
           handleAssignEngineer={handleAssignEngineer}
           searchQuery={searchQuery}
           statusFilter={statusFilter}
@@ -31,6 +84,17 @@ const Complaints = ({
           onStatusFilterChange={setStatusFilter}
         />
       </div>
+
+      {complaintDetailsModal.visible && complaintDetailsModal.complaint && (
+        <div className="admin-dashboard-modal-overlay">
+          <ComplaintDetailsModal
+            complaint={complaintDetailsModal.complaint}
+            onClose={() =>
+              setComplaintDetailsModal({ visible: false, complaint: null })
+            }
+          />
+        </div>
+      )}
     </div>
   );
 };

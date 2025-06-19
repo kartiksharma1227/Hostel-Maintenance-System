@@ -466,8 +466,8 @@ const login = async (req, res) => {
   const user = userResults[0];
 
   // Role should be stored in the Users table as either "Admin" or "Engineer"
-  const role = user.role;
-  role = role ? role.toLowerCase() : null; // Normalize role to lowercase
+  const role = user.role ? user.role.toLowerCase() : null;
+
   console.log('User role:', role);
   console.log(role !== "engineer")
   console.log(role !== "admin" && role !== "engineer")

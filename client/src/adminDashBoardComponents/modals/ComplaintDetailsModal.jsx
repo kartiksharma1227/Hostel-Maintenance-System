@@ -44,7 +44,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
             <div className="detail-row">
               <div className="detail-label">Location</div>
               <div className="detail-value">{complaint.location}</div>
-              <div className="detail-value">Room: {complaint.student_room_number
+              <div className="detail-value">Room: {complaint.room_FK
 }</div>
             </div>
 

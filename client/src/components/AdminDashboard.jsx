@@ -44,7 +44,6 @@
 //     complaintId: null,
 //   });
 
-
 // const fetchComplaints = async () => {
 //   try {
 //     const url =
@@ -338,7 +337,6 @@
 
 // export default AdminDashboard;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import Header from "../adminDashBoardComponents/layout/Header";
 import Sidebar from "../adminDashBoardComponents/layout/Sidebar";
@@ -366,11 +364,12 @@ const AdminDashboard = () => {
   });
   const [activeSection, setActiveSection] = useState("dashboard");
   const [notifications, setNotifications] = useState([]);
-  const [notificationPanelVisible, setNotificationPanelVisible] = useState(false);
+  const [notificationPanelVisible, setNotificationPanelVisible] =
+    useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const profileDropdownRef = useRef(null);
   const [toastMessage, setToastMessage] = useState("");
-const [toastVisible, setToastVisible] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
 
   const [complaints, setComplaints] = useState([]);
   const [engineers, setEngineers] = useState([]);
@@ -387,12 +386,15 @@ const [toastVisible, setToastVisible] = useState(false);
     visible: false,
     complaintId: null,
   });
-
+  console.log(activeSection, "activeSection in AdminDashboard");
+  // console.log('Complaints:', complaintId);
   const fetchComplaints = async () => {
+    console.log("Complaint ID .......:", complaintDetailsModal);
+
     try {
       const url =
         activeSection === "complaints"
-          ? `${API_BASE}/admin/complaints/with-assignees`
+          ? `${API_BASE}/admin/complaints/with-assignees/`
           : `${API_BASE}/admin/complaints`;
 
       const res = await fetch(url);
@@ -401,22 +403,23 @@ const [toastVisible, setToastVisible] = useState(false);
         throw new Error(`Fetch error (${res.status}): ${text}`);
       }
       const data = await res.json();
+      console.log("Fetched complaints:", data);
       setComplaints(data);
     } catch (err) {
       console.error("Complaints fetch failed:", err);
     }
   };
-  
+
   const fetchEngineers = async () => {
-  try {
-    const res = await axios.get("http://localhost:4000/api/admin/engineers", { withCredentials: true });
-    setEngineers(res.data);
-  } catch (err) {
-    console.error("Failed to fetch engineers:", err);
-  }
-};
-
-
+    try {
+      const res = await axios.get("http://localhost:4000/api/admin/engineers", {
+        withCredentials: true,
+      });
+      setEngineers(res.data);
+    } catch (err) {
+      console.error("Failed to fetch engineers:", err);
+    }
+  };
 
   useEffect(() => {
     fetchComplaints();
@@ -460,13 +463,20 @@ const [toastVisible, setToastVisible] = useState(false);
         visible: true,
         message: "Engineer added successfully!",
       });
-      setTimeout(() => setSuccessMessage({ visible: false, message: "" }), 3000);
+      setTimeout(
+        () => setSuccessMessage({ visible: false, message: "" }),
+        3000
+      );
     } catch (err) {
       alert(err.message);
     }
   };
 
-  const handleAssignEngineerSubmit = async ({ complaintId, engineerId, note }) => {
+  const handleAssignEngineerSubmit = async ({
+    complaintId,
+    engineerId,
+    note,
+  }) => {
     try {
       const res = await fetch(`${API_BASE}/admin/assignments`, {
         method: "POST",
@@ -480,7 +490,9 @@ const [toastVisible, setToastVisible] = useState(false);
 
       setComplaints((prevComplaints) =>
         prevComplaints.map((complaint) =>
-          complaint.id === complaintId ? { ...complaint, status: "In Progress" } : complaint
+          complaint.id === complaintId
+            ? { ...complaint, status: "In Progress" }
+            : complaint
         )
       );
 
@@ -489,53 +501,57 @@ const [toastVisible, setToastVisible] = useState(false);
         message: "Engineer assigned successfully!",
       });
 
-      setTimeout(() => setSuccessMessage({ visible: false, message: "" }), 3000);
+      setTimeout(
+        () => setSuccessMessage({ visible: false, message: "" }),
+        3000
+      );
 
       setAssignEngineerModal({ visible: false, complaintId: null });
     } catch (err) {
       alert(err.message);
     }
   };
-  
+
   const [engineerDetailsModal, setEngineerDetailsModal] = useState({
-  visible: false,
-  engineer: null,
-});
+    visible: false,
+    engineer: null,
+  });
 
-const handleViewEngineerDetails = async (engineerId) => {
-  try {
-    console.log("Fetching engineer details:", engineerId);
-    const res = await fetch(`${API_BASE}/admin/engineers/${engineerId}`);
-    if (!res.ok) throw new Error('Failed to fetch engineer');
-    const data = await res.json();
-    setEngineerDetailsModal({ visible: true, engineer: data });
-  } catch (e) { alert(e.message); }
-};
-const handleDeleteEngineer = async (user_FK) => {
-  console.log("Deleting engineer with user_FK:", user_FK);
-  if (!window.confirm("Are you sure you want to deactivate this engineer?")) return;
+  const handleViewEngineerDetails = async (engineerId) => {
+    try {
+      console.log("Fetching engineer details:", engineerId);
+      const res = await fetch(`${API_BASE}/admin/engineers/${engineerId}`);
+      if (!res.ok) throw new Error("Failed to fetch engineer");
+      const data = await res.json();
+      setEngineerDetailsModal({ visible: true, engineer: data });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+  const handleDeleteEngineer = async (user_FK) => {
+    console.log("Deleting engineer with user_FK:", user_FK);
+    if (!window.confirm("Are you sure you want to deactivate this engineer?"))
+      return;
 
-  try {
-    await axios.patch(
-      `http://localhost:4000/api/admin/engineers/${user_FK}/deactivate`
-    );
-    await fetchEngineers(); // ← re-fetches engineers after deletion
+    try {
+      await axios.patch(
+        `http://localhost:4000/api/admin/engineers/${user_FK}/deactivate`
+      );
+      await fetchEngineers(); // ← re-fetches engineers after deletion
 
-    // Filter out the deactivated engineer or refetch list
-    setEngineers((prev) => prev.filter((eng) => eng.user_FK !== user_FK));
-  } catch (err) {
-    console.error("Failed to deactivate engineer:", err);
-    alert("Error while deactivating engineer");
-  }
-};
+      // Filter out the deactivated engineer or refetch list
+      setEngineers((prev) => prev.filter((eng) => eng.user_FK !== user_FK));
+    } catch (err) {
+      console.error("Failed to deactivate engineer:", err);
+      alert("Error while deactivating engineer");
+    }
+  };
 
-
-const showToast = (message) => {
-  setToastMessage(message);
-  setToastVisible(true);
-  setTimeout(() => setToastVisible(false), 3000);
-};
-
+  const showToast = (message) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000);
+  };
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible((v) => !v);
@@ -557,7 +573,9 @@ const showToast = (message) => {
 
   const handleViewComplaintDetails = async (c) => {
     try {
-      const res = await fetch(`${API_BASE}/admin/complaints/with-assignees/${c.id}`);
+      const res = await fetch(
+        `${API_BASE}/admin/complaints/with-assignees/${c.id}`
+      );
       if (!res.ok) throw new Error("Failed to fetch complaint details");
       const detailedComplaint = await res.json();
       setComplaintDetailsModal({ visible: true, complaint: detailedComplaint });
@@ -579,7 +597,10 @@ const showToast = (message) => {
       />
 
       <div className="admin-dashboard-container">
-        <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+        <Sidebar
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+        />
 
         <main className="admin-dashboard-main-content">
           {activeSection === "dashboard" && (
@@ -592,10 +613,19 @@ const showToast = (message) => {
             />
           )}
 
-          {activeSection === "complaints" && (
+          {/* {activeSection === "complaints" && (
             <Complaints
               complaints={complaints}
               handleViewDetails={handleViewComplaintDetails}
+              handleAssignEngineer={(id) =>
+                setAssignEngineerModal({ visible: true, complaintId: id })
+              }
+            />
+          )} */}
+          {activeSection === "complaints" && (
+            <Complaints
+              complaints={complaints}
+              handleViewDetails={handleViewComplaintDetails} // ✅ use the API-calling version
               handleAssignEngineer={(id) =>
                 setAssignEngineerModal({ visible: true, complaintId: id })
               }
@@ -605,24 +635,22 @@ const showToast = (message) => {
           {activeSection === "engineers" && (
             // <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
             // <EngineersList engineers={engineers} handleEngineerDetails={handleViewEngineerDetails} handleDeleteEngineer={handleDeleteEngineer} />
-<EngineersList
-  handleEngineerDetails={handleViewEngineerDetails}
-  handleDeleteEngineer={handleDeleteEngineer}
-  showToast={showToast}
-  refreshEngineers={fetchEngineers}
-  engineers={engineers}
-/>
-
-
+            <EngineersList
+              handleEngineerDetails={handleViewEngineerDetails}
+              handleDeleteEngineer={handleDeleteEngineer}
+              showToast={showToast}
+              refreshEngineers={fetchEngineers}
+              engineers={engineers}
+            />
           )}
           {engineerDetailsModal.visible && (
-  <ViewEngineerModal
-    engineer={engineerDetailsModal.engineer}
-    onClose={() => setEngineerDetailsModal({ visible: false, engineer: null })}
-  />
-)}
-
-
+            <ViewEngineerModal
+              engineer={engineerDetailsModal.engineer}
+              onClose={() =>
+                setEngineerDetailsModal({ visible: false, engineer: null })
+              }
+            />
+          )}
 
           {activeSection === "add-engineer" && (
             <AddEngineerForm onSubmit={handleAddEngineer} />
@@ -648,6 +676,18 @@ const showToast = (message) => {
           />
         </div>
 
+        {/* {complaintDetailsModal.visible && (
+          <div className="admin-dashboard-modal-overlay">
+            <ComplaintDetailsModal
+              complaint={complaintDetailsModal.complaint}
+              // handleViewDetails={handleViewComplaintDetails}
+
+              onClose={() =>
+                setComplaintDetailsModal({ visible: false, complaint: null })
+              }
+            />
+          </div>
+        )} */}
         {complaintDetailsModal.visible && (
           <div className="admin-dashboard-modal-overlay">
             <ComplaintDetailsModal
@@ -674,7 +714,10 @@ const showToast = (message) => {
           </div>
         )}
 
-        <SuccessToast message={successMessage.message} visible={successMessage.visible} />
+        <SuccessToast
+          message={successMessage.message}
+          visible={successMessage.visible}
+        />
       </div>
     </div>
   );
