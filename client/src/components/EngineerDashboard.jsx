@@ -498,7 +498,7 @@ useEffect(() => {
 
   const handleAcceptComplaint = async (complaint) => {
     try {
-      await axios.put("/api/engineer-dashboard/accept-complaint", {
+      await axios.put("http://localhost:4000/api/engineer-dashboard/accept-complaint", {
         complaintId: complaint.id,
         engineerId,
       });
