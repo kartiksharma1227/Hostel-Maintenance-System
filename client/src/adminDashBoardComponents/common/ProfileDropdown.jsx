@@ -48,13 +48,9 @@ const ProfileDropdown = forwardRef(
           const response = await axios.get(
             `http://localhost:4000/api/admin/profile/${userPk}`
           );
-          console.log("Admin profile fetched:", response.data);
+          console.log("Admin profile fetched:", response.data.profile);
           setAdminData(
-            response.data.profile || {
-              name: "Admin User",
-              email: "admin@iiita.ac.in",
-              role: "Administrator",
-            }
+            response.data.profile 
           );
           setLoading(false);
         } catch (err) {

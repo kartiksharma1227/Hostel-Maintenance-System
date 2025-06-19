@@ -8,6 +8,8 @@ const Header = ({
   profileDropdownVisible,
   toggleProfileDropdown,
 }) => {
+  console.log("Admin Profile:", adminProfile);
+  // console.log('name',adminProfile.name);
   return (
     <header className="admin-dashboard-header">
       <div className="admin-dashboard-logo">
@@ -74,7 +76,7 @@ const Header = ({
               </span>
             )}
         </button>
-        <div className="admin-dashboard-user-profile">
+        {/* <div className="admin-dashboard-user-profile">
           <span>Admin Portal</span>
           <img
             src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -83,6 +85,21 @@ const Header = ({
             alt="Profile"
             className="admin-dashboard-avatar"
             onClick={toggleProfileDropdown}
+          />
+        </div> */}
+        <div
+          className="admin-dashboard-user-profile"
+          onClick={toggleProfileDropdown}
+          style={{ cursor: "pointer" }}
+        >
+          <span>{adminProfile.name || "Admin"}</span>
+        
+          <img
+            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+              adminProfile?.name || "Admin"
+            )}&background=3f51b5&color=fff&bold=true`}
+            alt="Profile"
+            className="admin-dashboard-avatar"
           />
         </div>
       </div>

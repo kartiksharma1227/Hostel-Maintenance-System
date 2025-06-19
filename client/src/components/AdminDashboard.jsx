@@ -359,7 +359,7 @@ const API_BASE = "http://localhost:4000/api";
 const AdminDashboard = () => {
   const [adminProfile] = useState({
     name: "Admin User",
-    email: "admin@iiita.ac.in",
+    email: "admin@iiita.ac.inefeff",
     phone: "+91 9876543210",
   });
   const [activeSection, setActiveSection] = useState("dashboard");
