@@ -91,11 +91,12 @@ const Login = () => {
         localStorage.setItem("token", token);
         showSuccessAlert();
 
-        if (role === "Student") {
-          navigate("/StudentDashboard");
-        } else {
-          setError("Unauthorized role for student login");
-        }
+        // if (role === "student") {
+        //   navigate("/StudentDashboard");
+        // } else {
+        //   setError("Unauthorized role for student login");
+        // }
+        navigate("/StudentDashboard");
         return;
       }
     }

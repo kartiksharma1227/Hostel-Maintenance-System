@@ -145,6 +145,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
         const response = await axios.get(
           `/api/engineer/complaints/completed/${engineerId}`
         );
+        console.log("Completed complaints response:", response.data);
         setCompletedComplaints(response.data);
       } catch (err) {
         console.error("Error fetching completed complaints:", err);
@@ -595,18 +596,18 @@ useEffect(() => {
           </div>
         </div>
       )}
-
-      <Header
+      <Header/>
+      {/* <Header
         engineerProfile={engineerProfile}
         profileDropdownVisible={profileDropdownVisible}
         toggleProfileDropdown={toggleProfileDropdown}
         profileAvatarRef={profileAvatarRef}
-        toggleNotificationPanel={() =>
-          setNotificationPanelVisible(!notificationPanelVisible)
-        }
-        notificationPanelVisible={notificationPanelVisible}
-        notifications={notifications}
-      />
+        // toggleNotificationPanel={() =>
+        //   setNotificationPanelVisible(!notificationPanelVisible)
+        // }
+        // notificationPanelVisible={notificationPanelVisible}
+        // notifications={notifications}
+      /> */}
 
       <div className="engineer-dashboard-container">
         <Sidebar

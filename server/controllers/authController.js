@@ -34,7 +34,7 @@ const login = async (req, res) => {
           user_PK: studentUser.user_PK,
           room_FK: studentUser.room_FK,
           roll_number: rollno,
-          role: studentUser.role || 'Student',
+          role: studentUser.role || 'student',
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRY || '1h' }
@@ -43,7 +43,7 @@ const login = async (req, res) => {
       return res.status(200).json({
         message: 'Student login successful',
         token,
-        role: 'Student',
+        role: 'student',
       });
     }
 
