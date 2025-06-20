@@ -1,15 +1,66 @@
 const db = require('../../db/connection');
 
+// const getAllComplaints = async (req, res, next) => {
+//   try {
+//     console.log('⏳  GET /api/admin/complaints called');
+//     const [rows] = await db.execute(`SELECT * FROM Complaints ORDER BY created_at DESC`);
+//     res.json(rows);
+//   } catch (err) {
+//     console.error("❌ Error fetching complaints:", err);
+//     res.status(500).json({ error: "Internal Server Error", details: err.message });
+//   }
+// };
 const getAllComplaints = async (req, res, next) => {
   try {
     console.log('⏳  GET /api/admin/complaints called');
-    const [rows] = await db.execute(`SELECT * FROM Complaints ORDER BY created_at DESC`);
+
+    // const [rows] = await db.execute(`
+    //   SELECT 
+    //     c.*, 
+    //     a.status AS assignmentStatus,
+    //     a.engineer_FK,
+    //     a.assigned_date
+    //   FROM Complaints c
+    //   LEFT JOIN Assignments a ON a.assignment_PK = (
+    //     SELECT assignment_PK 
+    //     FROM Assignments 
+    //     WHERE complaint_FK = c.id 
+    //     ORDER BY assigned_date DESC 
+    //     LIMIT 1
+    //   )
+    //   ORDER BY c.created_at DESC
+    // `);
+    const [rows] = await db.execute(`
+  WITH latest_assignments AS (
+    SELECT a.*
+    FROM Assignments a
+    JOIN (
+      SELECT complaint_FK, MAX(assigned_date) AS max_date
+      FROM Assignments
+      GROUP BY complaint_FK
+    ) latest 
+    ON a.complaint_FK = latest.complaint_FK AND a.assigned_date = latest.max_date
+  )
+
+  SELECT 
+    c.*, 
+    la.status AS assignmentStatus,
+    la.engineer_FK,
+    la.assigned_date,
+    la.admin_FK
+  FROM Complaints c
+  LEFT JOIN latest_assignments la ON c.id = la.complaint_FK
+  ORDER BY c.created_at DESC
+`);
+
+
     res.json(rows);
   } catch (err) {
     console.error("❌ Error fetching complaints:", err);
     res.status(500).json({ error: "Internal Server Error", details: err.message });
   }
 };
+
 
 const getComplaintDetails = async (req, res) => {
   try {

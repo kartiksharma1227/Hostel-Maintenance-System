@@ -138,11 +138,15 @@ const AdminDashboard = () => {
     engineerId,
     note,
   }) => {
+    const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const adminId = decoded.user_PK; // 👈 admin's user ID
     try {
+      console.log("Assigning engineer:", { complaintId, engineerId, note });
       const res = await fetch(`${API_BASE}/admin/assignments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ complaintId, engineerId, note }),
+        body: JSON.stringify({ complaintId, engineerId, note,adminId }),
       });
 
       if (!res.ok) throw new Error("Assignment failed");
