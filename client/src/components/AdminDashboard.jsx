@@ -1,342 +1,3 @@
-// import React, { useState, useEffect, useRef } from "react";
-// import Header from "../adminDashBoardComponents/layout/Header";
-// import Sidebar from "../adminDashBoardComponents/layout/Sidebar";
-// import Dashboard from "../adminDashBoardComponents/dashboard/Dashboard";
-// import Complaints from "../adminDashBoardComponents/complaints/Complaints";
-// import EngineersList from "../adminDashBoardComponents/engineers/EngineersList";
-// import AddEngineerForm from "../adminDashBoardComponents/engineers/AddEngineerForm";
-// import ComplaintDetailsModal from "../adminDashBoardComponents/modals/ComplaintDetailsModal";
-// import AssignComplaintModal from "../adminDashBoardComponents/modals/AssignComplaintModal";
-// import NotificationsPanel from "../adminDashBoardComponents/common/NotificationsPanel";
-// import ProfileDropdown from "../adminDashBoardComponents/common/ProfileDropdown";
-// import SuccessToast from "../adminDashBoardComponents/common/SuccessToast";
-// import "../styles/AdminDashboard.css";
-// import "../styles/SuccessToast.css";
-
-// const API_BASE = "http://localhost:4000/api";
-
-// const AdminDashboard = () => {
-//   const [adminProfile] = useState({
-//     name: "Admin User",
-//     email: "admin@iiita.ac.in",
-//     phone: "+91 9876543210",
-//   });
-//   const [activeSection, setActiveSection] = useState("dashboard");
-//   const [notifications, setNotifications] = useState([]);
-//   const [notificationPanelVisible, setNotificationPanelVisible] =
-//     useState(false);
-//   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
-//   const profileDropdownRef = useRef(null);
-
-//   const [complaints, setComplaints] = useState([]);
-//   const [engineers, setEngineers] = useState([]);
-//   const [successMessage, setSuccessMessage] = useState({
-//     visible: false,
-//     message: "",
-//   });
-
-//   const [complaintDetailsModal, setComplaintDetailsModal] = useState({
-//     visible: false,
-//     complaint: null,
-//   });
-//   const [assignEngineerModal, setAssignEngineerModal] = useState({
-//     visible: false,
-//     complaintId: null,
-//   });
-
-// const fetchComplaints = async () => {
-//   try {
-//     const url =
-//       activeSection === "complaints"
-//         ? `${API_BASE}/admin/complaints/with-assignees`
-//         : `${API_BASE}/admin/complaints`;
-
-//     const res = await fetch(url);
-//     if (!res.ok) {
-//       const text = await res.text();
-//       throw new Error(`Fetch error (${res.status}): ${text}`);
-//     }
-//     const data = await res.json();
-//     setComplaints(data);
-//   } catch (err) {
-//     console.error("Complaints fetch failed:", err);
-//   }
-// };
-
-//   // Fetch initial data
-//   useEffect(() => {
-//     // fetch(`${API_BASE}/admin/complaints`)
-//     //   .then((res) => res.json())
-//     //   .then(setComplaints)
-//     //   .catch((err) => console.error(err));
-//     fetchComplaints();
-
-//     fetch(`${API_BASE}/admin/engineers`)
-//       .then((res) => res.json())
-//       .then(setEngineers)
-//       .catch((err) => {
-//         console.error(err);
-//         setEngineers([]);
-//       });
-
-//     // fetch(`${API_BASE}/notifications`)
-//     //   .then((res) => res.json())
-//     //   .then(setNotifications)
-//     //   .catch((err) => console.error(err));
-
-//     fetch(`${API_BASE}/admin/complaints`)
-//       .then(async (res) => {
-//         if (!res.ok) {
-//           const text = await res.text(); // <-- 🔍 capture full raw response
-//           throw new Error(`Fetch error (${res.status}): ${text}`);
-//         }
-//         return res.json(); // only try to parse JSON if response is OK
-//       })
-//       .then(setComplaints)
-//       .catch((err) => console.error("Complaints fetch failed:", err));
-//   }, [activeSection]);
-
-//   // const handleAssignEngineerSubmit = async ({ complaintId, engineerId }) => {
-//   //   try {
-//   //     const res = await fetch(`${API_BASE}/complaints/${complaintId}/assign`, {
-//   //       method: "POST",
-//   //       headers: { "Content-Type": "application/json" },
-//   //       body: JSON.stringify({ engineerId }),
-//   //     });
-//   //     if (!res.ok) throw new Error("Assignment failed");
-//   //     const updated = await res.json();
-//   //     setComplaints((prev) =>
-//   //       prev.map((c) => (c.id === complaintId ? updated : c))
-//   //     );
-//   //     setSuccessMessage({
-//   //       visible: true,
-//   //       message: "Engineer assigned successfully!",
-//   //     });
-//   //     setTimeout(
-//   //       () => setSuccessMessage({ visible: false, message: "" }),
-//   //       3000
-//   //     );
-//   //     setAssignEngineerModal({ visible: false, complaintId: null });
-//   //   } catch (err) {
-//   //     alert(err.message);
-//   //   }
-//   // };
-
-//   const handleAddEngineer = async (engineerData) => {
-//     try {
-//       const res = await fetch(`${API_BASE}/admin/engineer`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(engineerData),
-//       });
-
-//       if (!res.ok) throw new Error("Add engineer failed");
-
-//       const saved = await res.json();
-
-//       // Create engineer object expected by EngineersList
-//       const newEngineer = {
-//         id: saved.engineerId || Math.random(),
-//         name: saved.name || engineerData.name || "Unnamed",
-//         email: saved.mail_UN || engineerData.mail_UN || "noemail@domain.com",
-//         specialization: saved.specialization || "General",
-//         phone: saved.phone_number || engineerData.phone_number || "N/A",
-//         status: saved.availability || "Available",
-//         assignedComplaints: 0,
-//         completedComplaints: 0,
-//       };
-
-//       setEngineers((prev) => [...prev, newEngineer]);
-//       setActiveSection("engineers");
-
-//       setSuccessMessage({
-//         visible: true,
-//         message: "Engineer added successfully!",
-//       });
-//       setTimeout(
-//         () => setSuccessMessage({ visible: false, message: "" }),
-//         3000
-//       );
-//     } catch (err) {
-//       alert(err.message);
-//     }
-//   };
-
-//   const handleAssignEngineerSubmit = async ({
-//     complaintId,
-//     engineerId,
-//     note,
-//   }) => {
-//     try {
-//       const res = await fetch(`${API_BASE}/admin/assignments`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({
-//           complaintId,
-//           engineerId,
-//           note,
-//         }),
-//       });
-
-//       if (!res.ok) throw new Error("Assignment failed");
-
-//       const updated = await res.json();
-
-//       // // Update complaint list locally if needed
-//       // setComplaints((prev) =>
-//       //   prev.map((c) => (c.id === complaintId ? updated : c))
-//       // );
-//       // ✅ Update complaints list in state to reflect the new status and assignment
-//       setComplaints((prevComplaints) =>
-//         prevComplaints.map((complaint) =>
-//           complaint.id === complaintId
-//             ? { ...complaint, status: "In Progress" }
-//             : complaint
-//         )
-//       );
-//       setSuccessMessage({
-//         visible: true,
-//         message: "Engineer assigned successfully!",
-//       });
-
-//       setTimeout(() => {
-//         setSuccessMessage({ visible: false, message: "" });
-//       }, 3000);
-
-//       setAssignEngineerModal({ visible: false, complaintId: null });
-//     } catch (err) {
-//       alert(err.message);
-//     }
-//   };
-
-//   const toggleProfileDropdown = () => {
-//     setProfileDropdownVisible((v) => !v);
-//     if (notificationPanelVisible) setNotificationPanelVisible(false);
-//   };
-
-//   useEffect(() => {
-//     const handleClickOutside = (e) => {
-//       if (
-//         profileDropdownRef.current &&
-//         !profileDropdownRef.current.contains(e.target)
-//       ) {
-//         setProfileDropdownVisible(false);
-//       }
-//     };
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => document.removeEventListener("mousedown", handleClickOutside);
-//   }, []);
-
-//   return (
-//     <div className="admin-dashboard-wrapper">
-//       <Header
-//         adminProfile={adminProfile}
-//         notifications={notifications}
-//         notificationPanelVisible={notificationPanelVisible}
-//         setNotificationPanelVisible={setNotificationPanelVisible}
-//         profileDropdownVisible={profileDropdownVisible}
-//         toggleProfileDropdown={toggleProfileDropdown}
-//       />
-
-//       <div className="admin-dashboard-container">
-//         <Sidebar
-//           activeSection={activeSection}
-//           setActiveSection={setActiveSection}
-//         />
-
-//         <main className="admin-dashboard-main-content">
-//           {activeSection === "dashboard" && (
-//             <Dashboard
-//               complaints={complaints}
-//               handleViewDetails={(c) =>
-//                 setComplaintDetailsModal({ visible: true, complaint: c })
-//               }
-//               handleAssignEngineer={(id) =>
-//                 setAssignEngineerModal({ visible: true, complaintId: id })
-//               }
-//             />
-//           )}
-
-//           {activeSection === "complaints" && (
-//             <Complaints
-//               complaints={complaints}
-//               handleViewDetails={(c) =>
-//                 setComplaintDetailsModal({ visible: true, complaint: c })
-//               }
-//               handleAssignEngineer={(id) =>
-//                 setAssignEngineerModal({ visible: true, complaintId: id })
-//               }
-//             />
-//           )}
-
-//           {activeSection === "engineers" && (
-//             <EngineersList
-//               engineers={engineers}
-//               handleEngineerDetails={() => {}}
-//             />
-//           )}
-
-//           {activeSection === "add-engineer" && (
-//             <AddEngineerForm onSubmit={handleAddEngineer} />
-//           )}
-//         </main>
-
-//         {notificationPanelVisible && (
-//           <div className="admin-dashboard-notification-panel-container">
-//             <NotificationsPanel
-//               notifications={notifications}
-//               onMarkAsRead={(id) => {}}
-//               onMarkAllAsRead={() => {}}
-//             />
-//           </div>
-//         )}
-
-//         <div className="admin-dashboard-profile-dropdown-container">
-//           <ProfileDropdown
-//             ref={profileDropdownRef}
-//             adminProfile={adminProfile}
-//             visible={profileDropdownVisible}
-//             onLogout={() => console.log("logout")}
-//           />
-//         </div>
-
-//         {complaintDetailsModal.visible && (
-//           <div className="admin-dashboard-modal-overlay">
-//             <ComplaintDetailsModal
-//               complaint={complaintDetailsModal.complaint}
-//               onClose={() =>
-//                 setComplaintDetailsModal({ visible: false, complaint: null })
-//               }
-//             />
-//           </div>
-//         )}
-
-//         {assignEngineerModal.visible && (
-//           <div className="admin-dashboard-modal-overlay">
-//             <AssignComplaintModal
-//               complaint={complaints.find(
-//                 (c) => c.id === assignEngineerModal.complaintId
-//               )}
-//               engineers={engineers}
-//               onAssign={handleAssignEngineerSubmit}
-//               onClose={() =>
-//                 setAssignEngineerModal({ visible: false, complaintId: null })
-//               }
-//             />
-//           </div>
-//         )}
-
-//         <SuccessToast
-//           message={successMessage.message}
-//           visible={successMessage.visible}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDashboard;
-
 import React, { useState, useEffect, useRef } from "react";
 import Header from "../adminDashBoardComponents/layout/Header";
 import Sidebar from "../adminDashBoardComponents/layout/Sidebar";
@@ -353,7 +14,7 @@ import ViewEngineerModal from "../adminDashBoardComponents/engineers/ViewEnginee
 import "../styles/AdminDashboard.css";
 import "../styles/SuccessToast.css";
 import axios from "axios";
-
+import {jwtDecode} from "jwt-decode";
 const API_BASE = "http://localhost:4000/api";
 
 const AdminDashboard = () => {
@@ -584,7 +245,73 @@ const AdminDashboard = () => {
       alert("Could not load complaint details");
     }
   };
+   const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const decodedToken = jwtDecode(token);
+        const user_PK = decodedToken.user_PK;
+  
+        const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
+        console.log("Fetching notifications for user_PK:", user_PK);
+        console.log("notifications response:", res);
+        if (!res.ok) throw new Error("Failed to fetch notifications");
+        const data = await res.json();
+        setNotifications(data);
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+      }
+    };
+     const markAllNotificationsAsRead = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const decodedToken = jwtDecode(token);
+          const user_PK = decodedToken.user_PK;
+    
+          const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
+            method: "PUT",
+          });
+          if (!res.ok) throw new Error("Failed to mark all as read");
+    
+          setNotifications((prev) =>
+            prev.map((n) => ({ ...n, read_status: true }))
+          );
+        } catch (err) {
+          console.error("Error marking all notifications as read:", err);
+        }
+      };
+      const markNotificationAsRead = async (notification_PK) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
+        { method: "PUT" }
+      );
+      if (!res.ok) throw new Error("Failed to mark as read");
 
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+        )
+      );
+    } catch (err) {
+      console.error("Error marking notification as read:", err);
+    }
+  };
+  useEffect(() => {
+      fetchNotifications();
+  
+      const handleUpdate = () => {
+        fetchNotifications();
+      };
+  
+      window.addEventListener("notificationsUpdated", handleUpdate);
+  
+      return () => {
+        window.removeEventListener("notificationsUpdated", handleUpdate);
+      };
+    }, []);
+  
+    const unreadCount = notifications.filter((n) => !n.read_status).length;
+  
   return (
     <div className="admin-dashboard-wrapper">
       <Header
@@ -661,8 +388,9 @@ const AdminDashboard = () => {
           <div className="admin-dashboard-notification-panel-container">
             <NotificationsPanel
               notifications={notifications}
-              onMarkAsRead={(id) => {}}
-              onMarkAllAsRead={() => {}}
+      markNotificationAsRead={markNotificationAsRead}
+      markAllNotificationsAsRead={markAllNotificationsAsRead}
+      visible={notificationPanelVisible}
             />
           </div>
         )}

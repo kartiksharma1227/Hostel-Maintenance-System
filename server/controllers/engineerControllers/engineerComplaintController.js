@@ -26,12 +26,12 @@ const getCompletedComplaints = async (req, res) => {
   console.log("engineerId:", engineerId);
   try {
     const [rows] = await db.query(
-      `SELECT c.*, a.assigned_date, c.completed_date
-       FROM Complaints c
-       JOIN Assignments a ON c.id = a.complaint_FK
-       WHERE a.engineer_FK = ? AND c.status = 'Completed'`,
+      `SELECT c.*,c.completed_date
+       FROM Complaints c   
+       WHERE c.completed_by = ? AND c.status = 'Completed'`,
       [engineerId]
     );
+    console.log("Completed Complaints:", rows);
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -139,6 +139,8 @@ const rejectComplaint = async (req, res) => {
     conn.release();
   }
 };
+
+// Function to update a complaint by an engineer
 const updateComplaintByEngineer = async (req, res) => {
   const {
     complaintId,
@@ -149,7 +151,8 @@ const updateComplaintByEngineer = async (req, res) => {
     visit_type,
     work_done,
     parts_replaced,
-    adminUserId
+    adminUserId,
+    
   } = req.body;
 
   const engineerId = req.params.id; 
@@ -166,10 +169,11 @@ console.log("adminUserId:", adminUserId);
        SET status = ?, 
            scheduled_visit_date = ?, 
            scheduled_visit_time = ?, 
+           completed_by = ?,
            completed_date = IF(? = 'Completed', NOW(), completed_date),
            updated_at = NOW()
        WHERE id = ?`,
-      [status, scheduled_visit_date || null, scheduled_visit_time || null, status, complaintId]
+      [status, scheduled_visit_date || null, scheduled_visit_time || null, engineerId,status, complaintId]
     );
 
     // 2. Insert into complaint_visits if work was done
@@ -217,10 +221,10 @@ console.log("adminUserId:", adminUserId);
     // 5. If complaint is completed
     if (status.toLowerCase() === "completed") {
       // 5.1 Delete from assignments
-      await connection.query(
-        `DELETE FROM assignments WHERE complaint_FK = ?`,
-        [complaintId]
-      );
+      // await connection.query(
+      //   `DELETE FROM assignments WHERE complaint_FK = ?`,
+      //   [complaintId]
+      // );
 
       // 5.2 Get student's user_FK and email
       const [studentResult] = await connection.query(
