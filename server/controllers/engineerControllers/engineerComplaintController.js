@@ -137,11 +137,93 @@ const rejectComplaint = async (req, res) => {
     conn.release();
   }
 };
+const updateComplaintByEngineer = async (req, res) => {
+  const {
+    complaintId,
+    status,
+    description,
+    scheduled_visit_date,
+    scheduled_visit_time,
+    visit_type,
+    work_done,
+    parts_replaced,
+    adminUserId
+  } = req.body;
 
+  const engineerId = req.params.id; 
+console.log("Engineer ID update:", engineerId);
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // 1. Update complaint main status and scheduled time
+    await connection.query(
+      `UPDATE complaints 
+       SET status = ?, 
+           scheduled_visit_date = ?, 
+           scheduled_visit_time = ?, 
+           completed_date = IF(? = 'Completed', NOW(), completed_date),
+           updated_at = NOW()
+       WHERE id = ?`,
+      [status, scheduled_visit_date || null, scheduled_visit_time || null, status, complaintId]
+    );
+
+    // 2. Insert into complaint_visits if work was done
+    if (work_done || parts_replaced || visit_type) {
+      await connection.query(
+        `INSERT INTO complaint_visits 
+         (complaint_FK, visit_date, visit_time, visit_type, work_done, parts_replaced) 
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          complaintId,
+          scheduled_visit_date || new Date(),
+          scheduled_visit_time || "00:00",
+          visit_type || "general",
+          work_done || "",
+          parts_replaced || "",
+        ]
+      );
+    }
+
+    // 3. Insert engineer's comment
+    if (description) {
+      await connection.query(
+        `INSERT INTO complaint_comments 
+         (complaint_FK, comment, created_at) 
+         VALUES (?, ?, NOW())`,
+        [complaintId, description]
+      );
+    }
+
+    
+    // 🔹 4. Insert Notification for Admin
+    const message = `Complaint #${complaintId} updated by engineer. Status: ${status}${
+      scheduled_visit_date ? ` | Scheduled Visit: ${scheduled_visit_date} ${scheduled_visit_time || ""}` : ""
+    }${work_done ? ` | Work Done: ${work_done}` : ""}${
+      parts_replaced ? ` | Parts: ${parts_replaced}` : ""
+    }`;
+
+    await connection.query(
+      `INSERT INTO notifications (message, read_status, user_FK, created_at, updated_at)
+       VALUES (?, false, ?, NOW(), NOW())`,
+      [message, adminUserId]
+    );
+
+    await connection.commit();
+    res.status(200).json({ message: "Complaint updated successfully." });
+  } catch (err) {
+    await connection.rollback();
+    console.error("Error updating complaint:", err);
+    res.status(500).json({ error: "Server error while updating complaint." });
+  } finally {
+    connection.release();
+  }
+};
 module.exports = {
   getAssignedComplaints,
   getCompletedComplaints,
   getPendingAssignmentsForEngineer,
   acceptComplaint,
-  rejectComplaint
+  rejectComplaint,updateComplaintByEngineer
 };

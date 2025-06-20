@@ -18,11 +18,18 @@ import {jwtDecode} from "jwt-decode";
 const EngineerDashboard = () => {
   // State for form and UI management
   const [updateForm, setUpdateForm] = useState({
-    status: "",
-    workDone: "",
-    partsReplaced: "",
-    nextVisitDate: "",
-    comments: "",
+    // status: "",
+    // workDone: "",
+    // partsReplaced: "",
+    // nextVisitDate: "",
+    // comments: "",
+      status: "",
+      description: "",
+      scheduled_visit_date: "",
+      scheduled_visit_time: "",
+      visit_type: "",
+      work_done: "",
+      parts_replaced: ""
   });
   const [engineerProfile, setEngineerProfile] = useState({});
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
@@ -208,43 +215,9 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
   setFilteredAssignedComplaints(result);
 }, [statusFilter, searchQuery, assignedComplaints]);
 
-  // Filter pending complaints based on search query
-//   useEffect(() => {
-//     console.log("Pending complaints:", pendingComplaints);
-//   let result = [...pendingComplaints];
-//   if (searchQuery.trim() !== "") {
-//     const query = searchQuery.toLowerCase();
-//     result = result.filter(
-//       (complaint) =>
-//         complaint.title.toLowerCase().includes(query) ||
-//         complaint.description.toLowerCase().includes(query) ||
-//         complaint.location.toLowerCase().includes(query) ||
-//         complaint.category.toLowerCase().includes(query) ||
-//         complaint.studentName?.toLowerCase().includes(query)
-//     );
-//   }
-//   setFilteredPendingComplaints(result);
-// }, [searchQuery, pendingComplaints]);
-// useEffect(() => {
-//   console.log("Pending complaints latest:", pendingComplaints);
-//   let result = Array.isArray(pendingComplaints) ? [...pendingComplaints] : [];
-//   if (searchQuery.trim() !== "") {
-//     const query = searchQuery.toLowerCase();
-//     result = result.filter(
-//       (complaint) =>
-//         complaint.title.toLowerCase().includes(query) ||
-//         complaint.description.toLowerCase().includes(query) ||
-//         complaint.location.toLowerCase().includes(query) ||
-//         complaint.category.toLowerCase().includes(query) ||
-//         complaint.studentName?.toLowerCase().includes(query)
-//     );
-//   }
-
-//   setFilteredPendingComplaints(result);
-//   console.log("set FilteredPendingComplaints:", filteredPendingComplaints);
-// }, [searchQuery, pendingComplaints]);
+  
 useEffect(() => {
-  // console.log("isArray?", typeof(pendingComplaints));
+  
   let result = Array.isArray(pendingComplaints) ? [...pendingComplaints] : [];
 
   if (searchQuery.trim() !== "") {
@@ -313,19 +286,29 @@ useEffect(() => {
     }));
   };
 
-  const handleUpdateSubmit = async (e) => {
-    e.preventDefault();
+  const handleUpdateSubmit = async (complaint) => {
+    complaint.preventDefault();
     const complaintId = updateModal.complaintId;
 
     try {
       // Send update to server
-      await axios.put("/api/engineer-dashboard/update-complaint", {
+      await axios.put(`http://localhost:4000/api/engineer/complaints/update/${engineerId}`, {
         complaintId,
         status: updateForm.status,
         workDone: updateForm.workDone,
         partsReplaced: updateForm.partsReplaced,
-        nextVisitDate: updateForm.nextVisitDate,
-        comments: updateForm.comments,
+        
+        
+
+        
+    
+    description: updateForm.description,
+    scheduled_visit_date: updateForm.scheduled_visit_date,
+    scheduled_visit_time: updateForm.scheduled_visit_time,
+    visit_type: updateForm.visit_type,
+    
+    
+    adminUserId:complaint.admin_FK
       });
 
       // Update UI based on response
@@ -385,11 +368,18 @@ useEffect(() => {
 
       // Reset form and show success message
       setUpdateForm({
-        status: "",
-        workDone: "",
-        partsReplaced: "",
-        nextVisitDate: "",
-        comments: "",
+        // status: "",
+        // workDone: "",
+        // partsReplaced: "",
+        // nextVisitDate: "",
+        // comments: "",
+          status: "",
+  description: "",
+  scheduled_visit_date: "",
+  scheduled_visit_time: "",
+  visit_type: "",
+  work_done: "",
+  parts_replaced: ""
       });
       setUpdateModal({ visible: false, complaintId: null });
       setSuccessMessage({
@@ -398,10 +388,10 @@ useEffect(() => {
       });
 
       // Refresh data
-      const response = await axios.get(
-        `/api/engineer-dashboard/notifications/${engineerId}`
-      );
-      setNotifications(response.data);
+      // const response = await axios.get(
+      //   `/api/engineer-dashboard/notifications/${engineerId}`
+      // );
+      // setNotifications(response.data);
 
       setTimeout(
         () => setSuccessMessage({ visible: false, message: "" }),
