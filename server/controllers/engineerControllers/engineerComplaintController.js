@@ -21,23 +21,50 @@ const getAssignedComplaints = async (req, res) => {
   }
 };
 
+// const getCompletedComplaints = async (req, res) => {
+//   const engineerId = req.params.id; // from JWT
+//   console.log("engineerId:", engineerId);
+//   try {
+//     const [rows] = await db.query(
+//       `SELECT c.*,c.completed_date
+//        FROM Complaints c   
+//        WHERE c.completed_by = ? AND c.status = 'Completed'`,
+//       [engineerId]
+//     );
+//     console.log("Completed Complaints:", rows);
+//     res.json(rows);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
 const getCompletedComplaints = async (req, res) => {
-  const engineerId = req.params.id; // from JWT
+  const engineerId = req.params.id; // from JWT or route
   console.log("engineerId:", engineerId);
+
   try {
     const [rows] = await db.query(
-      `SELECT c.*,c.completed_date
-       FROM Complaints c   
-       WHERE c.completed_by = ? AND c.status = 'Completed'`,
+      `
+      SELECT 
+        c.*, 
+        c.completed_date,
+        f.rating
+      FROM Complaints c
+      LEFT JOIN Feedback f ON c.id = f.complaint_fk
+      WHERE c.completed_by = ? AND c.status = 'Completed'
+      ORDER BY c.completed_date DESC
+      `,
       [engineerId]
     );
-    console.log("Completed Complaints:", rows);
+
+    console.log("Completed Complaints with Feedback:", rows);
     res.json(rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 const getPendingAssignmentsForEngineer = async (req, res) => {
   try {
