@@ -212,68 +212,104 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
           </div>
         );
 
+      // case "followups":
+      //   return (
+      //     <div className="complaint-followups-content">
+      //       {complaint.followups && complaint.followups.length > 0 ? (
+      //         <div className="followups-list">
+      //           {complaint.followups.map((followup, index) => (
+      //             <div key={index} className="followup-item">
+      //               <div className="followup-header">
+      //                 <div className="followup-date">
+      //                   {formatDate(followup.date)}
+      //                 </div>
+      //                 {followup.type && (
+      //                   <div className="followup-type">{followup.type}</div>
+      //                 )}
+      //               </div>
+      //               <div className="followup-body">
+      //                 <p>{followup.description}</p>
+      //                 {followup.attachments &&
+      //                   followup.attachments.length > 0 && (
+      //                     <div className="followup-attachments">
+      //                       {followup.attachments.map((attachment, i) => (
+      //                         <div key={i} className="attachment-item">
+      //                           <span className="attachment-name">
+      //                             {attachment}
+      //                           </span>
+      //                         </div>
+      //                       ))}
+      //                     </div>
+      //                   )}
+      //               </div>
+      //               {followup.actionTaken && (
+      //                 <div className="followup-action">
+      //                   <span className="action-tag">
+      //                     {followup.actionTaken}
+      //                   </span>
+      //                 </div>
+      //               )}
+      //             </div>
+      //           ))}
+      //         </div>
+      //       ) : (
+      //         <div className="no-followups">
+      //           <div className="no-data-icon">
+      //             <svg
+      //               xmlns="http://www.w3.org/2000/svg"
+      //               width="48"
+      //               height="48"
+      //               viewBox="0 0 24 24"
+      //               fill="none"
+      //               stroke="currentColor"
+      //               strokeWidth="1"
+      //               strokeLinecap="round"
+      //               strokeLinejoin="round"
+      //             >
+      //               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      //             </svg>
+      //           </div>
+      //           <p>No follow-ups available for this complaint</p>
+      //         </div>
+      //       )}
+      //     </div>
+      //   );
       case "followups":
-        return (
-          <div className="complaint-followups-content">
-            {complaint.followups && complaint.followups.length > 0 ? (
-              <div className="followups-list">
-                {complaint.followups.map((followup, index) => (
-                  <div key={index} className="followup-item">
-                    <div className="followup-header">
-                      <div className="followup-date">
-                        {formatDate(followup.date)}
-                      </div>
-                      {followup.type && (
-                        <div className="followup-type">{followup.type}</div>
-                      )}
-                    </div>
-                    <div className="followup-body">
-                      <p>{followup.description}</p>
-                      {followup.attachments &&
-                        followup.attachments.length > 0 && (
-                          <div className="followup-attachments">
-                            {followup.attachments.map((attachment, i) => (
-                              <div key={i} className="attachment-item">
-                                <span className="attachment-name">
-                                  {attachment}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                    </div>
-                    {followup.actionTaken && (
-                      <div className="followup-action">
-                        <span className="action-tag">
-                          {followup.actionTaken}
-                        </span>
-                      </div>
-                    )}
+  return (
+    <div className="complaint-followups-content">
+      {complaint.followups && complaint.followups.length > 0 ? (
+        complaint.followups.map((f, index) => (
+          <div key={index} className="followup-card">
+            <div className="followup-header">
+              <div><strong>Visit Type:</strong> {f.visit_type}</div>
+              <div><strong>Date:</strong> {formatDate(f.visit_date + "T" + f.visit_time)}</div>
+            </div>
+            <div className="followup-body">
+              <div className="detail-row">
+                <div className="detail-label">Work Done:</div>
+                <div className="detail-value">{f.work_done || "Not specified"}</div>
+              </div>
+              {f.parts_replaced && (
+                <div className="detail-row">
+                  <div className="detail-label">Parts Replaced:</div>
+                  <div className="detail-value">
+                    {f.parts_replaced.split(',').map((part, i) => (
+                      <div key={i} className="part-tag">{part.trim()}</div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-followups">
-                <div className="no-data-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="48"
-                    height="48"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                  </svg>
                 </div>
-                <p>No follow-ups available for this complaint</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        );
+        ))
+      ) : (
+        <div className="no-followups">
+          <p>No follow-ups recorded for this complaint.</p>
+        </div>
+      )}
+    </div>
+  );
+
 
       case "revisits":
         return (
@@ -394,7 +430,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
 
         return (
           <div className="complaint-feedback-content">
-            {complaint.feedback_text ? (
+            {complaint.feedback_rating ? (
               <div className="feedback-details">
                 <div className="detail-row">
                   <div className="detail-label">Rating</div>
