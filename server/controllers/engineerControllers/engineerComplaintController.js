@@ -1,12 +1,14 @@
 // controllers/engineerControllers/engineerComplaintController.js
 const db = require('../../db/connection');
+const mailSender = require("../../utils/mailSender");
+
 
 const getAssignedComplaints = async (req, res) => {
   const engineerId = req.params.id; // from JWT
   console.log("engineerId:", engineerId);
   try {
     const [rows] = await db.query(
-      `SELECT c.*, a.assigned_date
+      `SELECT c.*, a.assigned_date,a.admin_FK
        FROM Complaints c
        JOIN Assignments a ON c.id = a.complaint_FK
        WHERE a.engineer_FK = ? AND c.status IN ('Assigned', 'In Progress')`,
@@ -152,6 +154,7 @@ const updateComplaintByEngineer = async (req, res) => {
 
   const engineerId = req.params.id; 
 console.log("Engineer ID update:", engineerId);
+console.log("adminUserId:", adminUserId);
   const connection = await db.getConnection();
 
   try {
@@ -210,6 +213,52 @@ console.log("Engineer ID update:", engineerId);
       [message, adminUserId]
     );
 
+
+    // 5. If complaint is completed
+    if (status.toLowerCase() === "completed") {
+      // 5.1 Delete from assignments
+      await connection.query(
+        `DELETE FROM assignments WHERE complaint_FK = ?`,
+        [complaintId]
+      );
+
+      // 5.2 Get student's user_FK and email
+      const [studentResult] = await connection.query(
+        `SELECT u.mail_UN, u.user_PK
+         FROM complaints c
+         JOIN students s ON c.submitted_by = s.roll_number
+         JOIN users u ON s.user_FK = u.user_PK
+         WHERE c.id = ?`,
+        [complaintId]
+      );
+
+      if (studentResult.length > 0) {
+        const { mail_UN, user_PK } = studentResult[0];
+        console.log("Student Email:", mail_UN);
+        // 5.3 Insert notification for student
+        await connection.query(
+          `INSERT INTO notifications (message, read_status, user_FK, created_at, updated_at)
+           VALUES (?, false, ?, NOW(), NOW())`,
+          [
+            `Complaint #${complaintId} marked as completed. Please submit feedback.`,
+            user_PK,
+          ]
+        );
+
+        // 5.4 Send feedback request email
+        await mailSender(
+  mail_UN,
+  "Your Complaint has been Resolved - Feedback Requested",
+  `
+    <p>Hello,</p>
+    <p>Your complaint with ID <strong>${complaintId}</strong> has been marked as <strong>Completed</strong> by the engineer.</p>
+    <p>Please <a href="https://your-feedback-url.com">click here</a> to submit your feedback.</p>
+    <p>Thank you!</p>
+  `
+);
+
+      }
+    }
     await connection.commit();
     res.status(200).json({ message: "Complaint updated successfully." });
   } catch (err) {

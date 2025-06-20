@@ -289,7 +289,15 @@ useEffect(() => {
   const handleUpdateSubmit = async (complaint) => {
     complaint.preventDefault();
     const complaintId = updateModal.complaintId;
-
+     // 🔍 Find the full complaint object to extract admin_FK
+  const matchedComplaint = assignedComplaints.find(
+    (c) => c.id === complaintId
+  );
+  console.log("Matched Complaint:", matchedComplaint);
+  if (!matchedComplaint) {
+    console.error("Complaint not found in assignedComplaints");
+    return;
+  }
     try {
       // Send update to server
       await axios.put(`http://localhost:4000/api/engineer/complaints/update/${engineerId}`, {
@@ -306,9 +314,8 @@ useEffect(() => {
     scheduled_visit_date: updateForm.scheduled_visit_date,
     scheduled_visit_time: updateForm.scheduled_visit_time,
     visit_type: updateForm.visit_type,
-    
-    
-    adminUserId:complaint.admin_FK
+   // ✅ Now you can safely send it
+      adminUserId: matchedComplaint.admin_FK,
       });
 
       // Update UI based on response

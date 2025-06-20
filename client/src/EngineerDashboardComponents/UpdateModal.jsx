@@ -108,8 +108,8 @@ const UpdateModal = ({
               className="engineer-select-enhanced"
             >
               <option value="">Select status</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
             </select>
           </div>
 
