@@ -1,40 +1,4 @@
-// // src/EngineerDashBoardComponents/NotificationPanel.jsx
-// const NotificationPanel = ({ notifications, markAllNotificationsAsRead, markNotificationAsRead }) => {
-//   return (
-//     <div className="engineer-notifications-panel">
-//       <div className="engineer-notifications-header">
-//         <h3>Notifications</h3>
-//         <button className="engineer-mark-all-read" onClick={markAllNotificationsAsRead}>
-//           Mark all as read
-//         </button>
-//       </div>
-//       <div className="engineer-notifications-list">
-//         {notifications.length === 0 ? (
-//           <div className="engineer-no-notifications">
-//             <span className="engineer-empty-notifications-icon">🔔</span>
-//             <p>No notifications yet</p>
-//           </div>
-//         ) : (
-//           notifications.map((notification) => (
-//             <div
-//               key={notification.id}
-//               className={`engineer-notification-item ${notification.read ? "read" : "unread"}`}
-//               onClick={() => markNotificationAsRead(notification.id)}
-//             >
-//               <div className="engineer-notification-content">
-//                 <p>{notification.message}</p>
-//                 <span className="engineer-notification-time">{notification.time}</span>
-//               </div>
-//               {!notification.read && <span className="engineer-unread-indicator"></span>}
-//             </div>
-//           ))
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
 
-// export default NotificationPanel;
 
 
 import React, { useRef, useEffect } from "react";
@@ -49,24 +13,7 @@ const NotificationsPanel = ({
 }) => {
   const panelRef = useRef(null);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       panelRef.current &&
-  //       !panelRef.current.contains(event.target) &&
-  //       !event.target.closest(".notification-btn")
-  //     ) {
-  //       document.querySelector(".notification-btn")?.click();
-  //     }
-  //   };
-
-  //   if (visible) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [visible]);
+  
   useEffect(() => {
   const handleClickOutside = (event) => {
     if (
@@ -89,18 +36,7 @@ const NotificationsPanel = ({
 
   if (!visible) return null;
 
-  // const getTimeElapsed = (dateString) => {
-  //   const now = new Date();
-  //   const past = new Date(dateString);
-  //   const diff = now.getTime() - past.getTime();
-  //   const minutes = Math.floor(diff / 60000);
-  //   const hours = Math.floor(minutes / 60);
-  //   const days = Math.floor(hours / 24);
-  //   if (days > 0) return `${days} ${days === 1 ? "day" : "days"} ago`;
-  //   if (hours > 0) return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-  //   if (minutes > 0) return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
-  //   return "Just now";
-  // };
+ 
 const getTimeElapsed = (dateString) => {
   if (!dateString) return "Unknown time";
   const now = new Date();

@@ -1,3 +1,5 @@
+
+
 // src/EngineerDashboardComponents/Header.jsx
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -167,7 +169,10 @@ const Header = () => {
   <div className="engineer-logo">
     <h1>Maintenance Portal</h1>
   </div>
-
+{isLoading ? (
+        <div>Loading profile…</div>
+      ) : (
+        <>
   <div className="engineer-header-right">
     <button
       className="notification-btn enhanced"
@@ -183,7 +188,7 @@ const Header = () => {
       className="engineer-user-profile"
       onClick={() => setShowProfile((v) => !v)}
     >
-      <span>{engineerProfile.name}</span>
+      <span>{engineerProfile.name || "engineer"}</span>
       <img
         src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
           engineerProfile.name
@@ -194,6 +199,8 @@ const Header = () => {
       />
     </div>
   </div>
+        </>
+      )}
 </header>
 
 
@@ -301,53 +308,7 @@ const Header = () => {
         />
     </>
   );
-//   return (
-//   <>
-//     <header className="engineer-dashboard-header">
-//       <div className="engineer-logo">
-//         <h1>Maintenance Portal</h1>
-//       </div>
 
-//       {isLoading ? (
-//         <div>Loading profile…</div>
-//       ) : (
-//         <>
-//           <button
-//             className="notification-btn enhanced"
-//             onClick={() => setShowNotifications(!showNotifications)}
-//           >
-//             <FaBell />
-//             {unreadCount > 0 && (
-//               <span className="notification-badge pulse">{unreadCount}</span>
-//             )}
-//           </button>
-
-//           <div
-//             className="engineer-user-profile"
-//             onClick={() => setShowProfile((v) => !v)}
-//           >
-//             <span>{engineerProfile.name}</span>
-//             <img
-//               src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-//                 engineerProfile.name
-//               )}&background=2196f3&color=fff`}
-//               alt="Profile"
-//               className="engineer-avatar"
-//               ref={profileAvatarRef}
-//             />
-//           </div>
-//         </>
-//       )}
-//     </header>
-
-//     {/* only render dropdown if loaded */}
-//     {!isLoading && showProfile && (
-//       <div className="engineer-profile-dropdown">
-//         {/* profile content */}
-//       </div>
-//     )}
-//   </>
-// );
 
 };
 
