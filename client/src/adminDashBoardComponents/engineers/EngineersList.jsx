@@ -199,13 +199,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
                       </button>
                     </td>
                     <td>
-                       {/* <button
-    className="admin-dashboard-btn admin-dashboard-delete-btn"
-    style={{ marginLeft: '8px', backgroundColor: '#dc3545', color: '#fff' }}
-    onClick={() => handleDeleteEngineer(engineer.user_FK)}
-  >
-    Delete
-  </button> */}
+                      
  <button
   className="admin-dashboard-btn admin-dashboard-delete-btn"
   style={{ marginLeft: '8px', backgroundColor: '#dc3545', color: '#fff' }}

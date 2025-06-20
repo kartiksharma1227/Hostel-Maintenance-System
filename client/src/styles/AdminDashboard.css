@@ -1002,3 +1002,40 @@
   padding: 1rem;
   overflow-y: auto;
 }
+.rating-stars {
+  color: #ffc107;
+  font-size: 1.2rem;
+}
+
+.star {
+  color: #ccc;
+  margin-right: 2px;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.followup-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+.followup-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.part-tag {
+  display: inline-block;
+  background-color: #eee;
+  padding: 0.2rem 0.6rem;
+  margin: 0.2rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+}

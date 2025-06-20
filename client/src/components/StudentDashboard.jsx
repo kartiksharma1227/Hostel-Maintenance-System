@@ -135,32 +135,54 @@ const StudentDashboard = () => {
   // };
 
 
-  const handleFeedbackSubmit = async ({ complaintId, rating, feedback }) => {
-    try {
-      await axios.post('/api/feedback', {
-        complaint_FK: complaintId,
-        rating,
-        text: feedback,
-      });
+  // const handleFeedbackSubmit = async ({ complaintId, rating, feedback }) => {
+  //   try {
+  //     await axios.post('/api/feedback', {
+  //       complaint_FK: complaintId,
+  //       rating,
+  //       text: feedback,
+  //     });
   
-      const updatedComplaints = complaints.map((c) =>
-        c.id === complaintId ? { ...c, feedback, rating } : c
-      );
-      setComplaints(updatedComplaints);
-      setShowFeedbackModal(false);
-      showToast("Feedback Submitted", "Thank you for your feedback!");
-    } catch (err) {
-      console.error("Failed to submit feedback:", err);
-      if (err.response) {
-        console.error("Server responded with:", err.response.data);
-      } else if (err.request) {
-        console.error("No response received:", err.request);
-      } else {
-        console.error("Error setting up request:", err.message);
-      }
-      showToast("Error", "Unable to submit feedback. Please try again.");
-    }
-  };
+  //     const updatedComplaints = complaints.map((c) =>
+  //       c.id === complaintId ? { ...c, feedback, rating } : c
+  //     );
+  //     setComplaints(updatedComplaints);
+  //     setShowFeedbackModal(false);
+  //     showToast("Feedback Submitted", "Thank you for your feedback!");
+  //   } catch (err) {
+  //     console.error("Failed to submit feedback:", err);
+  //     if (err.response) {
+  //       console.error("Server responded with:", err.response.data);
+  //     } else if (err.request) {
+  //       console.error("No response received:", err.request);
+  //     } else {
+  //       console.error("Error setting up request:", err.message);
+  //     }
+  //     showToast("Error", "Unable to submit feedback. Please try again.");
+  //   }
+  // };
+  const handleFeedbackSubmit = async ({ complaintId, rating, feedback }) => {
+  try {
+    await axios.post('/api/feedback', {
+      complaintId,
+      rating,
+      text: feedback,
+    });
+    setComplaints(cs =>
+      cs.map(c =>
+        c.id === complaintId
+          ? { ...c, rating: rating, feedback: feedback }
+          : c
+      )
+    );
+    setShowFeedbackModal(false);
+    showToast("Feedback Submitted", "Thank you!");
+  } catch (err) {
+    console.error(err);
+    showToast("Error", "Unable to submit feedback.");
+  }
+};
+
 
 
 
@@ -210,13 +232,26 @@ const StudentDashboard = () => {
           <div className="dashboard-overview">
             <h2>Dashboard Overview</h2>
             <StatsCards stats={stats} />
-            <RecentComplaints
+            {/* <RecentComplaints
               complaints={complaints.slice(0, 6)}
               onComplaintClick={(complaint) => {
                 setSelectedComplaint(complaint);
                 setShowDetailsModal(true);
               }}
-            />
+            /> */}
+           <RecentComplaints
+  complaints={complaints.slice(0, 6)}
+  onComplaintClick={(complaint) => {
+    setSelectedComplaint(complaint);
+    setShowDetailsModal(true);
+  }}
+  onFeedback={(complaint) => {
+    setSelectedComplaint(complaint);
+    setShowFeedbackModal(true);
+  }}
+/>
+
+
           </div>
         );
       case "new-complaint":
@@ -227,30 +262,7 @@ const StudentDashboard = () => {
           </div>
         );
 
-      // case "new-complaint":
-      //   return (
-      //     <div className="file-complaint">
-      //       <h2>File a New Complaint</h2>
-      //       <ComplaintForm
-      //         onSubmitSuccess={(newComplaint) => {
-      //           setComplaints([newComplaint, ...complaints]);
-      //           updateStats([newComplaint, ...complaints]);
-      //           showToast("Complaint Submitted", "Your complaint has been successfully submitted.");
-      //           setActiveSection("dashboard");
-      //         }}
-      //         onCancel={() => setActiveSection("dashboard")}
-      //       />
-      //     </div>
-      //   );
-      // case "history":
-      //   return (
-      //     <div className="complaint-history">
-      //       {/* <h2>Complaint History</h2> */}
-      //       <ComplaintHistory 
-                
-      //       />
-      //     </div>
-      //   );
+      
 
 
 

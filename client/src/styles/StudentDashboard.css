@@ -4593,3 +4593,12 @@
 .rounded {
   border-radius: 0.5rem;
 }
+.submitted-feedback {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+.submitted-feedback {
+  display: flex;
+  align-items: center;
+}
