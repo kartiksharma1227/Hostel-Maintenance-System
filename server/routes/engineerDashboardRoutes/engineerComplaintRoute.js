@@ -3,7 +3,7 @@ const express = require('express');
 const {
   getAssignedComplaints,
   getCompletedComplaints,getPendingAssignmentsForEngineer
-,acceptComplaint,rejectComplaint} = require('../../controllers/engineerControllers/engineerComplaintController');
+,acceptComplaint,rejectComplaint,updateComplaintByEngineer} = require('../../controllers/engineerControllers/engineerComplaintController');
 
 const router = express.Router();
 
@@ -18,5 +18,5 @@ router.get('/complaints/pending/:id', getPendingAssignmentsForEngineer);
 
 router.put('/complaints/accept/', acceptComplaint);
 router.put('/complaints/reject/', rejectComplaint);
-
+router.put('/complaints/update/:id', updateComplaintByEngineer);
 module.exports = router;
