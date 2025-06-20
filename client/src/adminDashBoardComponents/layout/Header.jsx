@@ -69,12 +69,7 @@ const Header = ({
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
           )}
-          {/* {notifications.filter((n) => !n.read).length > 0 &&
-            !notificationPanelVisible && (
-              <span className="admin-dashboard-notification-badge">
-                {notifications.filter((n) => !n.read).length}
-              </span>
-            )} */}
+         
             {notifications.filter((n) => !n.read_status).length > 0 && !notificationPanelVisible && (
   <span className="admin-dashboard-notification-badge">
     {notifications.filter((n) => !n.read_status).length}
@@ -88,7 +83,9 @@ const Header = ({
           onClick={toggleProfileDropdown}
           style={{ cursor: "pointer" }}
         >
-          <span>{adminProfile.name || "Admin"}</span>
+          {/* <span>{adminProfile.name || "Admin"}</span> */}
+          
+          <span>{adminProfile.name}</span>
         
           <img
             src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
