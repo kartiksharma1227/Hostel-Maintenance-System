@@ -6,6 +6,7 @@ import {
 } from "../../utils/constants";
 import "../../styles/ComplaintForm.css";
 import {jwtDecode} from "jwt-decode";
+import SuccessToast,{SuccessToastComponent} from "../common/SuccessToast";
 
 export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -143,6 +144,9 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
 
       // Notify other parts of app about update
       window.dispatchEvent(new Event("notificationsUpdated"));
+
+ // Show success toast
+      SuccessToast.show("Complaint Submitted", "Your complaint has been successfully filed.");
 
       // success callback
       onSubmitSuccess && onSubmitSuccess(result);

@@ -8,70 +8,12 @@ import ComplaintHistory from "../studentDashBoardComponents/complaints/Complaint
 import FeedbackModal from "../studentDashBoardComponents/modals/FeedbackModal";
 import DeleteConfirmationModal from "../studentDashBoardComponents/modals/DeleteConfirmationModal";
 import ComplaintDetailsModal from "../studentDashBoardComponents/modals/ComplaintDetailsModal";
-import SuccessToast from "../studentDashBoardComponents/common/SuccessToast";
+import SuccessToast,{SuccessToastComponent} from "../studentDashBoardComponents/common/SuccessToast";
 import "../styles/StudentDashboard.css";
 import axios from 'axios';
 
-// Mock data for complaints
-const mockComplaints = [
-  {
-    id: 1,
-    title: "AC not working",
-    category: "Maintenance",
-    description:
-      "AC in room 201 is not cooling properly. The temperature control seems to be malfunctioning and it's blowing hot air instead of cold.",
-    status: "pending",
-    priority: "high",
-    createdAt: "2025-04-20T10:00:00",
-    location: "Room 201",
-  },
-  {
-    id: 2,
-    title: "Water leakage",
-    category: "Plumbing",
-    description:
-      "Water leaking from bathroom tap even when fully closed. The floor is constantly wet and might damage the tiles if not fixed soon.",
-    status: "in-progress",
-    priority: "medium",
-    createdAt: "2025-04-19T15:30:00",
-    location: "Room 105",
-  },
-  {
-    id: 3,
-    title: "Light bulb replacement",
-    category: "Electrical",
-    description:
-      "Two light bulbs need replacement in the study area. It's quite dark in the evening making it difficult to study.",
-    status: "completed",
-    priority: "low",
-    createdAt: "2025-04-18T09:15:00",
-    location: "Corridor B",
-    feedback: "The repair was done quickly and efficiently. Thank you!",
-    rating: 5,
-  },
-  {
-    id: 4,
-    title: "Broken chair",
-    category: "Furniture",
-    description:
-      "Chair in the study room has a broken leg and is unusable. Need replacement as soon as possible.",
-    status: "pending",
-    priority: "medium",
-    createdAt: "2025-04-17T14:20:00",
-    location: "Study Room 2",
-  },
-  {
-    id: 5,
-    title: "Wifi connectivity issues",
-    category: "Network",
-    description:
-      "Poor wifi signal in the corner rooms of Block A. Unable to connect properly for online classes.",
-    status: "in-progress",
-    priority: "high",
-    createdAt: "2025-04-16T11:45:00",
-    location: "Block A, Rooms 301-305",
-  },
-];
+
+
 
 const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -92,8 +34,7 @@ const StudentDashboard = () => {
   // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {
-      setComplaints(mockComplaints);
-      updateStats(mockComplaints);
+     
       setIsLoading(false);
     }, 1000);
 
@@ -110,32 +51,19 @@ const StudentDashboard = () => {
 
     setComplaints([newComplaint, ...complaints]);
     updateStats([newComplaint, ...complaints]);
-    showToast(
-      "Complaint Submitted",
-      "Your complaint has been successfully submitted."
-    );
+    // showToast(
+    //   "Complaint Submitted",
+    //   "Your complaint has been successfully submitted."
+    // );
+    SuccessToast.show("Complaint Submitted", "Your complaint has been successfully submitted.");
+
     setActiveSection("dashboard");
   };
 
-  // const handleFeedbackSubmit = (feedbackData) => {
-  //   const updatedComplaints = complaints.map((complaint) => {
-  //     if (complaint.id === feedbackData.complaintId) {
-  //       return {
-  //         ...complaint,
-  //         feedback: feedbackData.feedback,
-  //         rating: feedbackData.rating,
-  //       };
-  //     }
-  //     return complaint;
-  //   });
-
-  //   setComplaints(updatedComplaints);
-  //   setShowFeedbackModal(false);
-  //   showToast("Feedback Submitted", "Thank you for your feedback!");
-  // };
+  
 
 
-  // const handleFeedbackSubmit = async ({ complaintId, rating, feedback }) => {
+  
   //   try {
   //     await axios.post('/api/feedback', {
   //       complaint_FK: complaintId,
@@ -176,10 +104,10 @@ const StudentDashboard = () => {
       )
     );
     setShowFeedbackModal(false);
-    showToast("Feedback Submitted", "Thank you!");
+    SuccessToast.show("Feedback Submitted", "Thank you!");
   } catch (err) {
     console.error(err);
-    showToast("Error", "Unable to submit feedback.");
+    SuccessToast.show("Error", "Unable to submit feedback.");
   }
 };
 
@@ -187,18 +115,18 @@ const StudentDashboard = () => {
 
 
 
-  const handleComplaintDelete = (complaintId) => {
-    const updatedComplaints = complaints.filter(
-      (complaint) => complaint.id !== complaintId
-    );
-    setComplaints(updatedComplaints);
-    updateStats(updatedComplaints);
-    setShowDeleteModal(false);
-    showToast(
-      "Complaint Cancelled",
-      "Your complaint has been cancelled successfully."
-    );
-  };
+
+  //   const updatedComplaints = complaints.filter(
+  //     (complaint) => complaint.id !== complaintId
+  //   );
+  //   setComplaints(updatedComplaints);
+  //   updateStats(updatedComplaints);
+  //   setShowDeleteModal(false);
+  //   showToast(
+  //     "Complaint Cancelled",
+  //     "Your complaint has been cancelled successfully."
+  //   );
+  // };
 
   const updateStats = (updatedComplaints) => {
     setStats({
@@ -232,13 +160,7 @@ const StudentDashboard = () => {
           <div className="dashboard-overview">
             <h2>Dashboard Overview</h2>
             <StatsCards stats={stats} />
-            {/* <RecentComplaints
-              complaints={complaints.slice(0, 6)}
-              onComplaintClick={(complaint) => {
-                setSelectedComplaint(complaint);
-                setShowDetailsModal(true);
-              }}
-            /> */}
+            
            <RecentComplaints
   complaints={complaints.slice(0, 6)}
   onComplaintClick={(complaint) => {
@@ -258,7 +180,9 @@ const StudentDashboard = () => {
         return (
           <div className="file-complaint">
             <h2>File a New Complaint</h2>
-            <ComplaintForm onSubmit={handleComplaintSubmit} />
+            {/* <ComplaintForm onSubmit={handleComplaintSubmit} />
+             */}
+             <ComplaintForm/>
           </div>
         );
 
@@ -364,6 +288,10 @@ const StudentDashboard = () => {
           setSelectedComplaint(null);
         }}
       />
+      <SuccessToastComponent />
+
+
+      {/* Add any additional modals or components here */}
     </div>
   );
 };
