@@ -417,6 +417,7 @@ useEffect(() => {
   };
 
   const handleViewDetails = (complaint) => {
+    console.log("Viewing details for complaint:", complaint);
     setSelectedComplaint(complaint);
     setShowDetailsModal(true);
   };
