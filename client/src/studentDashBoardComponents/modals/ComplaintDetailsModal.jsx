@@ -5,6 +5,7 @@ import {
   FaCalendarAlt,
   FaTag,
   FaExclamationCircle,
+  FaStar,
 } from "react-icons/fa";
 
 const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {

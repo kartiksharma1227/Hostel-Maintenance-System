@@ -181,7 +181,7 @@ const updateComplaintByEngineer = async (req, res) => {
     adminUserId,
     
   } = req.body;
-
+console.log("Update Complaint Request Body:", req.body);
   const engineerId = req.params.id; 
 console.log("Engineer ID update:", engineerId);
 console.log("adminUserId:", adminUserId);

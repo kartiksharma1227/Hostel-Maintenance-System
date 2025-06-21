@@ -21,7 +21,7 @@ const getScheduledVisits = async (req, res) => {
         AND c.status != 'Completed'
       ORDER BY c.scheduled_visit_date, c.scheduled_visit_time
     `, [engineerId]);
-
+      console.log('Schedules visits fetched:',rows);
     res.json(rows);
   } catch (err) {
     console.error('Error fetching scheduled visits:', err);

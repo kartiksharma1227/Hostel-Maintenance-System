@@ -99,7 +99,7 @@ const assignEngineer = async (req, res) => {
       VALUES (?, ?, NOW())
     `, [
       engineerId,
-      `You have been assigned a new complaint (ID: ${complaintId}) by Admin ${adminId}.`,
+      `You have been assigned a new complaint (ID: ${complaintId}) by Admin ${adminId}.Accept or reject the complaint`,
     ]);
 
     res.status(201).json({ message: "Engineer assigned successfully" });
