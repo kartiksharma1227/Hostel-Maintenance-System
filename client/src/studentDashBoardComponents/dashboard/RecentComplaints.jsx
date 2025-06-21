@@ -132,7 +132,7 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
                   </span>
                   <span>
                     <FaClock className="meta-icon" />
-                    {formatDate(complaint.createdAt)}
+                    {formatDate(complaint.created_at)}
                   </span>
                 </div>
                 <div className={getPriorityClass(complaint.priority)}>

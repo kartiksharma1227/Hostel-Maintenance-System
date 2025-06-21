@@ -10,7 +10,7 @@ const ComplaintsTable = ({
   onStatusFilterChange,
 }) => {
   const filteredComplaints = complaints.filter((complaint) => {
-    console.log("Filtering complaint:", complaint);
+    // console.log("Filtering complaint:", complaint);
     const matchesSearch =
       (complaint.title || "")
         .toLowerCase()
@@ -46,7 +46,7 @@ const ComplaintsTable = ({
       hour12: true,
     });
   };
-console.log(filteredComplaints)
+// console.log(filteredComplaints)
   return (
     <div className="admin-dashboard-complaints-section">
       <div className="admin-dashboard-filters-container">

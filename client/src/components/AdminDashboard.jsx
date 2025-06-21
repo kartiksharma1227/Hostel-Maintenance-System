@@ -51,11 +51,14 @@ const AdminDashboard = () => {
   // console.log('Complaints:', complaintId);
   const fetchComplaints = async () => {
     console.log("Complaint ID .......:", complaintDetailsModal);
+     const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const adminId = decoded.user_PK; // 👈 admin's user ID
 
     try {
       const url =
-        activeSection === "complaints"
-          ? `${API_BASE}/admin/complaints/with-assignees/`
+        activeSection === "Complaints"
+          ? `${API_BASE}/admin/complaints/with-assignees/${adminId}`
           : `${API_BASE}/admin/complaints`;
 
       const res = await fetch(url);
@@ -237,6 +240,7 @@ const AdminDashboard = () => {
   }, []);
 
   const handleViewComplaintDetails = async (c) => {
+    console.log("Fetching complaint details for:", c);
     try {
       const res = await fetch(
         `${API_BASE}/admin/complaints/with-assignees/${c.id}`
