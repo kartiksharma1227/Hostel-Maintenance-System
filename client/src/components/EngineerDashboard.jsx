@@ -307,13 +307,8 @@ useEffect(() => {
       await axios.put(`http://localhost:4000/api/engineer/complaints/update/${engineerId}`, {
         complaintId,
         status: updateForm.status,
-        workDone: updateForm.workDone,
-        partsReplaced: updateForm.partsReplaced,
-        
-        
-
-        
-    
+        work_done: updateForm.work_done,
+        parts_replaced: updateForm.parts_replaced,
     description: updateForm.description,
     scheduled_visit_date: updateForm.scheduled_visit_date,
     scheduled_visit_time: updateForm.scheduled_visit_time,

@@ -29,7 +29,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
       </span>
     );
   };
-  console.log(complaint);
+  console.log("complaint in engineer tab:",complaint);
   // Tabs rendering function
   const renderTabContent = () => {
     switch (activeTab) {
@@ -310,98 +310,6 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
     </div>
   );
 
-
-      case "revisits":
-        return (
-          <div className="complaint-revisits-content">
-            {complaint.revisits && complaint.revisits.length > 0 ? (
-              <div className="revisits-list">
-                {complaint.revisits.map((revisit, index) => (
-                  <div key={index} className="revisit-item">
-                    <div className="revisit-header">
-                      <div className="revisit-date">
-                        <strong>Visit Date:</strong> {formatDate(revisit.date)}
-                      </div>
-                      <div className="revisit-engineer">
-                        <strong>Engineer:</strong>{" "}
-                        {revisit.engineer?.name ||
-                          complaint.assignedEngineer?.name ||
-                          "Not assigned"}
-                      </div>
-                    </div>
-
-                    <div className="revisit-work">
-                      <h6>Work Performed</h6>
-                      <p>{revisit.workPerformed || "No details provided"}</p>
-
-                      {revisit.partsReplaced &&
-                        revisit.partsReplaced.length > 0 && (
-                          <div className="parts-replaced">
-                            <h6>Parts Replaced</h6>
-                            <div className="parts-list">
-                              {revisit.partsReplaced.map((part, i) => (
-                                <div key={i} className="part-item">
-                                  <span className="part-name">{part}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                    </div>
-
-                    {revisit.images && revisit.images.length > 0 && (
-                      <div className="revisit-images">
-                        <h6>Images</h6>
-                        <div className="images-gallery">
-                          {revisit.images.map((image, i) => (
-                            <div key={i} className="gallery-item">
-                              <img src={image} alt={`Visit image ${i + 1}`} />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="revisit-status">
-                      <span className="status-label">Outcome:</span>
-                      <span
-                        className={`revisit-outcome ${
-                          revisit.outcome?.toLowerCase().replace(" ", "-") ||
-                          "diagnosed"
-                        }`}
-                      >
-                        {revisit.outcome || "Diagnosed"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-revisits">
-                <div className="no-data-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="48"
-                    height="48"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                </div>
-                <p>No revisits recorded for this complaint</p>
-              </div>
-            )}
-          </div>
-        );
-
       case "feedback":
         // Only show feedback if the complaint is completed
         if (complaint.status !== "Completed") {
@@ -521,12 +429,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
           >
             Follow-ups
           </button>
-          <button
-            className={`tab-btn ${activeTab === "revisits" ? "active" : ""}`}
-            onClick={() => setActiveTab("revisits")}
-          >
-            Revisits
-          </button>
+         
           <button
             className={`tab-btn ${activeTab === "feedback" ? "active" : ""}`}
             onClick={() => setActiveTab("feedback")}
