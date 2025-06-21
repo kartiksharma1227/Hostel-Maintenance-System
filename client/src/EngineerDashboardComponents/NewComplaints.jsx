@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/EngineerDashboard.css";
+import "../styles/EngineerNewComplaints.css";
 
 export default function NewComplaints({
   pendingComplaints,
@@ -11,9 +12,11 @@ export default function NewComplaints({
 }) {
   const [filterDate, setFilterDate] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const complaints = pendingComplaints || [];
-  // console.log("Pending Complaints in New complaint:", complaints);
 
   // Format date to be more readable
   const formatDate = (dateString) => {
@@ -41,11 +44,13 @@ export default function NewComplaints({
     });
   };
 
-  const dateOptions = [...new Set(
-    complaints
-      .map((c) => (c.updated_at || c.created_at || "").split("T")[0])
-      .filter((d) => d)
-  )].sort((a, b) => new Date(b) - new Date(a));
+  const dateOptions = [
+    ...new Set(
+      complaints
+        .map((c) => (c.updated_at || c.created_at || "").split("T")[0])
+        .filter((d) => d)
+    ),
+  ].sort((a, b) => new Date(b) - new Date(a));
 
   useEffect(() => {
     if (dateOptions.length > 0 && !filterDate) {
@@ -53,156 +58,313 @@ export default function NewComplaints({
     }
   }, [dateOptions]);
 
-  const filtered = complaints.filter((c) => {
+  // Get unique categories for filter
+  const categories = [
+    "all",
+    ...new Set(complaints.map((c) => c.category).filter(Boolean)),
+  ];
+
+  // Get unique priorities for filter
+  const priorities = [
+    "all",
+    ...new Set(complaints.map((c) => c.priority).filter(Boolean)),
+  ];
+
+  const filteredComplaints = complaints.filter((c) => {
     const datePart = (c.updated_at || c.created_at || "").split("T")[0];
-    return datePart === filterDate;
+    const dateMatch = datePart === filterDate;
+
+    // Search functionality
+    const searchMatch =
+      searchQuery === "" ||
+      (c.title && c.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.description &&
+        c.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.location &&
+        c.location.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (c.complaint_id &&
+        c.complaint_id.toString().includes(searchQuery.toLowerCase()));
+
+    // Category filter
+    const categoryMatch =
+      categoryFilter === "all" || c.category === categoryFilter;
+
+    // Priority filter
+    const priorityMatch =
+      priorityFilter === "all" || c.priority === priorityFilter;
+
+    return dateMatch && searchMatch && categoryMatch && priorityMatch;
   });
 
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setCategoryFilter("all");
+    setPriorityFilter("all");
+  };
+
+  // Calculate statistics for display
+  const pendingCount = filteredComplaints.length;
+
   return (
-    <div className="engineer-new-complaints">
-      <div className="engineer-complaints-header">
-        <h2>Complaints Dashboard</h2>
-
-        <div style={{ position: "relative", display: "inline-block" }}>
-          <label
-            htmlFor="date-select"
-            style={{ marginBottom: "6px", display: "block", fontWeight: 500 }}
-          >
-            Filter by date:
-          </label>
-
-          <div
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px 16px",
-              width: "250px",
-              backgroundColor: "white",
-              border: "1px solid #d1d5db",
-              borderRadius: "8px",
-            }}
-          >
-            <span>
-              {filterDate ? formatDateForDropdown(filterDate) : "Select date"}
-            </span>
-            <span
-              style={{
-                transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
-              }}
-            >
-              ▼
-            </span>
-          </div>
-
-          {dropdownOpen && (
-            <div
-              style={{
-                position: "absolute",
-                top: "100%",
-                width: "250px",
-                backgroundColor: "white",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                zIndex: 100,
-                maxHeight: "250px",
-                overflowY: "auto",
-              }}
-            >
-              {dateOptions.map((d) => (
-                <div
-                  key={d}
-                  onClick={() => handleDateSelection(d)}
-                  style={{
-                    padding: "10px 16px",
-                    cursor: "pointer",
-                    backgroundColor: filterDate === d ? "#f3f4f6" : "white",
-                    fontWeight: filterDate === d ? 600 : 400,
-                  }}
-                >
-                  {formatDateForDropdown(d)}
-                  {filterDate === d && <span style={{ float: "right" }}>✓</span>}
-                </div>
-              ))}
-            </div>
-          )}
+    <div className="engineer-new-complaints-container">
+      <div className="engineer-new-complaints-header">
+        <div className="engineer-new-complaints-header-content">
+          <h2 className="engineer-new-complaints-title">
+            New Complaints Dashboard
+          </h2>
+          <p className="engineer-new-complaints-subtitle">
+            Review and respond to pending complaints assigned to your department
+          </p>
         </div>
       </div>
 
-      <p className="engineer-section-description">
-        Reviewing complaints updated on {formatDateForDropdown(filterDate)}
-      </p>
+      <div className="engineer-new-complaints-filters-container">
+        <div className="engineer-new-complaints-search-container">
+          <div className="engineer-new-complaints-search">
+            <span className="engineer-new-complaints-search-icon">🔍</span>
+            <input
+              type="text"
+              placeholder="Search by complaint ID, title, description or location..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="engineer-new-complaints-search-input"
+            />
+          </div>
 
-      {filtered.length === 0 ? (
-        <div className="engineer-no-results">
-          <span className="engineer-empty-icon">📥</span>
-          <p>No complaints found for this date</p>
+          <div className="engineer-new-complaints-filters">
+            <div className="engineer-new-complaints-filter-row">
+              <div className="engineer-new-complaints-filter-group">
+                <label className="engineer-new-complaints-filter-label">
+                  Category
+                </label>
+                <select
+                  className="engineer-new-complaints-filter-select"
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category === "all" ? "All Categories" : category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="engineer-new-complaints-filter-group">
+                <label className="engineer-new-complaints-filter-label">
+                  Priority
+                </label>
+                <select
+                  className="engineer-new-complaints-filter-select"
+                  value={priorityFilter}
+                  onChange={(e) => setPriorityFilter(e.target.value)}
+                >
+                  {priorities.map((priority) => (
+                    <option key={priority} value={priority}>
+                      {priority === "all" ? "All Priorities" : priority}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="engineer-new-complaints-filter-group">
+                <label className="engineer-new-complaints-filter-label">
+                  Date
+                </label>
+                <select
+                  className="engineer-new-complaints-filter-select"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                >
+                  {dateOptions.map((date) => (
+                    <option key={date} value={date}>
+                      {formatDateForDropdown(date)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="engineer-new-complaints-summary">
+        <div className="engineer-new-complaints-count">
+          <span className="engineer-new-complaints-count-number">
+            {pendingCount}
+          </span>
+          <span className="engineer-new-complaints-count-label">
+            Pending Complaints
+          </span>
+        </div>
+        <div className="engineer-new-complaints-date-indicator">
+          <span className="engineer-new-complaints-date-icon">📅</span>
+          <span>
+            Viewing complaints from{" "}
+            <span className="engineer-new-complaints-highlight">
+              {formatDateForDropdown(filterDate)}
+            </span>
+          </span>
+        </div>
+      </div>
+
+      {filteredComplaints.length === 0 ? (
+        <div className="engineer-new-complaints-empty">
+          <div className="engineer-new-complaints-empty-icon">📥</div>
+          <h3 className="engineer-new-complaints-empty-title">
+            No complaints found
+          </h3>
+          <p className="engineer-new-complaints-empty-message">
+            {searchQuery || categoryFilter !== "all" || priorityFilter !== "all"
+              ? "Try adjusting your filters to see more results"
+              : "There are no pending complaints for this date"}
+          </p>
+          {(searchQuery ||
+            categoryFilter !== "all" ||
+            priorityFilter !== "all") && (
+            <button
+              className="engineer-new-complaints-reset-button"
+              onClick={handleClearFilters}
+            >
+              Reset Filters
+            </button>
+          )}
         </div>
       ) : (
         <div className="engineer-new-complaints-grid">
-          {filtered.map((complaint) => (
-            <div className="engineer-new-complaint-card" key={complaint.id}>
-              <div className="engineer-complaint-header">
-                <div className="engineer-complaint-title-container">
-                  <h3 className="engineer-complaint-title">
-                    {complaint.
-complaint_id
-}: {complaint.title || "Untitled Complaint"}
+          {filteredComplaints.map((complaint) => (
+            <div
+              className={`engineer-new-complaints-card priority-${
+                complaint.priority?.toLowerCase() || "unknown"
+              }`}
+              key={complaint.id}
+            >
+              <div className="engineer-new-complaints-card-header">
+                <div className="engineer-new-complaints-card-title-container">
+                  <h3 className="engineer-new-complaints-card-title">
+                    <span className="engineer-new-complaints-complaint-id">
+                      #{complaint.complaint_id}
+                    </span>
+                    {complaint.title || "Untitled Complaint"}
                   </h3>
                   <span
-                    className={`engineer-priority-indicator ${
+                    className={`engineer-new-complaints-priority ${
                       complaint.priority?.toLowerCase() || "unknown"
                     }`}
                   >
-                    {getPriorityIcon(complaint.priority)} {complaint.priority || "Unknown"}
+                    {getPriorityIcon(complaint.priority)}{" "}
+                    {complaint.priority || "Unknown"}
                   </span>
                 </div>
-                {/* <span className="engineer-complaint-date">
+                <div className="engineer-new-complaints-card-timestamp">
+                  <span className="engineer-new-complaints-timestamp-icon">
+                    🕒
+                  </span>
                   {formatDate(complaint.assigned_date || complaint.created_at)}
-                </span> */}
+                </div>
               </div>
 
-              <div className="engineer-complaint-content">
-                <div className="engineer-complaint-details">
-                  <p className="engineer-complaint-description">
+              <div className="engineer-new-complaints-card-content">
+                <div className="engineer-new-complaints-card-details">
+                  <p className="engineer-new-complaints-card-description">
                     {complaint.description || "No description provided"}
                   </p>
 
-                  <div className="engineer-complaint-meta-info">
-                    <p className="engineer-complaint-category">
-                      <span className="engineer-info-icon">
+                  <div className="engineer-new-complaints-card-metadata">
+                    <div className="engineer-new-complaints-card-metadata-item">
+                      <span className="engineer-new-complaints-card-icon">
                         {getCategoryIcon(complaint.category)}
                       </span>
-                      Updated At: {formatDate(complaint.assigned_date) || "Uncategorized"}
-                    </p>
+                      <div className="engineer-new-complaints-card-metadata-content">
+                        <span className="engineer-new-complaints-card-metadata-label">
+                          Category
+                        </span>
+                        <span className="engineer-new-complaints-card-metadata-value">
+                          {complaint.category || "Uncategorized"}
+                        </span>
+                      </div>
+                    </div>
 
-                    <p className="engineer-complaint-location">
-                      <span className="engineer-info-icon">📍</span>
-                      Location: {complaint.location || "Not specified"}
-                    </p>
+                    <div className="engineer-new-complaints-card-metadata-item">
+                      <span className="engineer-new-complaints-card-icon">
+                        📍
+                      </span>
+                      <div className="engineer-new-complaints-card-metadata-content">
+                        <span className="engineer-new-complaints-card-metadata-label">
+                          Location
+                        </span>
+                        <span className="engineer-new-complaints-card-metadata-value">
+                          {complaint.location || "Not specified"}
+                        </span>
+                      </div>
+                    </div>
 
-                    <p className="engineer-complaint-status">
-                      <span className="engineer-info-icon">🔄</span>
-                      Status: {complaint.status || "New"}
-                    </p>
+                    <div className="engineer-new-complaints-card-metadata-item">
+                      <span className="engineer-new-complaints-card-icon">
+                        🔄
+                      </span>
+                      <div className="engineer-new-complaints-card-metadata-content">
+                        <span className="engineer-new-complaints-card-metadata-label">
+                          Status
+                        </span>
+                        <span className="engineer-new-complaints-card-metadata-value">
+                          <span
+                            className={`engineer-new-complaints-status-badge ${
+                              complaint.status?.toLowerCase() || "new"
+                            }`}
+                          >
+                            {complaint.status || "New"}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="engineer-new-complaints-card-metadata-item">
+                      <span className="engineer-new-complaints-card-icon">
+                        👤
+                      </span>
+                      <div className="engineer-new-complaints-card-metadata-content">
+                        <span className="engineer-new-complaints-card-metadata-label">
+                          Reported By
+                        </span>
+                        <span className="engineer-new-complaints-card-metadata-value">
+                          {complaint.student_name ||
+                            complaint.user_name ||
+                            "Anonymous"}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="engineer-complaint-actions">
+                <div className="engineer-new-complaints-card-actions">
                   <button
-                    className="engineer-accept-btn"
-                    onClick={() => handleAcceptComplaint(complaint)}
+                    className="engineer-new-complaints-card-btn view"
+                    onClick={() => handleViewDetails(complaint)}
                   >
-                    ✅ Accept
+                    <span className="engineer-new-complaints-btn-icon">👁️</span>
+                    View Details
                   </button>
-                  <button
-                    className="engineer-reject-btn"
-                    onClick={() => handleRejectComplaint(complaint)}
-                  >
-                    ❌ Reject
-                  </button>
+                  <div className="engineer-new-complaints-card-action-buttons">
+                    <button
+                      className="engineer-new-complaints-card-btn accept"
+                      onClick={() => handleAcceptComplaint(complaint)}
+                    >
+                      <span className="engineer-new-complaints-btn-icon">
+                        ✅
+                      </span>
+                      Accept
+                    </button>
+                    <button
+                      className="engineer-new-complaints-card-btn reject"
+                      onClick={() => handleRejectComplaint(complaint)}
+                    >
+                      <span className="engineer-new-complaints-btn-icon">
+                        ❌
+                      </span>
+                      Reject
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
