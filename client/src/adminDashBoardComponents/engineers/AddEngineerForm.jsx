@@ -37,17 +37,25 @@ const AddEngineerForm = ({ onSubmit }) => {
   return (
     <div className="admindashboard-add-engineer-container">
       <div className="admindashboard-add-engineer-section-header">
-        <h2 className="admindashboard-add-engineer-section-title">Add New Engineer</h2>
+        <h2 className="admindashboard-add-engineer-section-title">
+          Add New Engineer
+        </h2>
         <p className="admindashboard-add-engineer-section-subtitle">
           Create a new maintenance engineer account
         </p>
       </div>
 
       <div className="admindashboard-add-engineer-card">
-        <form onSubmit={handleSubmit} className="admindashboard-add-engineer-form">
+        <form
+          onSubmit={handleSubmit}
+          className="admindashboard-add-engineer-form"
+        >
           <div className="admindashboard-add-engineer-form-row">
             <div className="admindashboard-add-engineer-form-group">
-              <label htmlFor="name" className="admindashboard-add-engineer-form-label">
+              <label
+                htmlFor="name"
+                className="admindashboard-add-engineer-form-label"
+              >
                 Full Name
               </label>
               <input
@@ -62,7 +70,10 @@ const AddEngineerForm = ({ onSubmit }) => {
             </div>
 
             <div className="admindashboard-add-engineer-form-group">
-              <label htmlFor="mail_UN" className="admindashboard-add-engineer-form-label">
+              <label
+                htmlFor="mail_UN"
+                className="admindashboard-add-engineer-form-label"
+              >
                 Email Address
               </label>
               <input
@@ -145,7 +156,8 @@ const AddEngineerForm = ({ onSubmit }) => {
                 <option value="Internet">Internet</option>
                 <option value="Others">Others</option>
               </select>
-            </div>              <div className="admindashboard-add-engineer-form-group">
+            </div>{" "}
+            <div className="admindashboard-add-engineer-form-group">
               <label
                 htmlFor="password"
                 className="admindashboard-add-engineer-form-label"
@@ -174,7 +186,10 @@ const AddEngineerForm = ({ onSubmit }) => {
           </div>
 
           <div className="admindashboard-add-engineer-form-group">
-            <label htmlFor="address" className="admindashboard-add-engineer-form-label">
+            <label
+              htmlFor="address"
+              className="admindashboard-add-engineer-form-label"
+            >
               Address
             </label>
             <textarea

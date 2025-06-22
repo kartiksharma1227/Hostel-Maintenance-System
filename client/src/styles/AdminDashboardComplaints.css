@@ -1,0 +1,322 @@
+.admin-dashboard-complaints-section {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Filter section styling */
+.admin-dashboard-filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.admin-dashboard-input-icon-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.admin-dashboard-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+
+.admin-dashboard-search-input {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+  background-color: #f9fafb;
+}
+
+.admin-dashboard-search-input:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+  background-color: #fff;
+}
+
+.admin-dashboard-filter-select {
+  padding: 10px 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  font-size: 14px;
+  min-width: 160px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-dashboard-filter-select:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+  background-color: #fff;
+}
+
+/* Table styling */
+.admin-dashboard-table-responsive {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-dashboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-dashboard-table thead {
+  background-color: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-dashboard-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.admin-dashboard-table tbody tr {
+  transition: all 0.2s;
+}
+
+.admin-dashboard-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.admin-dashboard-table tbody tr:hover {
+  background-color: #f0f4ff;
+}
+
+.admin-dashboard-table td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-dashboard-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-dashboard-title-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+/* Category and status badges */
+.admin-dashboard-category-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #e2e8f0;
+  color: #4b5563;
+}
+
+.admin-dashboard-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-dashboard-badge.pending {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+.admin-dashboard-badge.in-progress {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.admin-dashboard-badge.completed {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+/* Action buttons */
+.admin-dashboard-action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-dashboard-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  white-space: nowrap;
+}
+
+.admin-dashboard-view-btn {
+  background-color: #f0f4ff;
+  color: #3f51b5;
+}
+
+.admin-dashboard-view-btn:hover {
+  background-color: #e0e7ff;
+}
+
+.admin-dashboard-assign-btn {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.admin-dashboard-assign-btn:hover {
+  background-color: #bae6fd;
+}
+
+/* Empty state styling */
+.admin-dashboard-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.admin-dashboard-empty-text {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* Pagination styling */
+.admin-dashboard-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 15px 0;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.admin-dashboard-records-per-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.admin-dashboard-records-per-page select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-dashboard-records-per-page select:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+}
+
+.admin-dashboard-pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+  text-align: center;
+}
+
+.admin-dashboard-pagination-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.admin-dashboard-pagination-btn {
+  padding: 8px 14px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  color: #4b5563;
+}
+
+.admin-dashboard-pagination-btn:hover:not(:disabled) {
+  background-color: #f0f4ff;
+  border-color: #d1d5db;
+}
+
+.admin-dashboard-pagination-btn.active {
+  background-color: #3f51b5;
+  color: white;
+  border-color: #3f51b5;
+}
+
+.admin-dashboard-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard-filters-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .admin-dashboard-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-dashboard-pagination-controls {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .admin-dashboard-records-per-page {
+    margin-bottom: 10px;
+  }
+  
+  .admin-dashboard-action-buttons {
+    flex-direction: column;
+  }
+}

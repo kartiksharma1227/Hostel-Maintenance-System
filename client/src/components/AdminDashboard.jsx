@@ -12,9 +12,10 @@ import ProfileDropdown from "../adminDashBoardComponents/common/ProfileDropdown"
 import SuccessToast from "../adminDashBoardComponents/common/SuccessToast";
 import ViewEngineerModal from "../adminDashBoardComponents/engineers/ViewEngineerModal";
 import "../styles/AdminDashboard.css";
+import "../styles/AdminDashboardComplaints.css";
 import "../styles/SuccessToast.css";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 const API_BASE = "http://localhost:4000/api";
 
 const AdminDashboard = () => {
@@ -51,9 +52,9 @@ const AdminDashboard = () => {
   // console.log('Complaints:', complaintId);
   const fetchComplaints = async () => {
     console.log("Complaint ID .......:", complaintDetailsModal);
-     const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const adminId = decoded.user_PK; // 👈 admin's user ID
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token);
+    const adminId = decoded.user_PK; // 👈 admin's user ID
 
     try {
       const url =
@@ -142,14 +143,14 @@ const AdminDashboard = () => {
     note,
   }) => {
     const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const adminId = decoded.user_PK; // 👈 admin's user ID
+    const decoded = jwtDecode(token);
+    const adminId = decoded.user_PK; // 👈 admin's user ID
     try {
       console.log("Assigning engineer:", { complaintId, engineerId, note });
       const res = await fetch(`${API_BASE}/admin/assignments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ complaintId, engineerId, note,adminId }),
+        body: JSON.stringify({ complaintId, engineerId, note, adminId }),
       });
 
       if (!res.ok) throw new Error("Assignment failed");
@@ -253,41 +254,46 @@ const AdminDashboard = () => {
       alert("Could not load complaint details");
     }
   };
-   const fetchNotifications = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const decodedToken = jwtDecode(token);
-        const user_PK = decodedToken.user_PK;
-  
-        const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
-        console.log("Fetching notifications for user_PK:", user_PK);
-        console.log("notifications response:", res);
-        if (!res.ok) throw new Error("Failed to fetch notifications");
-        const data = await res.json();
-        setNotifications(data);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
-     const markAllNotificationsAsRead = async () => {
-        try {
-          const token = localStorage.getItem("token");
-          const decodedToken = jwtDecode(token);
-          const user_PK = decodedToken.user_PK;
-    
-          const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
-            method: "PUT",
-          });
-          if (!res.ok) throw new Error("Failed to mark all as read");
-    
-          setNotifications((prev) =>
-            prev.map((n) => ({ ...n, read_status: true }))
-          );
-        } catch (err) {
-          console.error("Error marking all notifications as read:", err);
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      const user_PK = decodedToken.user_PK;
+
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/${user_PK}`
+      );
+      console.log("Fetching notifications for user_PK:", user_PK);
+      console.log("notifications response:", res);
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+      const data = await res.json();
+      setNotifications(data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
+  const markAllNotificationsAsRead = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      const user_PK = decodedToken.user_PK;
+
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        {
+          method: "PUT",
         }
-      };
-      const markNotificationAsRead = async (notification_PK) => {
+      );
+      if (!res.ok) throw new Error("Failed to mark all as read");
+
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, read_status: true }))
+      );
+    } catch (err) {
+      console.error("Error marking all notifications as read:", err);
+    }
+  };
+  const markNotificationAsRead = async (notification_PK) => {
     try {
       const res = await fetch(
         `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
@@ -297,7 +303,9 @@ const AdminDashboard = () => {
 
       setNotifications((prev) =>
         prev.map((n) =>
-          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+          n.notification_PK === notification_PK
+            ? { ...n, read_status: true }
+            : n
         )
       );
     } catch (err) {
@@ -305,21 +313,21 @@ const AdminDashboard = () => {
     }
   };
   useEffect(() => {
+    fetchNotifications();
+
+    const handleUpdate = () => {
       fetchNotifications();
-  
-      const handleUpdate = () => {
-        fetchNotifications();
-      };
-  
-      window.addEventListener("notificationsUpdated", handleUpdate);
-  
-      return () => {
-        window.removeEventListener("notificationsUpdated", handleUpdate);
-      };
-    }, []);
-  
-    const unreadCount = notifications.filter((n) => !n.read_status).length;
-  
+    };
+
+    window.addEventListener("notificationsUpdated", handleUpdate);
+
+    return () => {
+      window.removeEventListener("notificationsUpdated", handleUpdate);
+    };
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.read_status).length;
+
   return (
     <div className="admin-dashboard-wrapper">
       <Header
@@ -396,9 +404,9 @@ const AdminDashboard = () => {
           <div className="admin-dashboard-notification-panel-container">
             <NotificationsPanel
               notifications={notifications}
-      markNotificationAsRead={markNotificationAsRead}
-      markAllNotificationsAsRead={markAllNotificationsAsRead}
-      visible={notificationPanelVisible}
+              markNotificationAsRead={markNotificationAsRead}
+              markAllNotificationsAsRead={markAllNotificationsAsRead}
+              visible={notificationPanelVisible}
             />
           </div>
         )}
