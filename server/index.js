@@ -36,15 +36,15 @@ const adminProfileRoute = require('./routes/adminDashboardRoutes/adminProfileRou
 // ENGINEER DASHBOARD ROUTES
 const engineerDashboardRoutes = require('./routes/engineerDashboard');
 
-const updComplaintRoute = require('./routes/updComplaints');
-// const engineerRoutes = require('./routes/engineer'); // update path if needed
+
+
 const engineerComplaintRoute = require('./routes/engineerDashboardRoutes/engineerComplaintRoute'); // Engineer complaint routes
 const engineerProfileRoute = require('./routes/engineerDashboardRoutes/engineerProfileRoute'); // Engineer profile route
 const engineerScheduledVisitsRoute = require('./routes/engineerDashboardRoutes/engineerScheduledVisitsRoute'); // Engineer scheduled visits route
 
 
 
-// const complaintsRouter = require('./routes/complaints');
+
 
 // Import the authentication routes
 const authLogin = require('./routes/authLogin');
@@ -68,13 +68,13 @@ app.use('/api/engineer', engineerScheduledVisitsRoute); // Engineer scheduled vi
 // Engineer routes
 app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 
-// const adminRouter = require('./routes/Admin');
-const feedbackRouter = require('./routes/feedback');
 
 
-// app.use("/api/compUpd", updComplaintRoute);
+
+
+
 app.use('/api/student', studentProfileRoute);
-// app.use('/api/feedback', feedbackRouter);
+
 
 app.use("/api/complaint-history", complainHistoryRoute);
 app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent complaints
@@ -92,8 +92,8 @@ app.use('/api/notifications', studentNotificationRoutes);
 
 app.use('/api/complaints', studentAddComplaintRoute);
 
-// app.use('/api/admin', adminRouter); 
-// app.use('/api', engineerRoutes);
+
+
 
 
 

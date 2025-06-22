@@ -1,10 +1,8 @@
-
-
 // src/EngineerDashboardComponents/Header.jsx
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
-import NotificationsPanel from "./NotificationPanel";  
+import { jwtDecode } from "jwt-decode";
+import NotificationsPanel from "./NotificationPanel";
 import { FaBell } from "react-icons/fa"; // ✅ ADD THIS LINE
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -15,39 +13,37 @@ const Header = () => {
 
   // Fetch engineer on mount
   useEffect(() => {
-  
     try {
-  const token = localStorage.getItem("token");
-  // console.log("Token:", token);
+      const token = localStorage.getItem("token");
+      // console.log("Token:", token);
 
-  if (!token) {
-    console.warn("No token found in localStorage.");
-    return;
-  }
+      if (!token) {
+        console.warn("No token found in localStorage.");
+        return;
+      }
 
-  const decoded = jwtDecode(token);
-  // console.log("Decoded token:", decoded);
+      const decoded = jwtDecode(token);
+      // console.log("Decoded token:", decoded);
 
-  const userPk = decoded?.user_PK;
+      const userPk = decoded?.user_PK;
 
-  if (!userPk) {
-    console.warn("User PK not found in token.");
-    return;
-  }
+      if (!userPk) {
+        console.warn("User PK not found in token.");
+        return;
+      }
 
-  axios
-    .get(`/api/engineer/profile/${userPk}`)
-    .then((res) => {
-      // console.log("Engineer profile loaded:", res.data.profile);
-      setEngineerProfile(res.data.profile);
-    })
-    .catch((err) => {
-      console.error("Could not load engineer profile:", err);
-    });
-
-} catch (err) {
-  console.error("Error decoding token or fetching profile:", err);
-}
+      axios
+        .get(`/api/engineer/profile/${userPk}`)
+        .then((res) => {
+          // console.log("Engineer profile loaded:", res.data.profile);
+          setEngineerProfile(res.data.profile);
+        })
+        .catch((err) => {
+          console.error("Could not load engineer profile:", err);
+        });
+    } catch (err) {
+      console.error("Error decoding token or fetching profile:", err);
+    }
   }, []);
 
   // If still loading profile
@@ -64,38 +60,43 @@ const Header = () => {
   const isLoading = !engineerProfile;
 
   const fetchNotifications = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const decodedToken = jwtDecode(token);
-        const user_PK = decodedToken.user_PK;
-  
-        const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
-        if (!res.ok) throw new Error("Failed to fetch notifications");
-        const data = await res.json();
-        setNotifications(data);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
-     const markAllNotificationsAsRead = async () => {
-        try {
-          const token = localStorage.getItem("token");
-          const decodedToken = jwtDecode(token);
-          const user_PK = decodedToken.user_PK;
-    
-          const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
-            method: "PUT",
-          });
-          if (!res.ok) throw new Error("Failed to mark all as read");
-    
-          setNotifications((prev) =>
-            prev.map((n) => ({ ...n, read_status: true }))
-          );
-        } catch (err) {
-          console.error("Error marking all notifications as read:", err);
+    try {
+      const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      const user_PK = decodedToken.user_PK;
+
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/${user_PK}`
+      );
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+      const data = await res.json();
+      setNotifications(data);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
+  const markAllNotificationsAsRead = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      const user_PK = decodedToken.user_PK;
+
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        {
+          method: "PUT",
         }
-      };
-      const markNotificationAsRead = async (notification_PK) => {
+      );
+      if (!res.ok) throw new Error("Failed to mark all as read");
+
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, read_status: true }))
+      );
+    } catch (err) {
+      console.error("Error marking all notifications as read:", err);
+    }
+  };
+  const markNotificationAsRead = async (notification_PK) => {
     try {
       const res = await fetch(
         `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
@@ -105,7 +106,9 @@ const Header = () => {
 
       setNotifications((prev) =>
         prev.map((n) =>
-          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+          n.notification_PK === notification_PK
+            ? { ...n, read_status: true }
+            : n
         )
       );
     } catch (err) {
@@ -113,21 +116,21 @@ const Header = () => {
     }
   };
   useEffect(() => {
+    fetchNotifications();
+
+    const handleUpdate = () => {
       fetchNotifications();
-  
-      const handleUpdate = () => {
-        fetchNotifications();
-      };
-  
-      window.addEventListener("notificationsUpdated", handleUpdate);
-  
-      return () => {
-        window.removeEventListener("notificationsUpdated", handleUpdate);
-      };
-    }, []);
-  
-    const unreadCount = notifications.filter((n) => !n.read_status).length;
-  
+    };
+
+    window.addEventListener("notificationsUpdated", handleUpdate);
+
+    return () => {
+      window.removeEventListener("notificationsUpdated", handleUpdate);
+    };
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.read_status).length;
+
   return (
     <>
       {/* <header className="engineer-dashboard-header">
@@ -165,44 +168,45 @@ const Header = () => {
           )}
         </header> */}
 
-        <header className="engineer-dashboard-header">
-  <div className="engineer-logo">
-    <h1>Maintenance Portal</h1>
-  </div>
-{isLoading ? (
-        <div>Loading profile…</div>
-      ) : (
-        <>
-  <div className="engineer-header-right">
-    <button
-      className="notification-btn enhanced"
-      onClick={() => setShowNotifications(!showNotifications)}
-    >
-      <FaBell />
-      {unreadCount > 0 && (
-        <span className="notification-badge pulse">{unreadCount}</span>
-      )}
-    </button>
+      <header className="engineer-dashboard-header">
+        <div className="engineer-logo">
+          <h1>Maintenance Portal</h1>
+        </div>
+        {isLoading ? (
+          <div>Loading profile…</div>
+        ) : (
+          <>
+            <div className="engineer-header-right">
+              <button
+                className="engineerdashboard-notification-pannel-btn"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
+                <FaBell />
+                {unreadCount > 0 && (
+                  <span className="engineerdashboard-notification-pannel-badge pulse">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
 
-    <div
-      className="engineer-user-profile"
-      onClick={() => setShowProfile((v) => !v)}
-    >
-      <span>{engineerProfile.name || "engineer"}</span>
-      <img
-        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-          engineerProfile.name
-        )}&background=2196f3&color=fff`}
-        alt="Profile"
-        className="engineer-avatar"
-        ref={profileAvatarRef}
-      />
-    </div>
-  </div>
-        </>
-      )}
-</header>
-
+              <div
+                className="engineer-user-profile"
+                onClick={() => setShowProfile((v) => !v)}
+              >
+                <span>{engineerProfile.name || "engineer"}</span>
+                <img
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    engineerProfile.name
+                  )}&background=2196f3&color=fff`}
+                  alt="Profile"
+                  className="engineer-avatar"
+                  ref={profileAvatarRef}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </header>
 
       {showProfile && (
         <div className="engineer-profile-dropdown">
@@ -281,7 +285,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-       
+
           <div className="engineer-profile-actions">
             {/* <button className="engineer-profile-action-btn">
               <span className="engineer-btn-icon">⚙️</span> Edit Profile
@@ -299,17 +303,15 @@ const Header = () => {
           </div>
         </div>
       )}
-       <NotificationsPanel
-          notifications={notifications}
-          visible={showNotifications}
-          markAllNotificationsAsRead={markAllNotificationsAsRead}
-          markNotificationAsRead={markNotificationAsRead}
-          closePanel={() => setShowNotifications(false)}
-        />
+      <NotificationsPanel
+        notifications={notifications}
+        visible={showNotifications}
+        markAllNotificationsAsRead={markAllNotificationsAsRead}
+        markNotificationAsRead={markNotificationAsRead}
+        closePanel={() => setShowNotifications(false)}
+      />
     </>
   );
-
-
 };
 
 export default Header;
