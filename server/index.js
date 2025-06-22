@@ -72,9 +72,9 @@ app.use('/api/engineer', engineerComplaintRoute); // Engineer complaint routes
 const feedbackRouter = require('./routes/feedback');
 
 
-app.use("/api/compUpd", updComplaintRoute);
+// app.use("/api/compUpd", updComplaintRoute);
 app.use('/api/student', studentProfileRoute);
-app.use('/api/feedback', feedbackRouter);
+// app.use('/api/feedback', feedbackRouter);
 
 app.use("/api/complaint-history", complainHistoryRoute);
 app.use('/api/recent-complaints', recentComplaintsRouter); // Route for recent complaints
