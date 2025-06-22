@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  FaSearch, FaEye, FaStar, FaTrash, FaFilter,
-  FaCalendarAlt, FaMapMarkerAlt
+  FaSearch,
+  FaEye,
+  FaStar,
+  FaTrash,
+  FaFilter,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import "../../styles/StudentComplaintHistory.css";
 
 const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
   const [complaints, setComplaints] = useState([]);
@@ -27,11 +33,11 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
         // console.log("Decoded roll number:", roll_number);
 
         const response = await axios.get("/api/complaint-history", {
-          params: { 
-            status: "all", 
-            category: "all", 
+          params: {
+            status: "all",
+            category: "all",
             search: "",
-            roll_number
+            roll_number,
           },
         });
 
@@ -62,45 +68,45 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className="studentdashboard-complaint-history-loading-container">
+        <div className="studentdashboard-complaint-history-loading-spinner"></div>
         <p>Loading complaint history...</p>
       </div>
     );
   }
 
   return (
-    <div className="complaint-history">
-      <div className="section-header">
+    <div className="studentdashboard-complaint-history-container">
+      <div className="studentdashboard-complaint-history-section-header">
         <h2>Complaint History</h2>
-        <span className="complaint-count">
+        <span className="studentdashboard-complaint-history-count">
           {filteredComplaints.length} complaints
         </span>
       </div>
 
-      <div className="complaint-filters">
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
+      <div className="studentdashboard-complaint-history-filters">
+        <div className="studentdashboard-complaint-history-search-bar">
+          <FaSearch className="studentdashboard-complaint-history-search-icon" />
           <input
             type="text"
             placeholder="Search complaints..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            className="studentdashboard-complaint-history-search-input"
           />
         </div>
 
-        <div className="filters-wrapper">
-          <div className="filter-label">
-            <FaFilter className="filter-icon" />
+        <div className="studentdashboard-complaint-history-filters-wrapper">
+          <div className="studentdashboard-complaint-history-filter-label">
+            <FaFilter className="studentdashboard-complaint-history-filter-icon" />
             <span>Filters:</span>
           </div>
 
-          <div className="select-wrapper">
+          <div className="studentdashboard-complaint-history-select-wrapper">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="filter-select"
+              className="studentdashboard-complaint-history-filter-select"
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -112,11 +118,11 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
             </select>
           </div>
 
-          <div className="select-wrapper">
+          <div className="studentdashboard-complaint-history-select-wrapper">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="filter-select"
+              className="studentdashboard-complaint-history-filter-select"
             >
               {statuses.map((status) => (
                 <option key={status} value={status}>
@@ -130,93 +136,95 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
         </div>
       </div>
 
-      <div className="complaints-grid">
+      <div className="studentdashboard-complaint-history-grid">
         {filteredComplaints.length === 0 ? (
-          <div className="no-results">
+          <div className="studentdashboard-complaint-history-no-results">
             <p>No complaints found matching your filters</p>
           </div>
         ) : (
           filteredComplaints.map((complaint) => (
-            <div key={complaint.id} className="complaint-card enhanced">
-              <div className="card-header">
-                <div className="category-indicator">{complaint.category}</div>
-                <span className={`status-badge ${complaint.status}`}>
+            <div
+              key={complaint.id}
+              className="studentdashboard-complaint-history-card"
+            >
+              <div className="studentdashboard-complaint-history-card-header">
+                <div className="studentdashboard-complaint-history-category-indicator">
+                  {complaint.category}
+                </div>
+                <span
+                  className={`studentdashboard-complaint-history-status-badge studentdashboard-complaint-history-status-${complaint.status
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
+                >
                   {complaint.status}
                 </span>
               </div>
 
-              <h4 className="complaint-title">{complaint.title}</h4>
-              <p className="complaint-excerpt">{complaint.description}</p>
+              <h4 className="studentdashboard-complaint-history-title">
+                {complaint.title}
+              </h4>
+              <p className="studentdashboard-complaint-history-excerpt">
+                {complaint.description}
+              </p>
 
-              <div className="card-footer">
-                <div className="complaint-meta">
+              <div className="studentdashboard-complaint-history-card-footer">
+                <div className="studentdashboard-complaint-history-meta">
                   <span>
-                    <FaMapMarkerAlt className="meta-icon" />
+                    <FaMapMarkerAlt className="studentdashboard-complaint-history-meta-icon" />
                     {complaint.location}
                   </span>
                   <span>
-                    <FaCalendarAlt className="meta-icon" />
+                    <FaCalendarAlt className="studentdashboard-complaint-history-meta-icon" />
                     {new Date(
                       complaint.created_at || complaint.createdAt
                     ).toLocaleDateString()}
                   </span>
                   {complaint.priority && (
-                    <span className={`priority-indicator ${complaint.priority}`}>
+                    <span
+                      className={`studentdashboard-complaint-history-priority-indicator studentdashboard-complaint-history-priority-${complaint.priority.toLowerCase()}`}
+                    >
                       {complaint.priority}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="card-action">
+              <div className="studentdashboard-complaint-history-card-action">
                 <button
-                  className="view-details-btn"
+                  className="studentdashboard-complaint-history-view-details-btn"
                   onClick={() => onViewDetails(complaint)}
                 >
                   <FaEye /> View Details
                 </button>
               </div>
 
-              <div className="action-buttons">
-                {/* {complaint.status?.toLowerCase() === "completed" && !complaint.feedback && (
-                  <button
-                    className="action-btn feedback-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onFeedback(complaint);
-                    }}
-                  >
-                    <FaStar /> Feedback
-                  </button>
-                )} */}
-                {complaint.status?.toLowerCase() === "completed" && (
-  complaint.rating ? (
-    <div className="submitted-feedback">
-      {[...Array(5)].map((_, index) => (
-        <FaStar
-          key={index}
-          color={index < complaint.rating ? "gold" : "#ccc"}
-          style={{ marginRight: "2px" }}
-        />
-      ))}
-    </div>
-  ) : (
-    <button
-      className="action-btn feedback-btn"
-      onClick={(e) => {
-        e.stopPropagation();
-        onFeedback(complaint);
-      }}
-    >
-      <FaStar /> Give Feedback
-    </button>
-  )
-)}
-
+              <div className="studentdashboard-complaint-history-action-buttons">
+                {complaint.status?.toLowerCase() === "completed" &&
+                  (complaint.rating ? (
+                    <div className="studentdashboard-complaint-history-submitted-feedback">
+                      {[...Array(5)].map((_, index) => (
+                        <FaStar
+                          key={index}
+                          color={index < complaint.rating ? "gold" : "#ccc"}
+                          style={{ marginRight: "2px" }}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <button
+                      className="studentdashboard-complaint-history-action-btn studentdashboard-complaint-history-feedback-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onFeedback(complaint);
+                      }}
+                    >
+                      <FaStar /> Give Feedback
+                    </button>
+                  ))}
 
                 {complaint.status === "pending" && (
                   <button
-                    className="action-btn delete-btn"
+                    className="studentdashboard-complaint-history-action-btn studentdashboard-complaint-history-delete-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete(complaint);
