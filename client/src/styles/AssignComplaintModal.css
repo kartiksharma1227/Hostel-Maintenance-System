@@ -1,0 +1,336 @@
+/* AssignComplaintModal.css */
+.assign-complaints-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.assign-complaints-modal-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: assign-complaints-modal-slide-in 0.3s ease-out;
+  border: 1px solid #e0e0e0;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes assign-complaints-modal-slide-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.assign-complaints-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid #eaeaea;
+  background-color: #f8f9fa;
+}
+
+.assign-complaints-modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.assign-complaints-modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.assign-complaints-modal-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #e74c3c;
+}
+
+.assign-complaints-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.assign-complaints-modal-complaint-summary {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3498db;
+}
+
+.assign-complaints-modal-complaint-summary h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.assign-complaints-modal-complaint-summary p {
+  margin: 5px 0;
+  color: #34495e;
+}
+
+.assign-complaints-modal-form-group {
+  margin-bottom: 20px;
+}
+
+.assign-complaints-modal-form-group label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.assign-complaints-modal-label-text {
+  margin-right: 8px;
+  color: #2c3e50;
+}
+
+.assign-complaints-modal-required-badge {
+  background-color: #e74c3c;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.assign-complaints-modal-optional-badge {
+  background-color: #95a5a6;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.assign-complaints-modal-select-enhanced {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #2c3e50;
+  background-color: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.assign-complaints-modal-select-enhanced:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.assign-complaints-modal-no-engineers-warning {
+  color: #e74c3c;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  background-color: #fdf2f2;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border-left: 4px solid #e74c3c;
+}
+
+.assign-complaints-modal-no-engineers-warning::before {
+  content: "⚠️";
+  margin-right: 6px;
+}
+
+.assign-complaints-modal-textarea-enhanced {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #2c3e50;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: inherit;
+}
+
+.assign-complaints-modal-textarea-enhanced:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.assign-complaints-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eaeaea;
+}
+
+.assign-complaints-modal-secondary-btn {
+  padding: 10px 16px;
+  background-color: #f1f2f6;
+  color: #606060;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.assign-complaints-modal-secondary-btn:hover {
+  background-color: #e2e2e2;
+}
+
+.assign-complaints-modal-primary-btn {
+  padding: 10px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.assign-complaints-modal-primary-btn:hover {
+  background-color: #2980b9;
+}
+
+.assign-complaints-modal-primary-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* View toggle styles */
+.assign-complaints-modal-view-toggle {
+  display: flex;
+  margin-bottom: 15px;
+  background-color: #f1f2f6;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.assign-complaints-modal-view-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.assign-complaints-modal-view-btn.active {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  color: #3498db;
+}
+
+/* Engineers list view styles */
+.assign-complaints-modal-engineers-container {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.assign-complaints-modal-engineer-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.assign-complaints-modal-engineer-item:last-child {
+  border-bottom: none;
+}
+
+.assign-complaints-modal-engineer-item:hover {
+  background-color: #f8f9fa;
+}
+
+.assign-complaints-modal-engineer-item.selected {
+  background-color: #ebf5fb;
+  border-left: 3px solid #3498db;
+}
+
+.assign-complaints-modal-engineer-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.assign-complaints-modal-engineer-name {
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.assign-complaints-modal-engineer-specialization {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.assign-complaints-modal-engineer-workload {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}
+
+.assign-complaints-modal-engineer-workload-low {
+  color: #2ecc71;
+}
+
+.assign-complaints-modal-engineer-workload-medium {
+  color: #f39c12;
+}
+
+.assign-complaints-modal-engineer-workload-high {
+  color: #e74c3c;
+}
