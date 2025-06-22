@@ -4,6 +4,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import NotificationsPanel from "./NotificationPanel";
 import { FaBell } from "react-icons/fa"; // ✅ ADD THIS LINE
+import "../styles/EngineerHeaderFixes.css"; // Import the header fixes CSS
+
 const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [engineerProfile, setEngineerProfile] = useState(null);

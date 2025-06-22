@@ -1,0 +1,68 @@
+/* EngineerHeaderFixes.css */
+/* Specific fixes for the engineer dashboard header */
+
+.engineer-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.engineerdashboard-notification-pannel-btn {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 20px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.engineerdashboard-notification-pannel-btn:hover {
+  background-color: rgba(63, 81, 181, 0.1);
+  color: var(--primary-dark);
+}
+
+.engineerdashboard-notification-pannel-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff5252;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.engineer-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.engineer-user-profile span {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.engineer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-light);
+}
