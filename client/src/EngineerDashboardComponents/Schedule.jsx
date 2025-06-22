@@ -1,6 +1,5 @@
-
-
 import { useState } from "react";
+import "../styles/EngineerSchedule.css";
 
 const Schedule = ({
   scheduledVisits,
@@ -91,57 +90,60 @@ const Schedule = ({
   const calendarDays = generateCalendarDays();
 
   return (
-    <div className="engineer-schedule-section">
+    <div className="engineerDashboard-schedule-section">
       <h2>My Schedule</h2>
-      <div className="engineer-calendar-container">
-        <div className="engineer-calendar-header">
+      <div className="engineerDashboard-calendar-container">
+        <div className="engineerDashboard-calendar-header">
           <h3>
             {currentDate.toLocaleString("default", { month: "long" })}{" "}
             {currentDate.getFullYear()}
           </h3>
-          <div className="engineer-calendar-controls">
+          <div className="engineerDashboard-calendar-controls">
             <button
-              className="engineer-calendar-control-btn"
+              className="engineerDashboard-calendar-control-btn"
               onClick={handlePreviousMonth}
             >
-              <span className="engineer-btn-icon">◀</span> Previous
+              <span className="engineerDashboard-btn-icon">◀</span> Previous
             </button>
             <button
-              className="engineer-calendar-control-btn"
+              className="engineerDashboard-calendar-control-btn"
               onClick={handleToday}
             >
               Today
             </button>
             <button
-              className="engineer-calendar-control-btn"
+              className="engineerDashboard-calendar-control-btn"
               onClick={handleNextMonth}
             >
-              Next <span className="engineer-btn-icon">▶</span>
+              Next <span className="engineerDashboard-btn-icon">▶</span>
             </button>
           </div>
         </div>
 
-        <div className="engineer-calendar-grid">
-          <div className="engineer-calendar-weekdays">
+        <div className="engineerDashboard-calendar-grid">
+          <div className="engineerDashboard-calendar-weekdays">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div key={day} className="engineer-weekday">
+              <div key={day} className="engineerDashboard-weekday">
                 {day}
               </div>
             ))}
           </div>
-          <div className="engineer-calendar-days">
+          <div className="engineerDashboard-calendar-days">
             {calendarDays.map((day, index) => (
               <div
                 key={index}
-                className={`engineer-day ${day.isCurrentMonth ? "" : "engineer-other-month"} ${
-                  day.isToday ? "engineer-current-day" : ""
-                }`}
+                className={`engineerDashboard-day ${
+                  day.isCurrentMonth ? "" : "engineerDashboard-other-month"
+                } ${day.isToday ? "engineerDashboard-current-day" : ""}`}
               >
-                <div className="engineer-day-number">{day.day}</div>
+                <div className="engineerDashboard-day-number">{day.day}</div>
 
                 {day.visits && day.visits.length > 0 && (
-                  <div className="engineer-visit-marker" title={`${day.visits.length} visit(s)`}>
-                    📌
+                  <div
+                    className="engineerDashboard-visit-marker"
+                    title={`${day.visits.length} visit(s)`}
+                  >
+                    {day.visits.length}
                   </div>
                 )}
               </div>
@@ -149,41 +151,50 @@ const Schedule = ({
           </div>
         </div>
 
-        <div className="engineer-scheduled-visits-list">
+        <div className="engineerDashboard-scheduled-visits-list">
           <h3>Upcoming Visits</h3>
           {scheduledVisits.length === 0 ? (
-            <div className="engineer-no-results">
+            <div className="engineerDashboard-no-results">
               <p>No upcoming visits scheduled</p>
             </div>
           ) : (
-            <div className="engineer-visits-timeline">
+            <div className="engineerDashboard-visits-timeline">
               {scheduledVisits.map((visit) => (
-                <div className="engineer-visit-timeline-item" key={visit.id}>
-                  <div className="engineer-timeline-date">
-                    <div className="engineer-date-display">
-                      <span className="engineer-date-day">
+                <div
+                  className="engineerDashboard-visit-timeline-item"
+                  key={visit.id}
+                >
+                  <div className="engineerDashboard-timeline-date">
+                    <div className="engineerDashboard-date-display">
+                      <span className="engineerDashboard-date-day">
                         {new Date(visit.date).getDate()}
                       </span>
-                      <span className="engineer-date-month">
+                      <span className="engineerDashboard-date-month">
                         {new Date(visit.date).toLocaleString("default", {
                           month: "short",
                         })}
                       </span>
                     </div>
-                    <div className="engineer-time-display">{visit.time}</div>
-                  </div>
-                  <div className="engineer-timeline-content">
-                    <div className="engineer-timeline-header">
-                      <h4>{visit.title}</h4>
-                      <span className="engineer-visit-id">#{visit.id}</span>
+                    <div className="engineerDashboard-time-display">
+                      {visit.time}
                     </div>
-                    <p className="engineer-visit-location">
-                      <span className="engineer-location-icon">📍</span>{" "}
+                  </div>
+                  <div className="engineerDashboard-timeline-content">
+                    <div className="engineerDashboard-timeline-header">
+                      <h4>{visit.title}</h4>
+                      <span className="engineerDashboard-visit-id">
+                        #{visit.id}
+                      </span>
+                    </div>
+                    <p className="engineerDashboard-visit-location">
+                      <span className="engineerDashboard-location-icon">
+                        📍
+                      </span>{" "}
                       {visit.location}
                     </p>
-                    <div className="engineer-timeline-actions">
+                    <div className="engineerDashboard-timeline-actions">
                       <button
-                        className="engineer-action-btn engineer-view-btn"
+                        className="engineerDashboard-action-btn engineerDashboard-view-btn"
                         onClick={() => {
                           const complaint = assignedComplaints.find(
                             (c) => c.id === visit.id

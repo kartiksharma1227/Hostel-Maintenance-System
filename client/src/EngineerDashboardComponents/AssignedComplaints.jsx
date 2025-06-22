@@ -1,7 +1,6 @@
-
-
-
 import React, { useState } from "react";
+import "../styles/EngineerAssignedComplaints.css";
+
 export default function AssignedComplaints({
   complaints,
   setStatusFilter,
@@ -29,13 +28,12 @@ export default function AssignedComplaints({
   });
 
   return (
-    
-    <div className="engineer-assigned-complaints">
+    <div className="engineerDashboard-assigned-complaints">
       <h2>Assigned Complaints</h2>
 
-      <div className="engineer-complaint-filters">
+      <div className="engineerDashboard-complaint-filters">
         <select
-          className="engineer-filter-select"
+          className="engineerDashboard-filter-select"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -48,17 +46,17 @@ export default function AssignedComplaints({
         <input
           type="text"
           placeholder="Search complaints..."
-          className="engineer-search-input"
+          className="engineerDashboard-search-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
       {filteredComplaints.length === 0 ? (
-        <div className="engineer-no-results">
+        <div className="engineerDashboard-no-results">
           <p>No complaints found matching your filters</p>
           <button
-            className="engineer-reset-filter-btn"
+            className="engineerDashboard-reset-filter-btn"
             onClick={() => {
               setStatusFilter("all");
               setSearchQuery("");
@@ -68,8 +66,11 @@ export default function AssignedComplaints({
           </button>
         </div>
       ) : (
-        <div className="engineer-table-container" style={{ overflowX: "auto" }}>
-          <table className="engineer-complaints-table">
+        <div
+          className="engineerDashboard-table-container"
+          style={{ overflowX: "auto" }}
+        >
+          <table className="engineerDashboard-complaints-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -88,8 +89,8 @@ export default function AssignedComplaints({
                   <td>#{complaint.id}</td>
                   <td>{complaint.title}</td>
                   <td>
-                    <span className="engineer-category-label">
-                      <span className="engineer-category-icon">
+                    <span className="engineerDashboard-category-label">
+                      <span className="engineerDashboard-category-icon">
                         {getCategoryIcon(complaint.category)}
                       </span>
                       {complaint.category}
@@ -98,14 +99,14 @@ export default function AssignedComplaints({
                   <td>{complaint.location}</td>
                   <td>
                     <span
-                      className={`engineer-priority-indicator ${complaint.priority}`}
+                      className={`engineerDashboard-priority-indicator ${complaint.priority}`}
                     >
                       {getPriorityIcon(complaint.priority)} {complaint.priority}
                     </span>
                   </td>
                   <td>
                     <span
-                      className={`engineer-status-badge ${complaint.status
+                      className={`engineerDashboard-status-badge ${complaint.status
                         .toLowerCase()
                         .replace(" ", "-")}`}
                     >
@@ -114,20 +115,22 @@ export default function AssignedComplaints({
                   </td>
                   <td>{complaint.assignedDate || complaint.created_at}</td>
                   <td>
-                    <div className="engineer-action-buttons">
+                    <div className="engineerDashboard-action-buttons">
                       <button
-                        className="engineer-action-btn engineer-view-btn"
+                        className="engineerDashboard-action-btn engineerDashboard-view-btn"
                         onClick={() => handleViewDetails(complaint)}
                         title="View Details"
                       >
-                        <span className="engineer-btn-icon">👁️</span> View
+                        <span className="engineerDashboard-btn-icon">👁️</span>{" "}
+                        View
                       </button>
                       <button
-                        className="engineer-action-btn engineer-update-btn"
+                        className="engineerDashboard-action-btn engineerDashboard-update-btn"
                         onClick={() => handleOpenUpdateModal(complaint.id)}
                         title="Update Status"
                       >
-                        <span className="engineer-btn-icon">🔄</span> Update
+                        <span className="engineerDashboard-btn-icon">🔄</span>{" "}
+                        Update
                       </button>
                     </div>
                   </td>
