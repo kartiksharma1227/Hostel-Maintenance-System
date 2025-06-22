@@ -52,7 +52,9 @@ const Header = () => {
       const decodedToken = jwtDecode(token);
       const user_PK = decodedToken.user_PK;
 
-      const res = await fetch(`http://localhost:4000/api/notifications/${user_PK}`);
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/${user_PK}`
+      );
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
       setNotifications(data);
@@ -67,9 +69,12 @@ const Header = () => {
       const decodedToken = jwtDecode(token);
       const user_PK = decodedToken.user_PK;
 
-      const res = await fetch(`http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`, {
-        method: "PUT",
-      });
+      const res = await fetch(
+        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        {
+          method: "PUT",
+        }
+      );
       if (!res.ok) throw new Error("Failed to mark all as read");
 
       setNotifications((prev) =>
@@ -90,7 +95,9 @@ const Header = () => {
 
       setNotifications((prev) =>
         prev.map((n) =>
-          n.notification_PK === notification_PK ? { ...n, read_status: true } : n
+          n.notification_PK === notification_PK
+            ? { ...n, read_status: true }
+            : n
         )
       );
     } catch (err) {
@@ -126,12 +133,14 @@ const Header = () => {
         </button>
 
         <button
-          className="notification-btn enhanced"
+          className="studentdashboard-notification-panel-btn enhanced"
           onClick={() => setShowNotifications(!showNotifications)}
         >
           <FaBell />
           {unreadCount > 0 && (
-            <span className="notification-badge pulse">{unreadCount}</span>
+            <span className="studentdashboard-notification-panel-badge pulse">
+              {unreadCount}
+            </span>
           )}
         </button>
 
@@ -143,9 +152,7 @@ const Header = () => {
             <FaUserCircle className="avatar" />
             <span className="online-indicator"></span>
           </div>
-          <span className="user-name">
-            {studentName || "Loading…"}
-          </span>
+          <span className="user-name">{studentName || "Loading…"}</span>
         </div>
 
         <NotificationsPanel

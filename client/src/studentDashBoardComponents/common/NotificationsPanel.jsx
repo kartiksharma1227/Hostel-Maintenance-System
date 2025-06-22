@@ -1,5 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import { FaCheckDouble, FaCheck, FaRegCircle, FaBell } from "react-icons/fa";
+import {
+  FaCheckDouble,
+  FaCheck,
+  FaRegCircle,
+  FaBell,
+  FaClock,
+} from "react-icons/fa";
+import "../../styles/NotificationsPanel.css";
 
 const NotificationsPanel = ({
   notifications,
@@ -14,9 +21,11 @@ const NotificationsPanel = ({
       if (
         panelRef.current &&
         !panelRef.current.contains(event.target) &&
-        !event.target.closest(".notification-btn")
+        !event.target.closest(".studentdashboard-notification-panel-btn")
       ) {
-        document.querySelector(".notification-btn")?.click();
+        document
+          .querySelector(".studentdashboard-notification-panel-btn")
+          ?.click();
       }
     };
 
@@ -39,7 +48,8 @@ const NotificationsPanel = ({
     const days = Math.floor(hours / 24);
     if (days > 0) return `${days} ${days === 1 ? "day" : "days"} ago`;
     if (hours > 0) return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-    if (minutes > 0) return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+    if (minutes > 0)
+      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
     return "Just now";
   };
 
@@ -47,60 +57,81 @@ const NotificationsPanel = ({
   const totalCount = notifications.length;
 
   return (
-    <div className="notifications-panel" ref={panelRef}>
-      <div className="notifications-header">
-        <div className="notification-counter">
+    <div
+      className="studentdashboard-notification-panel-container"
+      ref={panelRef}
+    >
+      <div className="studentdashboard-notification-panel-header">
+        <div className="studentdashboard-notification-panel-counter">
           <h3>Notifications</h3>
-          <span className="notification-count-indicator">
+          <span className="studentdashboard-notification-panel-count-indicator">
             {unreadCount} unread / {totalCount} total
           </span>
         </div>
         {unreadCount > 0 && (
-          <button className="mark-all-read" onClick={markAllNotificationsAsRead}>
-            <FaCheckDouble className="mark-read-icon" />
+          <button
+            className="studentdashboard-notification-panel-mark-all-read"
+            onClick={markAllNotificationsAsRead}
+          >
+            <FaCheckDouble className="studentdashboard-notification-panel-mark-read-icon" />
             Mark all as read
           </button>
         )}
       </div>
 
-      <div className="notifications-list">
+      <div className="studentdashboard-notification-panel-list">
         {notifications.length === 0 ? (
-          <div className="no-notifications">
-            <div className="empty-notifications-icon">
+          <div className="studentdashboard-notification-panel-empty">
+            <div className="studentdashboard-notification-panel-empty-icon">
               <FaBell />
             </div>
             <p>No notifications yet</p>
+            <span className="studentdashboard-notification-panel-empty-subtitle">
+              We'll notify you when something important happens
+            </span>
           </div>
         ) : (
           notifications.map((notification) => (
             <div
               key={notification.notification_PK}
-              className={`notification-item ${
-                notification.read_status ? "read" : "unread"
+              className={`studentdashboard-notification-panel-item ${
+                notification.read_status
+                  ? "studentdashboard-notification-panel-read"
+                  : "studentdashboard-notification-panel-unread"
               }`}
-              onClick={() => {console.log("Clicked notification:", notification.notification_PK);markNotificationAsRead(notification.notification_PK)}}
+              onClick={() =>
+                markNotificationAsRead(notification.notification_PK)
+              }
             >
-              <div className="read-status-icon">
+              <div className="studentdashboard-notification-panel-status-icon">
                 {notification.read_status ? (
-                  <FaCheck className="read-icon" />
+                  <FaCheck className="studentdashboard-notification-panel-read-icon" />
                 ) : (
-                  <FaRegCircle className="unread-icon" />
+                  <FaRegCircle className="studentdashboard-notification-panel-unread-icon" />
                 )}
               </div>
-              <div className="notification-content">
-                <p>{notification.message}</p>
-                <span className="notification-time">
-                  {getTimeElapsed(notification.date)}
-                </span>
+              <div className="studentdashboard-notification-panel-content">
+                <p className="studentdashboard-notification-panel-message">
+                  {notification.message}
+                </p>
+                <div className="studentdashboard-notification-panel-footer">
+                  <span className="studentdashboard-notification-panel-time">
+                    <FaClock className="studentdashboard-notification-panel-time-icon" />
+                    {getTimeElapsed(notification.date)}
+                  </span>
+                </div>
               </div>
-              {!notification.read_status && <span className="unread-indicator"></span>}
+              {!notification.read_status && (
+                <span className="studentdashboard-notification-panel-badge"></span>
+              )}
             </div>
           ))
         )}
       </div>
-
-      <div className="notifications-footer">
-        <p className="notification-tip">Click on a notification to mark it as read</p>
+      <div className="studentdashboard-notification-panel-footer">
+        <p className="studentdashboard-notification-panel-tip">
+          Click on a notification to mark it as read
+        </p>
       </div>
     </div>
   );

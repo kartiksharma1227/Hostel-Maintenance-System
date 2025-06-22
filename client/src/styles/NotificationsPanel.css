@@ -1,0 +1,334 @@
+/* Student Dashboard Notification Panel Styles */
+.studentdashboard-notification-panel-container {
+  position: absolute;
+  top: calc(var(--header-height, 70px) - 5px);
+  right: 80px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  max-height: 450px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  animation: studentdashboard-notification-panel-slideIn 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+@keyframes studentdashboard-notification-panel-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studentdashboard-notification-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+.studentdashboard-notification-panel-counter {
+  display: flex;
+  flex-direction: column;
+}
+
+.studentdashboard-notification-panel-counter h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212121;
+}
+
+.studentdashboard-notification-panel-count-indicator {
+  font-size: 0.75rem;
+  color: #757575;
+  margin-top: 4px;
+}
+
+.studentdashboard-notification-panel-mark-all-read {
+  background: none;
+  border: none;
+  color: #3f51b5;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.studentdashboard-notification-panel-mark-all-read:hover {
+  background-color: rgba(63, 81, 181, 0.08);
+}
+
+.studentdashboard-notification-panel-mark-read-icon {
+  font-size: 0.9rem;
+}
+
+.studentdashboard-notification-panel-list {
+  overflow-y: auto;
+  max-height: 350px;
+  padding: 10px 0;
+  scrollbar-width: thin;
+}
+
+.studentdashboard-notification-panel-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.studentdashboard-notification-panel-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.studentdashboard-notification-panel-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.studentdashboard-notification-panel-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #757575;
+  text-align: center;
+}
+
+.studentdashboard-notification-panel-empty-icon {
+  font-size: 2.5rem;
+  color: #9e9e9e;
+  opacity: 0.6;
+  margin-bottom: 16px;
+  background-color: #f5f5f5;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.studentdashboard-notification-panel-empty p {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.studentdashboard-notification-panel-empty-subtitle {
+  font-size: 0.85rem;
+  color: #9e9e9e;
+}
+
+.studentdashboard-notification-panel-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.studentdashboard-notification-panel-item:hover {
+  background-color: rgba(63, 81, 181, 0.04);
+}
+
+.studentdashboard-notification-panel-item:last-child {
+  border-bottom: none;
+}
+
+.studentdashboard-notification-panel-unread {
+  background-color: rgba(63, 81, 181, 0.06);
+}
+
+.studentdashboard-notification-panel-status-icon {
+  margin-right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 3px;
+}
+
+.studentdashboard-notification-panel-read-icon {
+  color: #4caf50;
+  font-size: 0.9rem;
+}
+
+.studentdashboard-notification-panel-unread-icon {
+  color: #3f51b5;
+  font-size: 0.9rem;
+}
+
+.studentdashboard-notification-panel-content {
+  flex: 1;
+  padding-right: 15px;
+}
+
+.studentdashboard-notification-panel-message {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #212121;
+  line-height: 1.5;
+}
+
+.studentdashboard-notification-panel-unread .studentdashboard-notification-panel-message {
+  font-weight: 500;
+}
+
+.studentdashboard-notification-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.studentdashboard-notification-panel-time {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #757575;
+}
+
+.studentdashboard-notification-panel-time-icon {
+  margin-right: 4px;
+  font-size: 0.7rem;
+}
+
+.studentdashboard-notification-panel-badge {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #3f51b5;
+}
+
+.studentdashboard-notification-panel-footer {
+  padding: 10px 16px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+.studentdashboard-notification-panel-tip {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #757575;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Notification Button Styles */
+.studentdashboard-notification-panel-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: #757575;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.studentdashboard-notification-panel-btn:hover {
+  color: #3f51b5;
+  background-color: rgba(63, 81, 181, 0.08);
+}
+
+.studentdashboard-notification-panel-btn.enhanced {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: #757575;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.studentdashboard-notification-panel-badge.pulse {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #ff4081;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: studentdashboard-notification-panel-pulse 2s infinite;
+}
+
+@keyframes studentdashboard-notification-panel-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 5px rgba(255, 64, 129, 0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .studentdashboard-notification-panel-container {
+    width: 320px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .studentdashboard-notification-panel-container {
+    width: 95vw;
+    max-width: none;
+    position: fixed;
+    top: var(--header-height, 70px);
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    max-height: calc(100vh - var(--header-height, 70px) - 20px);
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .studentdashboard-notification-panel-list {
+    max-height: calc(100vh - var(--header-height, 70px) - 120px);
+  }
+  
+  .studentdashboard-notification-panel-header {
+    padding: 14px 16px;
+  }
+  
+  .studentdashboard-notification-panel-item {
+    padding: 14px 16px;
+  }
+}
