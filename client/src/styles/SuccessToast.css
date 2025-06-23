@@ -100,10 +100,11 @@
     transform: translateY(-20px);
   }
 }
-.success-toast {
+.student-success-toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #4caf50;
   color: white;
   padding: 16px 24px;
@@ -114,30 +115,30 @@
   gap: 12px;
   z-index: 9999;
   min-width: 300px;
-  animation: fadeInOut 3s ease-in-out;
+  animation: student-fadeInOut 3s ease-in-out;
 }
 
-.success-toast-content {
+.student-success-toast-content {
   display: flex;
   align-items: center;
 }
 
-.success-icon {
+.student-success-icon {
   font-size: 24px;
 }
 
-.toast-message {
+.student-toast-message {
   display: flex;
   flex-direction: column;
 }
 
-.toast-message h4 {
+.student-toast-message h4 {
   margin: 0;
   font-size: 16px;
   font-weight: bold;
 }
 
-.toast-message p {
+.student-toast-message p {
   margin: 0;
   font-size: 14px;
   font-weight: normal;
@@ -160,5 +161,25 @@
   100% {
     opacity: 0;
     transform: translateY(20px);
+  }
+}
+
+/* Student specific fade animation */
+@keyframes student-fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
   }
 }

@@ -37,12 +37,12 @@ export const SuccessToastComponent = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="success-toast">
-      <div className="success-toast-content">
-        <div className="success-icon">
+    <div className="student-success-toast">
+      <div className="student-success-toast-content">
+        <div className="student-success-icon">
           <FaCheckCircle />
         </div>
-        <div className="toast-message">
+        <div className="student-toast-message">
           <h4>{toast.title}</h4>
           <p>{toast.message}</p>
         </div>
