@@ -431,7 +431,7 @@ const ComplaintDetailsModal = ({ complaint, onClose }) => {
                         </svg>
                       </span>
                       <strong>Date:</strong>{" "}
-                      {formatDate(f.visit_date + "T" + f.visit_time)}
+                      {formatDate(f.visit_date)}
                     </div>
                   </div>
                   <div className="complaints-modal-followup-body">
