@@ -126,8 +126,7 @@ const AssignComplaintModal = ({ complaint, engineers, onAssign, onClose }) => {
                             key={engineer.user_FK}
                             value={engineer.user_FK}
                           >
-                            {engineer.name} - {engineer.specialization} (
-                            {engineer.assignedComplaints || 0} active tasks)
+                            {engineer.name} - {engineer.specialization} 
                           </option>
                         );
                       })}

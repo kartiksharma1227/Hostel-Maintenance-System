@@ -117,7 +117,7 @@ const NotificationsPanel = ({
                 <div className="studentdashboard-notification-panel-footer">
                   <span className="studentdashboard-notification-panel-time">
                     <FaClock className="studentdashboard-notification-panel-time-icon" />
-                    {getTimeElapsed(notification.date)}
+                    {getTimeElapsed(notification.created_at)}
                   </span>
                 </div>
               </div>

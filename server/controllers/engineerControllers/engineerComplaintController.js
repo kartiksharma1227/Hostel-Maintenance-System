@@ -21,23 +21,7 @@ const getAssignedComplaints = async (req, res) => {
   }
 };
 
-// const getCompletedComplaints = async (req, res) => {
-//   const engineerId = req.params.id; // from JWT
-//   console.log("engineerId:", engineerId);
-//   try {
-//     const [rows] = await db.query(
-//       `SELECT c.*,c.completed_date
-//        FROM Complaints c   
-//        WHERE c.completed_by = ? AND c.status = 'Completed'`,
-//       [engineerId]
-//     );
-//     console.log("Completed Complaints:", rows);
-//     res.json(rows);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// };
+
 const getCompletedComplaints = async (req, res) => {
   const engineerId = req.params.id; // from JWT or route
   console.log("engineerId:", engineerId);
@@ -79,10 +63,12 @@ const getPendingAssignmentsForEngineer = async (req, res) => {
       c.location,
         
       
-      c.id AS complaint_id,
+      c.id ,
         c.title,
-        c.description
-        
+        c.description,
+        c.category,
+        c.status,
+        c.submitted_by
         
       FROM assignments a
       JOIN complaints c ON c.id = a.complaint_FK
