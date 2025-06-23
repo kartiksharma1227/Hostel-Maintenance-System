@@ -5,7 +5,7 @@ require('dotenv').config();
 const app = express();
 const pool = require('./db/connection'); // your mysql2 pool
 const timezoneMiddleware = require('./middlewares/timezoneMiddleware');
-// ✅ CORS configuration (must come before routes)
+// CORS configuration (must come before routes)
 const corsOptions = {
   origin: "http://localhost:5173", // your frontend origin
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"],

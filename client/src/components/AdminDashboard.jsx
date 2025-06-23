@@ -356,19 +356,11 @@ const AdminDashboard = () => {
             />
           )}
 
-          {/* {activeSection === "complaints" && (
-            <Complaints
-              complaints={complaints}
-              handleViewDetails={handleViewComplaintDetails}
-              handleAssignEngineer={(id) =>
-                setAssignEngineerModal({ visible: true, complaintId: id })
-              }
-            />
-          )} */}
+          
           {activeSection === "complaints" && (
             <Complaints
               complaints={complaints}
-              handleViewDetails={handleViewComplaintDetails} // ✅ use the API-calling version
+              handleViewDetails={handleViewComplaintDetails} //  use the API-calling version
               handleAssignEngineer={(id) =>
                 setAssignEngineerModal({ visible: true, complaintId: id })
               }
@@ -376,8 +368,7 @@ const AdminDashboard = () => {
           )}
 
           {activeSection === "engineers" && (
-            // <EngineersList engineers={engineers} handleEngineerDetails={() => {}} />
-            // <EngineersList engineers={engineers} handleEngineerDetails={handleViewEngineerDetails} handleDeleteEngineer={handleDeleteEngineer} />
+           
             <EngineersList
               handleEngineerDetails={handleViewEngineerDetails}
               handleDeleteEngineer={handleDeleteEngineer}

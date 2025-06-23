@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { getEngineerProfile } = require('../../controllers/engineerControllers/engineerProfileController');
 
-// GET /api/engineer/profile/:user_pk
+
 router.get('/profile/:user_pk', getEngineerProfile);
 
 module.exports = router;

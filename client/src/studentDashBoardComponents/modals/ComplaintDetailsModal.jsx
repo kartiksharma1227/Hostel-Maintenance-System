@@ -131,15 +131,7 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
             Details
           </div>
 
-          {/* <div className="student-complaint-modal-tab">
-            <FaComments />
-            Follow-ups
-          </div> */}
-
-          {/* <div className="student-complaint-modal-tab">
-            <FaStar />
-            Feedback
-          </div> */}
+          
         </div>
 
         <div className="student-complaint-modal-body">
