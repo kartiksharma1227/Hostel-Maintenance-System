@@ -37,11 +37,7 @@ console.log("New Complaints received:", complaints);
   };
 
   
-    // return new Date(dateString).toLocaleDateString("en-US", {
-    //   year: "numeric",
-    //   month: "short",
-    //   day: "numeric",
-    // });
+   
     const formatDateForDropdown = (dateString) => {
   if (dateString === "all") return "All Dates";
   const date = new Date(dateString);
@@ -54,19 +50,7 @@ console.log("New Complaints received:", complaints);
 
   
 
-  // const dateOptions = [
-  //   ...new Set(
-  //     complaints
-  //       .map((c) => (c.updated_at || c.created_at || "").split("T")[0])
-  //       .filter((d) => d)
-  //   ),
-  // ].sort((a, b) => new Date(b) - new Date(a));
-
-  // useEffect(() => {
-  //   if (dateOptions.length > 0 && !filterDate) {
-  //     setFilterDate(dateOptions[0]);
-  //   }
-  // }, [dateOptions]);
+ 
 
 const extractDatePart = (dateString) => {
   if (!dateString) return "";
@@ -168,22 +152,7 @@ useEffect(() => {
 
           <div className="engineer-new-complaints-filters">
             <div className="engineer-new-complaints-filter-row">
-              {/* <div className="engineer-new-complaints-filter-group">
-                <label className="engineer-new-complaints-filter-label">
-                  Category
-                </label>
-                <select
-                  className="engineer-new-complaints-filter-select"
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category === "all" ? "All Categories" : category}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
+            
 
               <div className="engineer-new-complaints-filter-group">
                 <label className="engineer-new-complaints-filter-label">
@@ -211,11 +180,7 @@ useEffect(() => {
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
                 >
-                  {/* {dateOptions.map((date) => (
-                    <option key={date} value={date}>
-                      {formatDateForDropdown(date)}
-                    </option>
-                  ))} */}
+                 
                   {dateOptions.map((date) => (
   <option key={date} value={date}>
     {date === "all" ? "All Dates" : formatDateForDropdown(date)}

@@ -94,100 +94,8 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
     }
   }, [engineerId]);
 
-  // // Fetch pending complaints
-  // useEffect(() => {
-  //   const fetchPendingComplaints = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/engineer/complaints/pending/${engineerId}`
-  //       );
-  //       // console.log("Pending complaints response:", response.data.pendingAssignments);
-  //       setPendingComplaints(response.data.pendingAssignments );
-  //     } catch (err) {
-  //       console.error("Error fetching pending complaints:", err);
-  //     }
-  //   };
 
-  //   if (engineerId) {
-  //     fetchPendingComplaints();
-  //   }
-  // }, [engineerId]);
-
-  // // Fetch assigned complaints
-  // useEffect(() => {
-  //   const fetchAssignedComplaints = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/engineer/complaints/assigned/${engineerId}`
-  //       );
-  //       setAssignedComplaints(response.data);
-  //       setLoading(false);
-  //     } catch (err) {
-  //       console.error("Error fetching assigned complaints:", err);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (engineerId) {
-  //     fetchAssignedComplaints();
-  //   }
-  // }, [engineerId]);
-
-  // // Fetch completed complaints
-  // useEffect(() => {
-  //   const fetchCompletedComplaints = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/engineer/complaints/completed/${engineerId}`
-  //       );
-  //       console.log("Completed complaints response:", response.data);
-  //       setCompletedComplaints(response.data);
-  //     } catch (err) {
-  //       console.error("Error fetching completed complaints:", err);
-  //     }
-  //   };
-
-  //   if (engineerId) {
-  //     fetchCompletedComplaints();
-  //   }
-  // }, [engineerId]);
-
-  // // Fetch scheduled visits
-  // useEffect(() => {
-  //   const fetchScheduledVisits = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/engineer/scheduled-visits/${engineerId}`
-  //       );
-  //       setScheduledVisits(response.data);
-  //     } catch (err) {
-  //       console.error("Error fetching scheduled visits:", err);
-  //     }
-  //   };
-
-  //   if (engineerId) {
-  //     fetchScheduledVisits();
-  //   }
-  // }, [engineerId]);
-
-  // // Fetch notifications
-  // useEffect(() => {
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/engineer-dashboard/notifications/${engineerId}`
-  //       );
-  //       setNotifications(response.data);
-  //     } catch (err) {
-  //       console.error("Error fetching notifications:", err);
-  //     }
-  //   };
-
-  //   if (engineerId) {
-  //     fetchNotifications();
-  //   }
-  // }, [engineerId]);
-
+//Fetch Pending complaints
 const fetchPendingComplaints = async () => {
   try {
     const response = await axios.get(`/api/engineer/complaints/pending/${engineerId}`);
@@ -196,7 +104,7 @@ const fetchPendingComplaints = async () => {
     console.error("Error fetching pending complaints:", err);
   }
 };
-
+// Fetch assigned complaints
 const fetchAssignedComplaints = async () => {
   try {
     const response = await axios.get(`/api/engineer/complaints/assigned/${engineerId}`);
@@ -205,7 +113,7 @@ const fetchAssignedComplaints = async () => {
     console.error("Error fetching assigned complaints:", err);
   }
 };
-
+// Fetch completed complaints
 const fetchCompletedComplaints = async () => {
   try {
     const response = await axios.get(`/api/engineer/complaints/completed/${engineerId}`);
@@ -214,7 +122,7 @@ const fetchCompletedComplaints = async () => {
     console.error("Error fetching completed complaints:", err);
   }
 };
-
+// Fetch notifications
 const fetchNotifications = async () => {
   try {
     const response = await axios.get(`/api/notifications/${engineerId}`);
@@ -223,6 +131,7 @@ const fetchNotifications = async () => {
     console.error("Error fetching notifications:", err);
   }
 };
+// Fetch scheduled visits
 const fetchScheduledVisits = async () => {
   try {
     const response = await axios.get(
@@ -233,6 +142,7 @@ const fetchScheduledVisits = async () => {
     console.error("Error fetching scheduled visits:", err);
   }
 };
+// Function to refresh all dashboard data
 const refreshDashboardData = async () => {
   try {
     setLoading(true); // ✅ Start loading
@@ -251,7 +161,7 @@ const refreshDashboardData = async () => {
   }
 };
 
-
+// Initial data fetch
 useEffect(() => {
   console.log("Engineer ID:", engineerId);
   if (engineerId) {
@@ -488,21 +398,7 @@ useEffect(() => {
   };
 
  
-  //   try {
-  //     await axios.put("/api/engineer-dashboard/mark-notification-read", {
-  //       notificationId: id,
-  //     });
-  //     setNotifications((prev) =>
-  //       prev.map((notification) =>
-  //         notification.id === id
-  //           ? { ...notification, read: true }
-  //           : notification
-  //       )
-  //     );
-  //   } catch (err) {
-  //     console.error("Error marking notification as read:", err);
-  //   }
-  // };
+ 
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible(!profileDropdownVisible);
@@ -512,17 +408,7 @@ useEffect(() => {
   };
 
  
-  //   try {
-  //     await axios.put("/api/engineer-dashboard/mark-all-notifications-read", {
-  //       engineerId,
-  //     });
-  //     setNotifications((prev) =>
-  //       prev.map((notification) => ({ ...notification, read: true }))
-  //     );
-  //   } catch (err) {
-  //     console.error("Error marking all notifications as read:", err);
-  //   }
-  // };
+
 
   const getCategoryIcon = (category) => {
     switch (category) {

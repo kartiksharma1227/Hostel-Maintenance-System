@@ -425,18 +425,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* {complaintDetailsModal.visible && (
-          <div className="admin-dashboard-modal-overlay">
-            <ComplaintDetailsModal
-              complaint={complaintDetailsModal.complaint}
-              // handleViewDetails={handleViewComplaintDetails}
-
-              onClose={() =>
-                setComplaintDetailsModal({ visible: false, complaint: null })
-              }
-            />
-          </div>
-        )} */}
+       
         {complaintDetailsModal.visible && (
           <div className="admin-dashboard-modal-overlay">
             <ComplaintDetailsModal
