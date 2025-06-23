@@ -21,11 +21,6 @@ import {jwtDecode} from "jwt-decode";
 const EngineerDashboard = () => {
   // State for form and UI management
   const [updateForm, setUpdateForm] = useState({
-    // status: "",
-    // workDone: "",
-    // partsReplaced: "",
-    // nextVisitDate: "",
-    // comments: "",
       status: "",
       description: "",
       scheduled_visit_date: "",
@@ -235,7 +230,7 @@ useEffect(() => {
     );
   }
 
-  // console.log("Setting filtered complaints to:", result);
+  console.log("Setting filtered complaints to:", result);
   setFilteredPendingComplaints(result);
 }, [searchQuery, pendingComplaints]);
 
@@ -374,11 +369,6 @@ useEffect(() => {
 
       // Reset form and show success message
       setUpdateForm({
-        // status: "",
-        // workDone: "",
-        // partsReplaced: "",
-        // nextVisitDate: "",
-        // comments: "",
           status: "",
   description: "",
   scheduled_visit_date: "",
@@ -394,10 +384,10 @@ useEffect(() => {
       });
 
       // Refresh data
-      // const response = await axios.get(
-      //   `/api/engineer-dashboard/notifications/${engineerId}`
-      // );
-      // setNotifications(response.data);
+      const response = await axios.get(
+        `/api/notifications/${engineerId}`
+      );
+      setNotifications(response.data);
 
       setTimeout(
         () => setSuccessMessage({ visible: false, message: "" }),
@@ -418,6 +408,7 @@ useEffect(() => {
 
   const handleViewDetails = (complaint) => {
     console.log("Viewing details for complaint:", complaint);
+    // console.log("")
     setSelectedComplaint(complaint);
     setShowDetailsModal(true);
   };
@@ -426,22 +417,22 @@ useEffect(() => {
     setUpdateModal({ visible: true, complaintId });
   };
 
-  const markNotificationAsRead = async (id) => {
-    try {
-      await axios.put("/api/engineer-dashboard/mark-notification-read", {
-        notificationId: id,
-      });
-      setNotifications((prev) =>
-        prev.map((notification) =>
-          notification.id === id
-            ? { ...notification, read: true }
-            : notification
-        )
-      );
-    } catch (err) {
-      console.error("Error marking notification as read:", err);
-    }
-  };
+  // const markNotificationAsRead = async (id) => {
+  //   try {
+  //     await axios.put("/api/engineer-dashboard/mark-notification-read", {
+  //       notificationId: id,
+  //     });
+  //     setNotifications((prev) =>
+  //       prev.map((notification) =>
+  //         notification.id === id
+  //           ? { ...notification, read: true }
+  //           : notification
+  //       )
+  //     );
+  //   } catch (err) {
+  //     console.error("Error marking notification as read:", err);
+  //   }
+  // };
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible(!profileDropdownVisible);
@@ -450,18 +441,18 @@ useEffect(() => {
     }
   };
 
-  const markAllNotificationsAsRead = async () => {
-    try {
-      await axios.put("/api/engineer-dashboard/mark-all-notifications-read", {
-        engineerId,
-      });
-      setNotifications((prev) =>
-        prev.map((notification) => ({ ...notification, read: true }))
-      );
-    } catch (err) {
-      console.error("Error marking all notifications as read:", err);
-    }
-  };
+  // const markAllNotificationsAsRead = async () => {
+  //   try {
+  //     await axios.put("/api/engineer-dashboard/mark-all-notifications-read", {
+  //       engineerId,
+  //     });
+  //     setNotifications((prev) =>
+  //       prev.map((notification) => ({ ...notification, read: true }))
+  //     );
+  //   } catch (err) {
+  //     console.error("Error marking all notifications as read:", err);
+  //   }
+  // };
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -497,7 +488,7 @@ useEffect(() => {
     // console.log("Accepting complaint:", complaint);
     try {
       await axios.put("http://localhost:4000/api/engineer/complaints/accept", {
-        complaintId: complaint.complaint_id,
+        complaintId: complaint.id,
         engineerId,
         adminUserId: complaint.admin_FK,
       });
@@ -517,7 +508,7 @@ useEffect(() => {
 
       // Refresh notifications
       const response = await axios.get(
-        `/api/engineer-dashboard/notifications/${engineerId}`
+        `/api/notifications/${engineerId}`
       );
       setNotifications(response.data);
 
@@ -546,7 +537,7 @@ useEffect(() => {
     // console.log("Rejecting complaint:", complaint);
     try {
       await axios.put("http://localhost:4000/api/engineer/complaints/reject", {
-        complaintId: complaint.complaint_id,
+        complaintId: complaint.id,
         engineerId,
         adminUserId: complaint.admin_FK,
       });
@@ -556,7 +547,7 @@ useEffect(() => {
 
       // Refresh notifications
       const response = await axios.get(
-        `/api/engineer-dashboard/notifications/${engineerId}`
+        `/api/notifications/${engineerId}`
       );
       setNotifications(response.data);
 
@@ -596,17 +587,7 @@ useEffect(() => {
         </div>
       )}
       <Header/>
-      {/* <Header
-        engineerProfile={engineerProfile}
-        profileDropdownVisible={profileDropdownVisible}
-        toggleProfileDropdown={toggleProfileDropdown}
-        profileAvatarRef={profileAvatarRef}
-        // toggleNotificationPanel={() =>
-        //   setNotificationPanelVisible(!notificationPanelVisible)
-        // }
-        // notificationPanelVisible={notificationPanelVisible}
-        // notifications={notifications}
-      /> */}
+    
 
       <div className="engineer-dashboard-container">
         <Sidebar

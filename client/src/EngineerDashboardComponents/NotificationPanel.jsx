@@ -107,7 +107,7 @@ const NotificationsPanel = ({
               <div className="engineerdashboard-notification-pannel-content">
                 <p>{notification.message}</p>
                 <span className="engineerdashboard-notification-pannel-time">
-                  {getTimeElapsed(notification.date)}
+                  {getTimeElapsed(notification.created_at)}
                 </span>
               </div>
               {!notification.read_status && (

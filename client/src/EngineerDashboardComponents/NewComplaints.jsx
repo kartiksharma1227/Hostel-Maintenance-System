@@ -243,7 +243,7 @@ export default function NewComplaints({
                 <div className="engineer-new-complaints-card-title-container">
                   <h3 className="engineer-new-complaints-card-title">
                     <span className="engineer-new-complaints-complaint-id">
-                      #{complaint.complaint_id}
+                      #{complaint.id}
                     </span>
                     {complaint.title || "Untitled Complaint"}
                   </h3>
@@ -328,8 +328,7 @@ export default function NewComplaints({
                           Reported By
                         </span>
                         <span className="engineer-new-complaints-card-metadata-value">
-                          {complaint.student_name ||
-                            complaint.user_name ||
+                          {complaint.submitted_by ||
                             "Anonymous"}
                         </span>
                       </div>

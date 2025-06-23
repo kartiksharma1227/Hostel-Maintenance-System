@@ -41,24 +41,7 @@ const StudentDashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleComplaintSubmit = (complaintData) => {
-    const newComplaint = {
-      id: complaints.length + 1,
-      ...complaintData,
-      status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-
-    setComplaints([newComplaint, ...complaints]);
-    updateStats([newComplaint, ...complaints]);
-    // showToast(
-    //   "Complaint Submitted",
-    //   "Your complaint has been successfully submitted."
-    // );
-    SuccessToast.show("Complaint Submitted", "Your complaint has been successfully submitted.");
-
-    setActiveSection("dashboard");
-  };
+  
 
   
 
@@ -180,8 +163,7 @@ const StudentDashboard = () => {
         return (
           <div className="file-complaint">
             <h2>File a New Complaint</h2>
-            {/* <ComplaintForm onSubmit={handleComplaintSubmit} />
-             */}
+            
              <ComplaintForm/>
           </div>
         );

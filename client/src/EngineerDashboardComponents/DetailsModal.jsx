@@ -12,7 +12,7 @@ const DetailsModal = ({ selectedComplaint, closeDetailsModal }) => {
         <div className="engineer-details-modal-content">
           <div className="engineer-detail-item">
             <span className="engineer-detail-label">Complaint ID</span>
-            <span className="engineer-detail-value">#{selectedComplaint.complaint_id}</span>
+            <span className="engineer-detail-value">#{selectedComplaint.id}</span>
           </div>
           <div className="engineer-detail-item">
             <span className="engineer-detail-label">Title</span>
