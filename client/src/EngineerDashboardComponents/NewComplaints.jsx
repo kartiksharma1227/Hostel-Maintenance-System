@@ -37,11 +37,38 @@ export default function NewComplaints({
   };
 
   const formatDateForDropdown = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    // return new Date(dateString).toLocaleDateString("en-US", {
+    //   year: "numeric",
+    //   month: "short",
+    //   day: "numeric",
+    // });
+    if (!dateString) return "N/A";
+
+  // Split and extract date/time parts manually
+  const [datePart, timePart] = dateString.split(" ");
+  const [year, month, day] = datePart.split("-");
+  const [hour, minute, second] = timePart.split(":");
+
+  // Create local Date object (not UTC)
+  const date = new Date(
+    year,
+    month - 1, // Month is 0-indexed
+    day,
+    hour,
+    minute,
+    second
+  );
+
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
   };
 
   const dateOptions = [
@@ -65,10 +92,11 @@ export default function NewComplaints({
   ];
 
   // Get unique priorities for filter
-  const priorities = [
-    "all",
-    ...new Set(complaints.map((c) => c.priority).filter(Boolean)),
-  ];
+  // const priorities = [
+  //   "all",
+  //   ...new Set(complaints.map((c) => c.priority).filter(Boolean)),
+  // ];
+  const priorities = ["all", "Low", "Medium", "High"];
 
   const filteredComplaints = complaints.filter((c) => {
     const datePart = (c.updated_at || c.created_at || "").split("T")[0];

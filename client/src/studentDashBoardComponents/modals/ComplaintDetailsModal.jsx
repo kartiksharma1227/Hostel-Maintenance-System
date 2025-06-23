@@ -18,7 +18,7 @@ import "../../styles/StudentComplaintDetailsModal.css";
 
 const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
-
+  console.log("ComplaintDetailsModal rendered with complaint:", complaint);
   // Handle graceful closing animation
   const handleClose = () => {
     setIsClosing(true);
@@ -51,6 +51,25 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
       minute: "2-digit",
     });
   };
+//   const formatDate = (dateString) => {
+//     console.log("Formatting date:", dateString);
+//   if (!dateString) return "N/A";
+
+//   // Force parse as UTC, then convert to IST
+//   const utcDate = new Date(dateString.replace(" ", "T") + "Z"); // 'Z' = UTC
+//   const istOffsetMs = 5.5 * 60 * 60 * 1000;
+//   const istDate = new Date(utcDate.getTime() + istOffsetMs);
+
+//   return istDate.toLocaleString("en-IN", {
+//     day: "2-digit",
+//     month: "short",
+//     year: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//     second: "2-digit",
+//     hour12: true,
+//   });
+// };
 
   // Calculate time elapsed since complaint creation
   const getTimeElapsed = (dateString) => {
@@ -196,7 +215,7 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
                   <div className="student-complaint-modal-avatar">
                     <FaUserCircle className="student-complaint-modal-user-icon" />
                   </div>
-                  {complaint.student || "Student ID"}
+                  {complaint.submitted_by || "Student ID"}
                 </div>
               </div>
 
@@ -204,38 +223,13 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
                 <div>Date Submitted</div>
                 <div className="student-complaint-modal-user-info">
                   <FaCalendarAlt className="student-complaint-modal-icon-small" />
-                  {formatDate(complaint.createdAt)}
+                  {formatDate(complaint.created_at)}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* <div className="student-complaint-modal-section">
-            <h3>Assignment Information</h3>
-
-            <div>
-              {complaint.assignedTo ? (
-                <>
-                  <div className="student-complaint-modal-info-row">
-                    <div>Assigned To</div>
-                    <div className="student-complaint-modal-user-info">
-                      <div className="student-complaint-modal-avatar engineer">
-                        <FaUserCircle className="student-complaint-modal-user-icon engineer" />
-                      </div>
-                      {complaint.assignedTo}
-                      <span className="student-complaint-modal-role-label">
-                        (Technician)
-                      </span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="student-complaint-modal-not-assigned">
-                  This complaint hasn't been assigned to a technician yet.
-                </div>
-              )}
-            </div>
-          </div> */}
+          
 
           <div className="student-complaint-modal-info-grid">
             <div className="student-complaint-modal-info-card">
@@ -247,7 +241,7 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
                   Submitted On
                 </span>
                 <span className="student-complaint-modal-info-value">
-                  {formatDate(complaint.createdAt)}
+                  {formatDate(complaint.created_at)}
                 </span>
               </div>
             </div>

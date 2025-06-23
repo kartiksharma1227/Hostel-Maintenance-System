@@ -26,7 +26,8 @@ const createStudentComplaint = async (req, res, next) => {
          created_at, updated_at, submitted_by)
       VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW(), NOW(), ?)
     `;
-
+    await pool.execute("SET time_zone = 'Asia/Kolkata'");
+   
     const [complaintResult] = await pool.execute(complaintSql, [
       room_FK,
       title,
