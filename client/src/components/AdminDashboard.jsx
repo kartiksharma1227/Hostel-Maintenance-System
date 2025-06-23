@@ -401,14 +401,12 @@ const AdminDashboard = () => {
         </main>
 
         {notificationPanelVisible && (
-          <div className="admin-dashboard-notification-panel-container">
-            <NotificationsPanel
-              notifications={notifications}
-              markNotificationAsRead={markNotificationAsRead}
-              markAllNotificationsAsRead={markAllNotificationsAsRead}
-              visible={notificationPanelVisible}
-            />
-          </div>
+          <NotificationsPanel
+            notifications={notifications}
+            markNotificationAsRead={markNotificationAsRead}
+            markAllNotificationsAsRead={markAllNotificationsAsRead}
+            visible={notificationPanelVisible}
+          />
         )}
 
         {profileDropdownVisible && (
