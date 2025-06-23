@@ -3,7 +3,8 @@ const cors = require('cors');
 require('dotenv').config();
 // Initialize the Express app
 const app = express();
-
+const pool = require('./db/connection'); // your mysql2 pool
+const timezoneMiddleware = require('./middlewares/timezoneMiddleware');
 // ✅ CORS configuration (must come before routes)
 const corsOptions = {
   origin: "http://localhost:5173", // your frontend origin
@@ -15,6 +16,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json()); // Parse incoming JSON data
+app.locals.pool = pool;
+
+app.use(timezoneMiddleware);
+//middleware to set date
+
+
+
+
+
+
 
 // Use the authentication login route
 // *******************************************************************************************
@@ -33,11 +44,8 @@ const adminComplaintRoute = require('./routes/adminDashboardRoutes/adminComplain
 const adminAssignmentRoute = require('./routes/adminDashboardRoutes/adminAssignmentRoute');
 const adminProfileRoute = require('./routes/adminDashboardRoutes/adminProfileRoute'); // Admin profile route
 
+// *******************************************************************************************
 // ENGINEER DASHBOARD ROUTES
-const engineerDashboardRoutes = require('./routes/engineerDashboard');
-
-
-
 const engineerComplaintRoute = require('./routes/engineerDashboardRoutes/engineerComplaintRoute'); // Engineer complaint routes
 const engineerProfileRoute = require('./routes/engineerDashboardRoutes/engineerProfileRoute'); // Engineer profile route
 const engineerScheduledVisitsRoute = require('./routes/engineerDashboardRoutes/engineerScheduledVisitsRoute'); // Engineer scheduled visits route

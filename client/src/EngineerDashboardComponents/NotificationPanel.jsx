@@ -49,7 +49,7 @@ const NotificationsPanel = ({
   };
 
   const unreadCount = notifications.filter((n) => !n.read_status).length;
-  const totalCount = notifications.length;
+  const totalCount = notifications.filter((n) => !n.read_status).length;
 
   return (
     <div
@@ -83,7 +83,9 @@ const NotificationsPanel = ({
             <p>No notifications yet</p>
           </div>
         ) : (
-          notifications.map((notification) => (
+          notifications
+          .filter((notification) => !notification.read_status)
+          .map((notification) => (
             <div
               key={notification.notification_PK}
               className={`engineerdashboard-notification-pannel-item ${

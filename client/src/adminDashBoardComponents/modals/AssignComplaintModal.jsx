@@ -69,7 +69,7 @@ const AssignComplaintModal = ({ complaint, engineers, onAssign, onClose }) => {
               </p>
               <p>
                 <strong>Submitted:</strong>{" "}
-                {new Date(complaint.createdAt).toLocaleString()}
+                {new Date(complaint.created_at).toLocaleString()}
               </p>
             </div>
 

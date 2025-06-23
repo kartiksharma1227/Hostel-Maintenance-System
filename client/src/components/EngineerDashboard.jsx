@@ -1,6 +1,3 @@
-
-
-
 // src/Components/EngineerDashboard.jsx
 import { useState, useEffect, useRef } from "react";
 import Header from "../EngineerDashBoardComponents/Header";
@@ -80,7 +77,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
     
       const engineerId  = decoded?.user_PK;
 
-  // Fetch engineer profile data
+  // // Fetch engineer profile data
   useEffect(() => {
     const fetchEngineerProfile = async () => {
       try {
@@ -97,99 +94,80 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
     }
   }, [engineerId]);
 
-  // Fetch pending complaints
-  useEffect(() => {
-    const fetchPendingComplaints = async () => {
-      try {
-        const response = await axios.get(
-          `/api/engineer/complaints/pending/${engineerId}`
-        );
-        // console.log("Pending complaints response:", response.data.pendingAssignments);
-        setPendingComplaints(response.data.pendingAssignments );
-      } catch (err) {
-        console.error("Error fetching pending complaints:", err);
-      }
-    };
 
-    if (engineerId) {
-      fetchPendingComplaints();
-    }
-  }, [engineerId]);
+//Fetch Pending complaints
+const fetchPendingComplaints = async () => {
+  try {
+    const response = await axios.get(`/api/engineer/complaints/pending/${engineerId}`);
+    setPendingComplaints(response.data.pendingAssignments);
+  } catch (err) {
+    console.error("Error fetching pending complaints:", err);
+  }
+};
+// Fetch assigned complaints
+const fetchAssignedComplaints = async () => {
+  try {
+    const response = await axios.get(`/api/engineer/complaints/assigned/${engineerId}`);
+    setAssignedComplaints(response.data);
+  } catch (err) {
+    console.error("Error fetching assigned complaints:", err);
+  }
+};
+// Fetch completed complaints
+const fetchCompletedComplaints = async () => {
+  try {
+    const response = await axios.get(`/api/engineer/complaints/completed/${engineerId}`);
+    setCompletedComplaints(response.data);
+  } catch (err) {
+    console.error("Error fetching completed complaints:", err);
+  }
+};
+// Fetch notifications
+const fetchNotifications = async () => {
+  try {
+    const response = await axios.get(`/api/notifications/${engineerId}`);
+    setNotifications(response.data);
+  } catch (err) {
+    console.error("Error fetching notifications:", err);
+  }
+};
+// Fetch scheduled visits
+const fetchScheduledVisits = async () => {
+  try {
+    const response = await axios.get(
+      `/api/engineer/scheduled-visits/${engineerId}`
+    );
+    setScheduledVisits(response.data);
+  } catch (err) {
+    console.error("Error fetching scheduled visits:", err);
+  }
+};
+// Function to refresh all dashboard data
+const refreshDashboardData = async () => {
+  try {
+    setLoading(true); // ✅ Start loading
+    await Promise.all([
+      fetchPendingComplaints(),
+      fetchAssignedComplaints(),
+      fetchCompletedComplaints(),
+      fetchScheduledVisits(),
+      fetchNotifications(),
+    ]);
+    setLoading(false); // ✅ Stop loading once done
+  } catch (error) {
+    console.error("Error refreshing dashboard data:", error);
+    setError("Failed to load dashboard data");
+    setLoading(false); // ✅ Ensure loading is stopped on error too
+  }
+};
 
-  // Fetch assigned complaints
-  useEffect(() => {
-    const fetchAssignedComplaints = async () => {
-      try {
-        const response = await axios.get(
-          `/api/engineer/complaints/assigned/${engineerId}`
-        );
-        setAssignedComplaints(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching assigned complaints:", err);
-        setLoading(false);
-      }
-    };
-
-    if (engineerId) {
-      fetchAssignedComplaints();
-    }
-  }, [engineerId]);
-
-  // Fetch completed complaints
-  useEffect(() => {
-    const fetchCompletedComplaints = async () => {
-      try {
-        const response = await axios.get(
-          `/api/engineer/complaints/completed/${engineerId}`
-        );
-        console.log("Completed complaints response:", response.data);
-        setCompletedComplaints(response.data);
-      } catch (err) {
-        console.error("Error fetching completed complaints:", err);
-      }
-    };
-
-    if (engineerId) {
-      fetchCompletedComplaints();
-    }
-  }, [engineerId]);
-
-  // Fetch scheduled visits
-  useEffect(() => {
-    const fetchScheduledVisits = async () => {
-      try {
-        const response = await axios.get(
-          `/api/engineer/scheduled-visits/${engineerId}`
-        );
-        setScheduledVisits(response.data);
-      } catch (err) {
-        console.error("Error fetching scheduled visits:", err);
-      }
-    };
-
-    if (engineerId) {
-      fetchScheduledVisits();
-    }
-  }, [engineerId]);
-
-  // Fetch notifications
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get(
-          `/api/engineer-dashboard/notifications/${engineerId}`
-        );
-        setNotifications(response.data);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
-
-    if (engineerId) {
-      fetchNotifications();
-    }
-  }, [engineerId]);
+// Initial data fetch
+useEffect(() => {
+  console.log("Engineer ID:", engineerId);
+  if (engineerId) {
+    refreshDashboardData();
+  }
+}, [engineerId]);
 
   // Filter assigned complaints based on status and search query
   useEffect(() => {
@@ -311,6 +289,8 @@ useEffect(() => {
    // ✅ Now you can safely send it
       adminUserId: matchedComplaint.admin_FK,
       });
+      await refreshDashboardData();
+
 
       // Update UI based on response
       // If status is completed, move to completed complaints
@@ -417,22 +397,8 @@ useEffect(() => {
     setUpdateModal({ visible: true, complaintId });
   };
 
-  // const markNotificationAsRead = async (id) => {
-  //   try {
-  //     await axios.put("/api/engineer-dashboard/mark-notification-read", {
-  //       notificationId: id,
-  //     });
-  //     setNotifications((prev) =>
-  //       prev.map((notification) =>
-  //         notification.id === id
-  //           ? { ...notification, read: true }
-  //           : notification
-  //       )
-  //     );
-  //   } catch (err) {
-  //     console.error("Error marking notification as read:", err);
-  //   }
-  // };
+ 
+ 
 
   const toggleProfileDropdown = () => {
     setProfileDropdownVisible(!profileDropdownVisible);
@@ -441,18 +407,8 @@ useEffect(() => {
     }
   };
 
-  // const markAllNotificationsAsRead = async () => {
-  //   try {
-  //     await axios.put("/api/engineer-dashboard/mark-all-notifications-read", {
-  //       engineerId,
-  //     });
-  //     setNotifications((prev) =>
-  //       prev.map((notification) => ({ ...notification, read: true }))
-  //     );
-  //   } catch (err) {
-  //     console.error("Error marking all notifications as read:", err);
-  //   }
-  // };
+ 
+
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -492,6 +448,8 @@ useEffect(() => {
         engineerId,
         adminUserId: complaint.admin_FK,
       });
+      await refreshDashboardData();
+
 
       // Update UI
       const acceptedComplaint = {
@@ -541,6 +499,8 @@ useEffect(() => {
         engineerId,
         adminUserId: complaint.admin_FK,
       });
+      await refreshDashboardData();
+
 
       // Update UI
       setPendingComplaints((prev) => prev.filter((c) => c.id !== complaint.id));

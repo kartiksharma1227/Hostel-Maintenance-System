@@ -23,10 +23,11 @@ const createStudentComplaint = async (req, res, next) => {
       INSERT INTO Complaints
         (room_FK, title, category, priority,
          location, description, status,
-         created_at, updated_at, submitted_by)
-      VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW(), NOW(), ?)
+         created_at, submitted_by)
+      VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW(), ?)
     `;
-
+    await pool.execute("SET time_zone = 'Asia/Kolkata'");
+   
     const [complaintResult] = await pool.execute(complaintSql, [
       room_FK,
       title,
