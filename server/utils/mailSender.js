@@ -5,7 +5,7 @@ require("dotenv").config();
 const mailSender = async (email, title, body) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail", // since you're using Gmail's App Password
+      service: "gmail", // since we're using Gmail's App Password
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -14,7 +14,7 @@ const mailSender = async (email, title, body) => {
     });
 
     const mailOptions = {
-      from: `"Hostel Maintenance System" <${process.env.EMAIL}>`, // this is how to set the sender's display name
+      from: `"Hostel Maintenance System" <${process.env.EMAIL}>`, 
       to: email,
       subject: title,
       html: body,

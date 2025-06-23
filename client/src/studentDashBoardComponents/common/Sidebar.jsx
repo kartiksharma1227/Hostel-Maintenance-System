@@ -24,21 +24,7 @@ const navItems = [
     label: "Complaint History",
     icon: <FaHistory />,
   },
-  // {
-  //   id: "analytics",
-  //   label: "Analytics",
-  //   icon: <FaChartBar />,
-  // },
-  // {
-  //   id: "settings",
-  //   label: "Settings",
-  //   icon: <FaCog />,
-  // },
-  // {
-  //   id: "help",
-  //   label: "Help",
-  //   icon: <FaQuestionCircle />,
-  // },
+ 
 ];
 
 const Sidebar = ({ activeSection, onSectionChange }) => {

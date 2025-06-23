@@ -88,14 +88,7 @@ export default function AssignedComplaints({
                 <tr key={complaint.id}>
                   <td>#{complaint.id}</td>
                   <td>{complaint.title}</td>
-                  {/* <td>
-                    <span className="engineerDashboard-category-label">
-                      <span className="engineerDashboard-category-icon">
-                        {getCategoryIcon(complaint.category)}
-                      </span>
-                      {complaint.category}
-                    </span>
-                  </td> */}
+                 
                   <td>{complaint.location}</td>
                   <td>
                     <span

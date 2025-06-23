@@ -228,32 +228,7 @@ const DashboardOverview = ({
         </div>
       </div>
 
-      {/* <div className="engineer-performance-metrics">
-        <h3>Performance Metrics</h3>
-        <div className="engineer-metrics-cards">
-          <div className="engineer-metric-card">
-            <div className="engineer-metric-icon">⏱️</div>
-            <div className="engineer-metric-content">
-              <h4>Avg. Resolution Time</h4>
-              <p className="engineer-metric-value">2.3 days</p>
-            </div>
-          </div>
-          <div className="engineer-metric-card">
-            <div className="engineer-metric-icon">⭐</div>
-            <div className="engineer-metric-content">
-              <h4>Avg. Feedback Rating</h4>
-              <p className="engineer-metric-value">4.5/5</p>
-            </div>
-          </div>
-          <div className="engineer-metric-card">
-            <div className="engineer-metric-icon">✅</div>
-            <div className="engineer-metric-content">
-              <h4>Completion Rate</h4>
-              <p className="engineer-metric-value">95%</p>
-            </div>
-          </div>
-        </div>
-      </div> */}
+     
     </div>
   );
 };

@@ -128,7 +128,7 @@ const getComplaintDetails = async (req, res) => {
 };
 
 
-// 👇 All exports at the end
+
 module.exports = {
   getAllComplaints,
   getComplaintDetails

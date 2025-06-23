@@ -18,7 +18,7 @@ const NotificationsPanel = ({
         !panelRef.current.contains(event.target) &&
         !event.target.closest(".engineerdashboard-notification-pannel-btn")
       ) {
-        closePanel(); // ✅ Use explicit close
+        closePanel(); //  Use explicit close
       }
     };
 

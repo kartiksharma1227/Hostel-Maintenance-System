@@ -145,7 +145,7 @@ const fetchScheduledVisits = async () => {
 // Function to refresh all dashboard data
 const refreshDashboardData = async () => {
   try {
-    setLoading(true); // ✅ Start loading
+    setLoading(true); //  Start loading
     await Promise.all([
       fetchPendingComplaints(),
       fetchAssignedComplaints(),
@@ -153,11 +153,11 @@ const refreshDashboardData = async () => {
       fetchScheduledVisits(),
       fetchNotifications(),
     ]);
-    setLoading(false); // ✅ Stop loading once done
+    setLoading(false); //  Stop loading once done
   } catch (error) {
     console.error("Error refreshing dashboard data:", error);
     setError("Failed to load dashboard data");
-    setLoading(false); // ✅ Ensure loading is stopped on error too
+    setLoading(false); // Ensure loading is stopped on error too
   }
 };
 
