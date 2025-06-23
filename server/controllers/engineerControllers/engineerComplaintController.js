@@ -68,7 +68,8 @@ const getPendingAssignmentsForEngineer = async (req, res) => {
         c.description,
         c.category,
         c.status,
-        c.submitted_by
+        c.submitted_by,
+        c.created_at
         
       FROM assignments a
       JOIN complaints c ON c.id = a.complaint_FK

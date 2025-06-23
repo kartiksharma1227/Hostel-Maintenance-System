@@ -17,7 +17,7 @@ export default function NewComplaints({
   const [priorityFilter, setPriorityFilter] = useState("all");
 
   const complaints = pendingComplaints || [];
-
+console.log("New Complaints received:", complaints);
   // Format date to be more readable
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -36,92 +36,98 @@ export default function NewComplaints({
     setDropdownOpen(false);
   };
 
-  const formatDateForDropdown = (dateString) => {
+  
     // return new Date(dateString).toLocaleDateString("en-US", {
     //   year: "numeric",
     //   month: "short",
     //   day: "numeric",
     // });
-    if (!dateString) return "N/A";
-
-  // Split and extract date/time parts manually
-  const [datePart, timePart] = dateString.split(" ");
-  const [year, month, day] = datePart.split("-");
-  const [hour, minute, second] = timePart.split(":");
-
-  // Create local Date object (not UTC)
-  const date = new Date(
-    year,
-    month - 1, // Month is 0-indexed
-    day,
-    hour,
-    minute,
-    second
-  );
-
-  return date.toLocaleString("en-IN", {
+    const formatDateForDropdown = (dateString) => {
+  if (dateString === "all") return "All Dates";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  });
+  });
+};
 
-  };
+  
 
-  const dateOptions = [
-    ...new Set(
-      complaints
-        .map((c) => (c.updated_at || c.created_at || "").split("T")[0])
-        .filter((d) => d)
-    ),
-  ].sort((a, b) => new Date(b) - new Date(a));
+  // const dateOptions = [
+  //   ...new Set(
+  //     complaints
+  //       .map((c) => (c.updated_at || c.created_at || "").split("T")[0])
+  //       .filter((d) => d)
+  //   ),
+  // ].sort((a, b) => new Date(b) - new Date(a));
 
-  useEffect(() => {
-    if (dateOptions.length > 0 && !filterDate) {
-      setFilterDate(dateOptions[0]);
-    }
-  }, [dateOptions]);
+  // useEffect(() => {
+  //   if (dateOptions.length > 0 && !filterDate) {
+  //     setFilterDate(dateOptions[0]);
+  //   }
+  // }, [dateOptions]);
 
-  // Get unique categories for filter
-  const categories = [
-    "all",
-    ...new Set(complaints.map((c) => c.category).filter(Boolean)),
-  ];
+const extractDatePart = (dateString) => {
+  if (!dateString) return "";
 
-  // Get unique priorities for filter
-  // const priorities = [
-  //   "all",
-  //   ...new Set(complaints.map((c) => c.priority).filter(Boolean)),
-  // ];
+  // ISO format: "2025-06-23T09:39:45.000Z"
+  if (dateString.includes("T")) {
+    return dateString.split("T")[0];
+  }
+
+  // SQL format: "2025-06-23 15:12:47"
+  if (dateString.includes(" ")) {
+    return dateString.split(" ")[0];
+  }
+
+  // Just in case it's only a date
+  return dateString;
+};
+
+
+
+const dateOptions = [
+  "all",
+  ...new Set(
+    complaints
+      .map((c) => extractDatePart(c.created_at))
+      .filter(Boolean)
+  ),
+].sort((a, b) => new Date(b) - new Date(a));
+
+
+
+useEffect(() => {
+  if (dateOptions.length > 1 && !filterDate) {
+    setFilterDate(dateOptions[1]); // skip "all"
+  }
+}, [dateOptions]);
+
+
+
+ 
+
+ 
   const priorities = ["all", "Low", "Medium", "High"];
 
   const filteredComplaints = complaints.filter((c) => {
-    const datePart = (c.updated_at || c.created_at || "").split("T")[0];
-    const dateMatch = datePart === filterDate;
+ const datePart = extractDatePart(c.updated_at || c.created_at);
+  const dateMatch = datePart === filterDate;
 
-    // Search functionality
-    const searchMatch =
-      searchQuery === "" ||
-      (c.title && c.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (c.description &&
-        c.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (c.location &&
-        c.location.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (c.complaint_id &&
-        c.complaint_id.toString().includes(searchQuery.toLowerCase()));
+  const searchMatch =
+    searchQuery === "" ||
+    (c.title && c.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (c.description && c.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (c.location && c.location.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (c.complaint_id && c.complaint_id.toString().includes(searchQuery.toLowerCase()));
 
-    // Category filter
-    const categoryMatch =
-      categoryFilter === "all" || c.category === categoryFilter;
+  const categoryMatch = categoryFilter === "all" || c.category === categoryFilter;
 
-    // Priority filter
-    const priorityMatch =
-      priorityFilter === "all" || c.priority === priorityFilter;
+  const priorityMatch = priorityFilter === "all" || 
+    (c.priority && c.priority.toLowerCase() === priorityFilter.toLowerCase());
 
-    return dateMatch && searchMatch && categoryMatch && priorityMatch;
+  return dateMatch && searchMatch && categoryMatch && priorityMatch;
   });
 
   const handleClearFilters = () => {
@@ -132,6 +138,7 @@ export default function NewComplaints({
 
   // Calculate statistics for display
   const pendingCount = filteredComplaints.length;
+  // console.log("Filtered Complaints:", filteredComplaints);
 
   return (
     <div className="engineer-new-complaints-container">
@@ -161,7 +168,7 @@ export default function NewComplaints({
 
           <div className="engineer-new-complaints-filters">
             <div className="engineer-new-complaints-filter-row">
-              <div className="engineer-new-complaints-filter-group">
+              {/* <div className="engineer-new-complaints-filter-group">
                 <label className="engineer-new-complaints-filter-label">
                   Category
                 </label>
@@ -176,7 +183,7 @@ export default function NewComplaints({
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <div className="engineer-new-complaints-filter-group">
                 <label className="engineer-new-complaints-filter-label">
@@ -204,11 +211,17 @@ export default function NewComplaints({
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
                 >
-                  {dateOptions.map((date) => (
+                  {/* {dateOptions.map((date) => (
                     <option key={date} value={date}>
                       {formatDateForDropdown(date)}
                     </option>
-                  ))}
+                  ))} */}
+                  {dateOptions.map((date) => (
+  <option key={date} value={date}>
+    {date === "all" ? "All Dates" : formatDateForDropdown(date)}
+  </option>
+))}
+
                 </select>
               </div>
             </div>
