@@ -128,9 +128,9 @@ const Header = () => {
       </div>
 
       <div className="header-controls">
-        <button className="help-btn">
+        {/* <button className="help-btn">
           <FaQuestionCircle />
-        </button>
+        </button> */}
 
         <button
           className="studentdashboard-notification-panel-btn enhanced"

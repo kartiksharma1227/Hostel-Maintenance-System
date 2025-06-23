@@ -85,7 +85,7 @@ export default function AssignedComplaints({
             </thead>
             <tbody>
               {filteredComplaints.map((complaint) => (
-                <tr key={complaint.complaint_id}>
+                <tr key={complaint.id}>
                   <td>#{complaint.id}</td>
                   <td>{complaint.title}</td>
                   {/* <td>
