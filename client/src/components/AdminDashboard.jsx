@@ -49,9 +49,7 @@ const AdminDashboard = () => {
     complaintId: null,
   });
 
-
   const fetchComplaints = async () => {
-
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
     const adminId = decoded.user_PK; // 👈 admin's user ID
@@ -146,7 +144,6 @@ const AdminDashboard = () => {
     const decoded = jwtDecode(token);
     const adminId = decoded.user_PK; // 👈 admin's user ID
     try {
-
       const res = await fetch(`${API_BASE}/admin/assignments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,7 +185,6 @@ const AdminDashboard = () => {
 
   const handleViewEngineerDetails = async (engineerId) => {
     try {
-
       const res = await fetch(`${API_BASE}/admin/engineers/${engineerId}`);
       if (!res.ok) throw new Error("Failed to fetch engineer");
       const data = await res.json();
@@ -198,21 +194,23 @@ const AdminDashboard = () => {
     }
   };
   const handleDeleteEngineer = async (user_FK) => {
-
     if (!window.confirm("Are you sure you want to deactivate this engineer?"))
-      return;
+      return false;
 
     try {
       await axios.patch(
         `http://localhost:4000/api/admin/engineers/${user_FK}/deactivate`
       );
-      await fetchEngineers(); // ← re-fetches engineers after deletion
 
-      // Filter out the deactivated engineer or refetch list
-      setEngineers((prev) => prev.filter((eng) => eng.user_FK !== user_FK));
+      // Immediately fetch the updated list
+      await fetchEngineers();
+
+      // We don't need to manually filter since we're refreshing the data
+      return true; // Return true to indicate success
     } catch (err) {
       console.error("Failed to deactivate engineer:", err);
       alert("Error while deactivating engineer");
+      return false; // Return false to indicate failure
     }
   };
 
@@ -241,7 +239,6 @@ const AdminDashboard = () => {
   }, []);
 
   const handleViewComplaintDetails = async (c) => {
-
     try {
       const res = await fetch(
         `${API_BASE}/admin/complaints/with-assignees/${c.id}`
@@ -263,7 +260,6 @@ const AdminDashboard = () => {
       const res = await fetch(
         `http://localhost:4000/api/notifications/${user_PK}`
       );
-
 
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
@@ -356,7 +352,6 @@ const AdminDashboard = () => {
             />
           )}
 
-          
           {activeSection === "complaints" && (
             <Complaints
               complaints={complaints}
@@ -368,7 +363,6 @@ const AdminDashboard = () => {
           )}
 
           {activeSection === "engineers" && (
-           
             <EngineersList
               handleEngineerDetails={handleViewEngineerDetails}
               handleDeleteEngineer={handleDeleteEngineer}
@@ -414,7 +408,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-       
         {complaintDetailsModal.visible && (
           <div className="admin-dashboard-modal-overlay">
             <ComplaintDetailsModal

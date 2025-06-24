@@ -307,7 +307,7 @@ const Login = () => {
       {/* Main Footer */}
       <footer className="login-footer-main">
         <div className="login-footer-simple">
-          <h3 className="login-footer-title">IIIT Maintenance Portal</h3>
+          <h3 className="login-footer-title">IIIT-A Maintenance Portal</h3>
           <p className="login-footer-subtitle">
             Empowering efficient facility management • Contact IT Support:
             support@iiita.ac.in

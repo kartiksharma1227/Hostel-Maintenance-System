@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast, refreshEngineers}) => {
+const EngineersList = ({
+  handleEngineerDetails,
+  handleDeleteEngineer,
+  showToast,
+  refreshEngineers,
+  engineers: engineersFromProps,
+}) => {
   const [engineers, setEngineers] = useState([]);
   const [filteredEngineers, setFilteredEngineers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterSpecialization, setFilterSpecialization] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
 
-  // Fetch engineers on mount
+  // Use engineers from props if provided
   useEffect(() => {
-    const fetchEngineers = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:4000/api/admin/engineers",
-          { withCredentials: true }
-        );
+    if (engineersFromProps && engineersFromProps.length > 0) {
+      setEngineers(engineersFromProps);
+    } else {
+      // Fallback to fetching engineers if not provided in props
+      const fetchEngineers = async () => {
+        try {
+          const res = await axios.get(
+            "http://localhost:4000/api/admin/engineers",
+            { withCredentials: true }
+          );
 
-        setEngineers(res.data);
-      } catch (err) {
-        console.error("Failed to fetch engineers:", err);
-      }
-    };
-    fetchEngineers();
-  }, []);
+          setEngineers(res.data);
+        } catch (err) {
+          console.error("Failed to fetch engineers:", err);
+        }
+      };
+      fetchEngineers();
+    }
+  }, [engineersFromProps]);
 
   // Filter engineers whenever inputs change
   useEffect(() => {
@@ -134,7 +145,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
             ))}
           </select> */}
 
-          <select
+          {/* <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="admin-dashboard-filter-select"
@@ -145,7 +156,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
                 {status}
               </option> // ✅ FIXED: Added unique key fallback
             ))}
-          </select>
+          </select> */}
         </div>
 
         {filteredEngineers.length > 0 ? (
@@ -179,7 +190,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
                         {engineer.specialization}
                       </span>
                     </td>
-                    <td>
+                    {/* <td>
                       <span
                         className={`admin-dashboard-status-indicator ${
                           engineer.status === "Available"
@@ -189,7 +200,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
                       >
                         {engineer.status}
                       </span>
-                    </td>
+                    </td> */}
                     <td>
                       <button
                         className="admin-dashboard-btn admin-dashboard-view-btn"
@@ -199,21 +210,25 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
                       </button>
                     </td>
                     <td>
-                      
- <button
-  className="admin-dashboard-btn admin-dashboard-delete-btn"
-  style={{ marginLeft: '8px', backgroundColor: '#dc3545', color: '#fff' }}
-  onClick={async () => {
-    const success = await handleDeleteEngineer(engineer.user_FK);
-    if (success) {
-      showToast("Engineer deactivated successfully");
-      await refreshEngineers();
-    }
-  }}
->
-  Delete
-</button>
-
+                      <button
+                        className="admin-dashboard-btn admin-dashboard-delete-btn"
+                        style={{
+                          marginLeft: "8px",
+                          backgroundColor: "#dc3545",
+                          color: "#fff",
+                        }}
+                        onClick={async () => {
+                          const success = await handleDeleteEngineer(
+                            engineer.user_FK
+                          );
+                          if (success) {
+                            showToast("Engineer deleted successfully");
+                            // The list will be refreshed automatically through props
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -241,7 +256,6 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
             </svg>
             <p className="admin-dashboard-empty-text">
               No engineers found matching your search criteria
-
             </p>
             <button
               className="admin-dashboard-btn"
