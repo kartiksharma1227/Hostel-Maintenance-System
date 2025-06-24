@@ -262,10 +262,11 @@ The database consists of several interconnected tables:
 The system sends email notifications for important events:
 
 - Complaint submission confirmation
-- Complaint status updates
-- Engineer assignment notifications
-- Scheduled visit reminders
+- Complaint is marked as completed
 - Feedback requests
+- New Engineer Credentials
+
+
 
 ## 👥 Contributors
 
