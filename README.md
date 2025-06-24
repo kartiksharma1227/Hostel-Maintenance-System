@@ -62,18 +62,32 @@ The Hostel Maintenance System is designed to streamline the process of reporting
 
 ## 📹 Dashboard Screen Recordings
 
-Experience the functionality of each dashboard through quick screen recordings:
+Experience the functionality of each dashboard through quick images:
 
+![Login](client/src/assets/Login.png)
 ### 🔸 Student Dashboard
-- **[Watch Video](#)**  
+
+  
+![Student Dashboard](client/src/assets/Student%20dashboard.png)
+![Fill Complaint](client/src/assets/Complaint%20form.png)
+![Feedback](client/src/assets/Feedback.png)
+ 
   Demonstrates how a student reports issues, tracks complaint status, gives feedback, and receives notifications.
 
 ### 🔸 Engineer Dashboard
-- **[Watch Video](#)**  
+  
+![Engineer Dashboard](client/src/assets/Engineer%20dashboard.png)
+![Accept or Reject Compaint](client/src/assets/Accept%20reject.png)
+![See your Schedule](client/src/assets/Schedule%20.png)
+
   Showcases complaint assignment, updating statuses, scheduling visits, and viewing performance metrics.
 
 ### 🔸 Admin Dashboard
-- **[Watch Video](#)**  
+
+![Admin Dashboard](client/src/assets/Admin%20Dashboard.png)
+![Manage and Assign complaints to Engineer](client/src/assets/Assign%20Engineer.png)
+![Add Engineers](client/src/assets/Add%20Engineer.png)
+ 
   Covers complaint overview, assigning engineers, managing priorities, and monitoring system performance.
 
 
