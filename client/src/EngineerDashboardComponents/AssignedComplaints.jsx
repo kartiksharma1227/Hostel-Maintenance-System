@@ -12,7 +12,7 @@ export default function AssignedComplaints({
   handleViewDetails,
   handleOpenUpdateModal,
 }) {
-  // console.log("Assigned Complaints received:", complaints);
+
 
   const filteredComplaints = complaints.filter((complaint) => {
     const matchesStatus =

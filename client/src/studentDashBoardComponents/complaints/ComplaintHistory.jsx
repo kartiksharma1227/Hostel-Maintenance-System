@@ -30,7 +30,7 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
 
         const decoded = jwtDecode(token);
         const roll_number = decoded.roll_number;
-        // console.log("Decoded roll number:", roll_number);
+
 
         const response = await axios.get("/api/complaint-history", {
           params: {

@@ -17,7 +17,7 @@ export default function NewComplaints({
   const [priorityFilter, setPriorityFilter] = useState("all");
 
   const complaints = pendingComplaints || [];
-console.log("New Complaints received:", complaints);
+
   // Format date to be more readable
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -122,7 +122,7 @@ useEffect(() => {
 
   // Calculate statistics for display
   const pendingCount = filteredComplaints.length;
-  // console.log("Filtered Complaints:", filteredComplaints);
+
 
   return (
     <div className="engineer-new-complaints-container">

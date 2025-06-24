@@ -65,7 +65,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
   
    
       const token = localStorage.getItem("token");
-      // console.log("Token:", token);
+
     
       if (!token) {
         console.warn("No token found in localStorage.");
@@ -73,7 +73,7 @@ const [filteredPendingComplaints, setFilteredPendingComplaints] = useState([]);
       }
     
       const decoded = jwtDecode(token);
-      // console.log("Decoded token:", decoded);
+
     
       const engineerId  = decoded?.user_PK;
 
@@ -163,7 +163,7 @@ const refreshDashboardData = async () => {
 
 // Initial data fetch
 useEffect(() => {
-  console.log("Engineer ID:", engineerId);
+
   if (engineerId) {
     refreshDashboardData();
   }
@@ -208,12 +208,12 @@ useEffect(() => {
     );
   }
 
-  console.log("Setting filtered complaints to:", result);
+
   setFilteredPendingComplaints(result);
 }, [searchQuery, pendingComplaints]);
 
 useEffect(() => {
-  // console.log("FilteredPendingComplaints UPDATED:", filteredPendingComplaints);
+
 }, [filteredPendingComplaints]);
 
 
@@ -270,7 +270,7 @@ useEffect(() => {
   const matchedComplaint = assignedComplaints.find(
     (c) => c.id === complaintId
   );
-  console.log("Matched Complaint:", matchedComplaint);
+
   if (!matchedComplaint) {
     console.error("Complaint not found in assignedComplaints");
     return;
@@ -387,8 +387,8 @@ useEffect(() => {
   };
 
   const handleViewDetails = (complaint) => {
-    console.log("Viewing details for complaint:", complaint);
-    // console.log("")
+
+
     setSelectedComplaint(complaint);
     setShowDetailsModal(true);
   };
@@ -441,7 +441,7 @@ useEffect(() => {
   };
 
   const handleAcceptComplaint = async (complaint) => {
-    // console.log("Accepting complaint:", complaint);
+
     try {
       await axios.put("http://localhost:4000/api/engineer/complaints/accept", {
         complaintId: complaint.id,
@@ -492,7 +492,7 @@ useEffect(() => {
   };
 
   const handleRejectComplaint = async (complaint) => {
-    // console.log("Rejecting complaint:", complaint);
+
     try {
       await axios.put("http://localhost:4000/api/engineer/complaints/reject", {
         complaintId: complaint.id,
@@ -581,7 +581,7 @@ useEffect(() => {
               )}
 
               {activeSection === "new-complaints" && (
-                // console.log("Filtered Pending Complaints:", filteredPendingComplaints),
+
                 <NewComplaints
                   // pendingComplaints={pendingComplaints}
                   pendingComplaints={filteredPendingComplaints}

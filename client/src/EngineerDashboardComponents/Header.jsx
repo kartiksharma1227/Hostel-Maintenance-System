@@ -17,7 +17,7 @@ const Header = () => {
   useEffect(() => {
     try {
       const token = localStorage.getItem("token");
-      // console.log("Token:", token);
+
 
       if (!token) {
         console.warn("No token found in localStorage.");
@@ -25,7 +25,7 @@ const Header = () => {
       }
 
       const decoded = jwtDecode(token);
-      // console.log("Decoded token:", decoded);
+
 
       const userPk = decoded?.user_PK;
 
@@ -37,7 +37,7 @@ const Header = () => {
       axios
         .get(`/api/engineer/profile/${userPk}`)
         .then((res) => {
-          // console.log("Engineer profile loaded:", res.data.profile);
+
           setEngineerProfile(res.data.profile);
         })
         .catch((err) => {
@@ -48,17 +48,7 @@ const Header = () => {
     }
   }, []);
 
-  // If still loading profile
-  // if (!engineerProfile) {
-  //   return (
-  //     <header className="engineer-dashboard-header">
-  //       <div className="engineer-logo">
-  //         <h1>IIIT-A Maintenance</h1>
-  //       </div>
-  //       <div>Loading profile…</div>
-  //     </header>
-  //   );
-  // }
+
   const isLoading = !engineerProfile;
 
   const fetchNotifications = async () => {

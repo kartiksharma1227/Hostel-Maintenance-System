@@ -45,10 +45,7 @@ const Login = () => {
     try {
       const isNumeric = /^\d+$/.test(rollno);
       const normalizedRollno = rollno.toUpperCase();
-      console.log("Normalized Roll Number:", normalizedRollno);
-      console.log("Is Numeric Roll Number:", isNumeric);
-      console.log('password:', password);
-      console.log(allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix)))
+      
 
       // 👉 Case 1: Engineer/Admin Login (numeric rollno)
       if (isNumeric) {
@@ -83,7 +80,7 @@ const Login = () => {
           rollno,
           password,
         });
-        console.log("Student login response:", res);
+
 
         if (res.status === 200) {
           const { token, role } = res.data;

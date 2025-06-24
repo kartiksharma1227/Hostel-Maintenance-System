@@ -125,7 +125,7 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       user_PK: userPK,
     };
 
-    console.log("Form data to be submitted:", payload);
+
 
     try {
       const res = await fetch("http://localhost:4000/api/complaints", {
@@ -140,7 +140,7 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       if (!res.ok) throw new Error(res.statusText);
 
       const result = await res.json();
-      console.log("Complaint submitted successfully:", result);
+
 
       // Notify other parts of app about update
       window.dispatchEvent(new Event("notificationsUpdated"));

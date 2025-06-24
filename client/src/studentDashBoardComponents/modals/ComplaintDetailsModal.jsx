@@ -18,7 +18,7 @@ import "../../styles/StudentComplaintDetailsModal.css";
 
 const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
-  console.log("ComplaintDetailsModal rendered with complaint:", complaint);
+
   // Handle graceful closing animation
   const handleClose = () => {
     setIsClosing(true);
@@ -51,25 +51,7 @@ const ComplaintDetailsModal = ({ isVisible, complaint, onClose }) => {
       minute: "2-digit",
     });
   };
-//   const formatDate = (dateString) => {
-//     console.log("Formatting date:", dateString);
-//   if (!dateString) return "N/A";
 
-//   // Force parse as UTC, then convert to IST
-//   const utcDate = new Date(dateString.replace(" ", "T") + "Z"); // 'Z' = UTC
-//   const istOffsetMs = 5.5 * 60 * 60 * 1000;
-//   const istDate = new Date(utcDate.getTime() + istOffsetMs);
-
-//   return istDate.toLocaleString("en-IN", {
-//     day: "2-digit",
-//     month: "short",
-//     year: "numeric",
-//     hour: "2-digit",
-//     minute: "2-digit",
-//     second: "2-digit",
-//     hour12: true,
-//   });
-// };
 
   // Calculate time elapsed since complaint creation
   const getTimeElapsed = (dateString) => {

@@ -32,7 +32,7 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
         }
 
         const roll_number = decodedToken.roll_number;
-        console.log("Fetching complaints for roll number on home page:", roll_number);
+
 
         const res = await axios.get("/api/recent-complaints", {
           params: { roll_number },

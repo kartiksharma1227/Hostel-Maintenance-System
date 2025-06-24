@@ -21,8 +21,8 @@ const DashboardOverview = ({
   handleViewDetails,
   handleOpenUpdateModal,
 }) => {
-  // console.log('Total complaints',pendingComplaints);
-  // console.log('Assigned complaints',assignedComplaints);
+
+
   return (
     <div className="engineer-dashboard-overview">
       <h2>Engineer Dashboard</h2>
