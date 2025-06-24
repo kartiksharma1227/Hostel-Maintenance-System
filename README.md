@@ -227,10 +227,7 @@ The system sends email notifications for important events:
 
 ## 👥 Contributors
 
-- [Your Name](https://github.com/yourusername)
-- [Contributor 1](https://github.com/contributor1)
-- [Contributor 2](https://github.com/contributor2)
+- [Kartik Sharma](https://github.com/kartiksharma1227)
+- [Ishita Agrawal](https://github.com/Ishu0112)
 
-## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
