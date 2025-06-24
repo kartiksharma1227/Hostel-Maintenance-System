@@ -204,16 +204,40 @@ The system uses JWT (JSON Web Tokens) for authentication and role-based authoriz
 ## 💾 Database Schema
 
 The database consists of several interconnected tables:
+- **Users**:  
+  Stores central login and identification data for all users (students, engineers, and admins), including credentials and common attributes.
 
-- **Users**: Central user information
-- **Students**: Student-specific data
-- **Engineers**: Engineer-specific data
-- **Admin**: Administrator data
-- **Complaints**: Maintenance issue details
-- **Assignments**: Engineer assignments to complaints
-- **Feedback**: Student feedback on completed maintenance
-- **Notifications**: System notifications
-- **Rooms**: Hostel room information
+- **Students**:  
+  Contains student-specific information such as name, roll number, room assignment, and contact details. Linked to `Users` and `Rooms`.
+
+- **Engineers**:  
+  Contains details about engineers responsible for complaint resolution, including specialization, contact info, and availability. Linked to `Users`.
+
+- **Admin**:  
+  Stores data specific to admin users who manage the system, including name, role level, and associated privileges. Linked to `Users`.
+
+- **Complaints**:  
+  Contains detailed records of maintenance issues reported by students, including type, description, status, timestamps, and student-room associations.
+
+- **complaint_comments**:  
+  Maintains a history of engineer/admin comments or updates related to a specific complaint. Used to track communication and progress notes over time. Linked to `Complaints`.
+
+- **complaint_visits**:  
+  Logs scheduled or completed visit records made by engineers to resolve a complaint. Includes visit date, purpose, outcome, and optional follow-up notes. Linked to `Complaints` and `Engineers`.
+
+- **Assignments**:  
+  Tracks which complaints have been assigned to which engineers, along with assignment timestamps and references to complaint and engineer.
+
+- **Feedback**:  
+  Stores student feedback on resolved complaints, including rating, review text, and timestamps. Linked to `Complaints`.
+
+- **Notifications**:  
+  Stores in-app or system messages sent to users, such as assignment alerts, complaint status changes, and feedback reminders.
+
+- **Rooms**:  
+  Contains hostel room information including room number, capacity, and occupancy status. Linked to `Students`.
+
+
 
 ## 📧 Email Notifications
 
