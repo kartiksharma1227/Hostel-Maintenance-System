@@ -19,7 +19,7 @@ const ComplaintsTable = ({
   }, [searchQuery, statusFilter]);
 
   const filteredComplaints = complaints.filter((complaint) => {
-    // console.log("Filtering complaint:", complaint);
+
     const matchesSearch =
       (complaint.title || "")
         .toLowerCase()

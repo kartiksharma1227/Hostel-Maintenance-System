@@ -8,8 +8,8 @@ const Header = ({
   profileDropdownVisible,
   toggleProfileDropdown,
 }) => {
-  console.log("Admin Profile:", adminProfile);
-  // console.log('name',adminProfile.name);
+
+
   return (
     <header className="admin-dashboard-header">
       <div className="admin-dashboard-logo">

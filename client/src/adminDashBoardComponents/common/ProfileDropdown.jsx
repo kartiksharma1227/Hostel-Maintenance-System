@@ -32,23 +32,13 @@ const ProfileDropdown = forwardRef(
 
           // Use the user_PK from token to fetch admin details
           const userPk = decodedToken.user_PK;
-          // console.log("Decoded User PK:", userPk);
-
-          // Check if we already have the admin data passed as a prop
-          // if (adminProfile && adminProfile.name && adminProfile.email) {
-          //   setAdminData({
-          //     ...adminProfile,
-          //     role: "Administrator",
-          //   });
-          //   setLoading(false);
-          //   return;
-          // }
+         
 
           // If not, fetch from server (your API endpoint might be different)
           const response = await axios.get(
             `http://localhost:4000/api/admin/profile/${userPk}`
           );
-          // console.log("Admin profile fetched:", response.data.profile);
+
           setAdminData(
             response.data.profile 
           );

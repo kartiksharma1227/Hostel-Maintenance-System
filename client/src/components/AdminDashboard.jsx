@@ -48,10 +48,10 @@ const AdminDashboard = () => {
     visible: false,
     complaintId: null,
   });
-  console.log(activeSection, "activeSection in AdminDashboard");
-  // console.log('Complaints:', complaintId);
+
+
   const fetchComplaints = async () => {
-    console.log("Complaint ID .......:", complaintDetailsModal);
+
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token);
     const adminId = decoded.user_PK; // 👈 admin's user ID
@@ -68,7 +68,7 @@ const AdminDashboard = () => {
         throw new Error(`Fetch error (${res.status}): ${text}`);
       }
       const data = await res.json();
-      console.log("Fetched complaints:", data);
+
       setComplaints(data);
     } catch (err) {
       console.error("Complaints fetch failed:", err);
@@ -146,7 +146,7 @@ const AdminDashboard = () => {
     const decoded = jwtDecode(token);
     const adminId = decoded.user_PK; // 👈 admin's user ID
     try {
-      console.log("Assigning engineer:", { complaintId, engineerId, note });
+
       const res = await fetch(`${API_BASE}/admin/assignments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,7 +188,7 @@ const AdminDashboard = () => {
 
   const handleViewEngineerDetails = async (engineerId) => {
     try {
-      console.log("Fetching engineer details:", engineerId);
+
       const res = await fetch(`${API_BASE}/admin/engineers/${engineerId}`);
       if (!res.ok) throw new Error("Failed to fetch engineer");
       const data = await res.json();
@@ -198,7 +198,7 @@ const AdminDashboard = () => {
     }
   };
   const handleDeleteEngineer = async (user_FK) => {
-    console.log("Deleting engineer with user_FK:", user_FK);
+
     if (!window.confirm("Are you sure you want to deactivate this engineer?"))
       return;
 
@@ -241,7 +241,7 @@ const AdminDashboard = () => {
   }, []);
 
   const handleViewComplaintDetails = async (c) => {
-    console.log("Fetching complaint details for:", c);
+
     try {
       const res = await fetch(
         `${API_BASE}/admin/complaints/with-assignees/${c.id}`
@@ -263,8 +263,8 @@ const AdminDashboard = () => {
       const res = await fetch(
         `http://localhost:4000/api/notifications/${user_PK}`
       );
-      console.log("Fetching notifications for user_PK:", user_PK);
-      console.log("notifications response:", res);
+
+
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
       setNotifications(data);

@@ -16,7 +16,7 @@ const EngineersList = ({ handleEngineerDetails, handleDeleteEngineer, showToast,
           "http://localhost:4000/api/admin/engineers",
           { withCredentials: true }
         );
-        // console.log("Engineers fetched:", res.data);
+
         setEngineers(res.data);
       } catch (err) {
         console.error("Failed to fetch engineers:", err);

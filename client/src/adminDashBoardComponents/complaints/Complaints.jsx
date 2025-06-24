@@ -18,7 +18,7 @@ const Complaints = ({ complaints, handleAssignEngineer }) => {
         visible: true,
         complaint: response.data,
       });
-      console.log("Complaint details fetched successfully:", response.data);
+
     } catch (error) {
       console.error("Failed to fetch complaint details:", error);
     }
