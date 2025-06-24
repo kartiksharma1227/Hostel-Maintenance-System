@@ -112,7 +112,7 @@ const DashboardOverview = ({
             </div>
           ) : (
             <div className="recent-assigned-complaints-container">
-              {assignedComplaints.map((complaint) => (
+              {assignedComplaints.slice(0, 4).map((complaint) => (
                 <div
                   className="recent-assigned-complaints-card"
                   key={complaint.id}
@@ -215,16 +215,7 @@ const DashboardOverview = ({
               ))}
             </div>
           )}
-          {assignedComplaints.length > 3 && (
-            <div className="recent-assigned-complaints-view-all">
-              <button className="recent-assigned-complaints-view-all-btn">
-                View All Assigned Complaints
-                <span className="recent-assigned-complaints-view-all-icon">
-                  →
-                </span>
-              </button>
-            </div>
-          )}
+     
         </div>
       </div>
 

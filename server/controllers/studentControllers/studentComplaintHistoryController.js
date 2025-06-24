@@ -3,7 +3,7 @@ const pool = require("../../db/connection");
 const getStudentComplaintHistory = async (req, res, next) => {
   try {
     const { status, category, search, roll_number } = req.query;
-    console.log("Query Parameters:", req.query);
+
 
     if (!roll_number) {
       return res.status(400).json({ error: "Missing roll_number" });
@@ -38,11 +38,11 @@ const getStudentComplaintHistory = async (req, res, next) => {
 
     sql += ` ORDER BY c.created_at DESC`;
 
-    console.log("Final SQL:", sql);
-    console.log("Values:", values);
+
+
 
     const [complaints] = await pool.execute(sql, values);
-    console.log("Fetched Complaints:", complaints);
+
     res.json(complaints);
   } catch (err) {
     console.error("ERROR in getComplaintHistory:", err);

@@ -3,7 +3,7 @@ const db = require('../../db/connection');
 
 const getEngineerProfile = async (req, res) => {
   const { user_pk } = req.params;
-  console.log(`⏳  GET /api/engineer/profile/${user_pk} called`);
+
 
   if (!user_pk) {
     return res.status(400).json({ error: "Engineer ID is required" });

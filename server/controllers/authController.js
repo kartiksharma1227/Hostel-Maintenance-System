@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const login = async (req, res) => {
   try {
-    console.log('Received login request:', req.body);
+
 
     let { rollno, user_PK, password } = req.body;
 
@@ -54,7 +54,7 @@ const login = async (req, res) => {
         [user_PK]
       );
 
-      console.log('User results:', userResults);
+
 
       if (userResults.length === 0 || userResults[0].password !== password) {
         return res.status(401).json({ error: 'Invalid credentials' });
@@ -66,7 +66,7 @@ const login = async (req, res) => {
       const rawRole = user.role;
       const normalizedRole = rawRole ? rawRole.toLowerCase() : null;
 
-      console.log('User role:', normalizedRole);
+
 
       if (normalizedRole !== "admin" && normalizedRole !== "engineer") {
         return res.status(403).json({ error: "Unauthorized role" });

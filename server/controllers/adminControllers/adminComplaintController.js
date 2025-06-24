@@ -3,7 +3,7 @@ const db = require('../../db/connection');
 
 const getAllComplaints = async (req, res, next) => {
   try {
-    console.log('⏳  GET /api/admin/complaints called');
+
 
     
     const [rows] = await db.execute(`

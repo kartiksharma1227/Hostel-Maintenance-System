@@ -5,7 +5,7 @@ const mailSender = require("../../utils/mailSender");
 
 const getAssignedComplaints = async (req, res) => {
   const engineerId = req.params.id; // from JWT
-  console.log("engineerId:", engineerId);
+
   try {
     const [rows] = await db.query(
       `SELECT c.*, a.assigned_date,a.admin_FK
@@ -24,7 +24,7 @@ const getAssignedComplaints = async (req, res) => {
 
 const getCompletedComplaints = async (req, res) => {
   const engineerId = req.params.id; // from JWT or route
-  console.log("engineerId:", engineerId);
+
 
   try {
     const [rows] = await db.query(
@@ -41,7 +41,7 @@ const getCompletedComplaints = async (req, res) => {
       [engineerId]
     );
 
-    console.log("Completed Complaints with Feedback:", rows);
+
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -77,7 +77,7 @@ const getPendingAssignmentsForEngineer = async (req, res) => {
       WHERE a.engineer_FK = ? AND a.status = 'Pending'
       
     `, [engineerId]);
-console.log(Array.isArray(assignments)); // Should log true
+
 
     res.status(200).json({ pendingAssignments: assignments });
   } catch (err) {
@@ -89,7 +89,7 @@ console.log(Array.isArray(assignments)); // Should log true
 // Function to accept a complaint assignment
 const acceptComplaint = async (req, res) => {
   const { complaintId, engineerId ,adminUserId} = req.body;
-  // console.log(req.body);
+
 
   try {
     // Update the assignment to Accepted
@@ -120,7 +120,7 @@ const acceptComplaint = async (req, res) => {
 
 const rejectComplaint = async (req, res) => {
   const { complaintId, engineerId,adminUserId } = req.body;
-  console.log(req.body);
+
 
   const conn = await db.getConnection();
   try {
@@ -168,10 +168,10 @@ const updateComplaintByEngineer = async (req, res) => {
     adminUserId,
     
   } = req.body;
-console.log("Update Complaint Request Body:", req.body);
+
   const engineerId = req.params.id; 
-console.log("Engineer ID update:", engineerId);
-console.log("adminUserId:", adminUserId);
+
+
   const connection = await db.getConnection();
 
   try {
@@ -252,7 +252,7 @@ console.log("adminUserId:", adminUserId);
 
       if (studentResult.length > 0) {
         const { mail_UN, user_PK } = studentResult[0];
-        console.log("Student Email:", mail_UN);
+
         // 5.3 Insert notification for student
         await connection.query(
           `INSERT INTO notifications (message, read_status, user_FK, created_at, updated_at)

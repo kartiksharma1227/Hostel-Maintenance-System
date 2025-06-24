@@ -4,7 +4,7 @@ const db = require('../../db/connection');
 // GET /api/engineer-dashboard/scheduled-visits/:engineerId
 const getScheduledVisits = async (req, res) => {
   const { engineerId } = req.params;
-  console.log('Fetching scheduled visits for engineer:', engineerId);
+
 
   try {
     const [rows] = await db.query(`
@@ -21,7 +21,7 @@ const getScheduledVisits = async (req, res) => {
         AND c.status != 'Completed'
       ORDER BY c.scheduled_visit_date, c.scheduled_visit_time
     `, [engineerId]);
-      console.log('Schedules visits fetched:',rows);
+
     res.json(rows);
   } catch (err) {
     console.error('Error fetching scheduled visits:', err);

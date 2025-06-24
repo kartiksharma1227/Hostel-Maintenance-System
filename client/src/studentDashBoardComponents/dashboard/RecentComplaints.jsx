@@ -97,11 +97,11 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
     <div className="recent-complaints">
       <div className="section-header">
         <h3>Recent Complaints</h3>
-        {complaints.length > 0 && (
+        {/* {complaints.length > 0 && (
           <button className="view-all-btn">
             View All <FaChevronRight className="arrow-icon" />
           </button>
-        )}
+        )} */}
       </div>
 
       {complaints.length > 0 ? (

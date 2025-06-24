@@ -4,7 +4,7 @@ const db = require('../../db/connection');
 const getNotifications = async (req, res) => {
   try {
     const userId = req.params.user_PK;
-    console.log('Fetching notifications for user:', userId);
+
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
@@ -45,7 +45,7 @@ const markAsRead = async (req, res) => {
 // Mark all notifications as read for a user
 const markAllAsRead = async (req, res) => {
   const user_PK = req.params.user_PK;
-  console.log('Marking all notifications as read for user:', user_PK);
+
 
   try {
     await db.execute(

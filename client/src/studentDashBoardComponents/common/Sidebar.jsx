@@ -32,7 +32,7 @@ const Sidebar = ({ activeSection, onSectionChange }) => {
     <div className="sidebar enhanced">
       <div className="sidebar-header">
         <div className="sidebar-brand">
-          <span className="brand-icon">MP</span>
+          {/* <span className="brand-icon">Stud</span> */}
           <span className="brand-text">Student Portal</span>
         </div>
       </div>

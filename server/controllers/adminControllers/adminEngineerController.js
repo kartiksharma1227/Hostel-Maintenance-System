@@ -2,7 +2,7 @@ const db = require('../../db/connection');
 const mailSender = require("../../utils/mailSender");
 const getAllEngineers = async (req, res, next) => {
   try {
-    console.log('⏳  GET /api/admin/engineers called');
+
     const [rows] = await db.execute(`
       SELECT u.name, u.mail_UN AS email, u.role,
              e.phone_number AS phone, e.availability AS status, 
@@ -170,9 +170,9 @@ const addEngineer = async (req, res, next) => {
 
 const getEngineerById = async (req, res, next) => {
   const { id } = req.params;
-  console.log(`🔍 Fetching engineer with ID: ${id}`);
+
   try {
-    console.log(`🔍 GET /api/admin/engineers/${id} called`);
+
     const [rows] = await db.execute(
       `SELECT u.user_PK AS userFk, u.name AS fullName, u.mail_UN AS email,
               e.phone_number AS phoneNumber, e.availability AS isAvailable,
@@ -196,13 +196,13 @@ const getEngineerById = async (req, res, next) => {
 };
 const deactivateEngineer = async (req, res) => {
   const { user_FK } = req.params;
-  console.log(`🔒 Deactivating engineer with user_FK: ${user_FK}`);
+
   try {
     const [result] = await db.query(
       `UPDATE Engineers SET isWorking = 0 WHERE user_FK = ?`,
       [user_FK]
     );
-    console.log(result);
+
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Engineer not found" });
