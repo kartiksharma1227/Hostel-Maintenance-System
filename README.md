@@ -59,6 +59,24 @@ The Hostel Maintenance System is designed to streamline the process of reporting
 - **Priority Management**: Adjust complaint priorities.
 - **System Monitoring**: Track overall system performance and bottlenecks.
 
+
+## 📹 Dashboard Screen Recordings
+
+Experience the functionality of each dashboard through quick screen recordings:
+
+### 🔸 Student Dashboard
+- **[Watch Video](#)**  
+  Demonstrates how a student reports issues, tracks complaint status, gives feedback, and receives notifications.
+
+### 🔸 Engineer Dashboard
+- **[Watch Video](#)**  
+  Showcases complaint assignment, updating statuses, scheduling visits, and viewing performance metrics.
+
+### 🔸 Admin Dashboard
+- **[Watch Video](#)**  
+  Covers complaint overview, assigning engineers, managing priorities, and monitoring system performance.
+
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -219,10 +237,10 @@ The database consists of several interconnected tables:
 - **Complaints**:  
   Contains detailed records of maintenance issues reported by students, including type, description, status, timestamps, and student-room associations.
 
-- **complaint_comments**:  
+- **Complaint_comments**:  
   Maintains a history of engineer/admin comments or updates related to a specific complaint. Used to track communication and progress notes over time. Linked to `Complaints`.
 
-- **complaint_visits**:  
+- **Complaint_visits**:  
   Logs scheduled or completed visit records made by engineers to resolve a complaint. Includes visit date, purpose, outcome, and optional follow-up notes. Linked to `Complaints` and `Engineers`.
 
 - **Assignments**:  
