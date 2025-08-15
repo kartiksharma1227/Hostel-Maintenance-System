@@ -59,37 +59,35 @@ The Hostel Maintenance System is designed to streamline the process of reporting
 - **Priority Management**: Adjust complaint priorities.
 - **System Monitoring**: Track overall system performance and bottlenecks.
 
-
 ## 📹 Dashboard Screen Recordings
 
 Experience the functionality of each dashboard through quick images:
 
 ![Login](client/src/assets/Login.png)
+
 ### 🔸 Student Dashboard
 
-  
 ![Student Dashboard](client/src/assets/Student%20dashboard.png)
 ![Fill Complaint](client/src/assets/Complaint%20form.png)
 ![Feedback](client/src/assets/Feedback.png)
- 
-  Demonstrates how a student reports issues, tracks complaint status, gives feedback, and receives notifications.
+
+Demonstrates how a student reports issues, tracks complaint status, gives feedback, and receives notifications.
 
 ### 🔸 Engineer Dashboard
-  
+
 ![Engineer Dashboard](client/src/assets/Engineer%20dashboard.png)
 ![Accept or Reject Compaint](client/src/assets/Accept%20reject.png)
 ![See your Schedule](client/src/assets/Schedule%20.png)
 
-  Showcases complaint assignment, updating statuses, scheduling visits, and viewing performance metrics.
+Showcases complaint assignment, updating statuses, scheduling visits, and viewing performance metrics.
 
 ### 🔸 Admin Dashboard
 
 ![Admin Dashboard](client/src/assets/Admin%20Dashboard.png)
 ![Manage and Assign complaints to Engineer](client/src/assets/Assign%20Engineer.png)
 ![Add Engineers](client/src/assets/Add%20Engineer.png)
- 
-  Covers complaint overview, assigning engineers, managing priorities, and monitoring system performance.
 
+Covers complaint overview, assigning engineers, managing priorities, and monitoring system performance.
 
 ## 🛠️ Tech Stack
 
@@ -121,7 +119,7 @@ Experience the functionality of each dashboard through quick images:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/hostel-maintenance-system.git
+   git clone https://github.com/kartiksharma1227/Hostel-Maintenance-System.git
    cd hostel-maintenance-system
    ```
 
@@ -236,6 +234,7 @@ The system uses JWT (JSON Web Tokens) for authentication and role-based authoriz
 ## 💾 Database Schema
 
 The database consists of several interconnected tables:
+
 - **Users**:  
   Stores central login and identification data for all users (students, engineers, and admins), including credentials and common attributes.
 
@@ -269,8 +268,6 @@ The database consists of several interconnected tables:
 - **Rooms**:  
   Contains hostel room information including room number, capacity, and occupancy status. Linked to `Students`.
 
-
-
 ## 📧 Email Notifications
 
 The system sends email notifications for important events:
@@ -280,11 +277,7 @@ The system sends email notifications for important events:
 - Feedback requests
 - New Engineer Credentials
 
-
-
 ## 👥 Contributors
 
 - [Kartik Sharma](https://github.com/kartiksharma1227)
 - [Ishita Agrawal](https://github.com/Ishu0112)
-
-
