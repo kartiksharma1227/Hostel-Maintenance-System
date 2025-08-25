@@ -109,7 +109,7 @@ const Login = () => {
       <header className="login-header-main">
         <div className="login-header-welcome-banner">
           <h1 className="login-welcome-heading">
-            Welcome to IIIT-A Maintenance System
+            Welcome to Hostel Maintenance System
           </h1>
           
           <div className="login-welcome-divider"></div>
@@ -148,7 +148,7 @@ const Login = () => {
                 <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h1 className="login-welcome-title">IIIT-A Maintenance System</h1>
+            <h1 className="login-welcome-title">Hostel Maintenance System</h1>
             <p className="login-welcome-subtitle">
               Your efficient solution for hostel maintenance requests and
               facility management
@@ -307,7 +307,7 @@ const Login = () => {
       {/* Main Footer */}
       <footer className="login-footer-main">
         <div className="login-footer-simple">
-          <h3 className="login-footer-title">IIIT-A Maintenance Portal</h3>
+          <h3 className="login-footer-title">Hostel Maintenance Portal</h3>
           <p className="login-footer-subtitle">
             Empowering efficient facility management • Contact IT Support:
             support@iiita.ac.in

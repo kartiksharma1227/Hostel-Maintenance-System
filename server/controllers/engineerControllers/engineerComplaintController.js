@@ -136,7 +136,7 @@ const rejectComplaint = async (req, res) => {
     
 
     // Step 3: Notify admin (replace <admin_user_id> appropriately)
-    // const adminUserId = 1; // <-- You should replace this with real admin id logic if dynamic
+    // const adminUserId = 1; // 
     const message = `Engineer ${engineerId} rejected Complaint #${complaintId}. Kindly assign it to another engineer.`;
     await conn.query(`
       INSERT INTO Notifications (message, user_FK, created_at)

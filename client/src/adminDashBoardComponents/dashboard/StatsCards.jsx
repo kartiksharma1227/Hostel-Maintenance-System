@@ -1,13 +1,7 @@
 import React from "react";
 
-const StatsCards = ({ complaints }) => {
-  const stats = {
-    total: complaints.length,
-    pending: complaints.filter((c) => c.status === "Pending").length,
-    inProgress: complaints.filter((c) => c.status === "In Progress").length,
-    completed: complaints.filter((c) => c.status === "Completed").length,
-  };
-
+const StatsCards = ({ stats }) => {
+  
   return (
     <div className="admin-dashboard-stats-grid">
       <div className="admin-dashboard-stat-card total">
@@ -33,23 +27,6 @@ const StatsCards = ({ complaints }) => {
         <div className="admin-dashboard-stat-content">
           <h3>Total Complaints</h3>
           <div className="admin-dashboard-stat-value">{stats.total}</div>
-          {/* <div className="admin-dashboard-stat-trend up">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-              <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-            <span>12% this month</span>
-          </div> */}
         </div>
       </div>
 
@@ -73,23 +50,6 @@ const StatsCards = ({ complaints }) => {
         <div className="admin-dashboard-stat-content">
           <h3>Pending</h3>
           <div className="admin-dashboard-stat-value">{stats.pending}</div>
-          {/* <div className="admin-dashboard-stat-trend down">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
-              <polyline points="17 18 23 18 23 12"></polyline>
-            </svg>
-            <span>5% this month</span>
-          </div> */}
         </div>
       </div>
 
@@ -114,23 +74,6 @@ const StatsCards = ({ complaints }) => {
         <div className="admin-dashboard-stat-content">
           <h3>In Progress</h3>
           <div className="admin-dashboard-stat-value">{stats.inProgress}</div>
-          {/* <div className="admin-dashboard-stat-trend up">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-              <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-            <span>8% this month</span>
-          </div> */}
         </div>
       </div>
 
@@ -154,23 +97,6 @@ const StatsCards = ({ complaints }) => {
         <div className="admin-dashboard-stat-content">
           <h3>Completed</h3>
           <div className="admin-dashboard-stat-value">{stats.completed}</div>
-          {/* <div className="admin-dashboard-stat-trend up">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-              <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-            <span>15% this month</span>
-          </div> */}
         </div>
       </div>
     </div>

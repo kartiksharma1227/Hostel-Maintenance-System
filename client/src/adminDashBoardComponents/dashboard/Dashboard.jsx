@@ -2,7 +2,7 @@ import React from "react";
 import StatsCards from "./StatsCards";
 import RecentComplaints from "./RecentComplaints";
 
-const Dashboard = ({ complaints, handleViewDetails, handleAssignEngineer }) => {
+const Dashboard = ({ complaints, handleViewDetails, handleAssignEngineer,stats }) => {
   return (
     <div className="admin-dashboard-overview">
       <div className="admin-dashboard-section-header">
@@ -11,7 +11,7 @@ const Dashboard = ({ complaints, handleViewDetails, handleAssignEngineer }) => {
           Monitor system metrics and recent activities
         </p>
       </div>
-      <StatsCards complaints={complaints} />
+      <StatsCards stats={stats} />
       <div className="admin-dashboard-card">
         <div className="admin-dashboard-card-header">
           <h3 className="admin-dashboard-card-title">Recent Complaints</h3>

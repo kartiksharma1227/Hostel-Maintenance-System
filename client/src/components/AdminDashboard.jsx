@@ -34,7 +34,18 @@ const AdminDashboard = () => {
   const [toastVisible, setToastVisible] = useState(false);
 
   const [complaints, setComplaints] = useState([]);
+  
+  const [complaintStats, setComplaintStats] = useState({ total: 0, pending: 0, inProgress: 0, completed: 0 });
+
   const [engineers, setEngineers] = useState([]);
+  const [engineerTotal, setEngineerTotal] = useState(0);
+const [engineerFilters, setEngineerFilters] = useState({
+  search: "",
+  specialization: "",
+  status: "Available", // default
+  page: 1,
+  limit: 25
+});
   const [successMessage, setSuccessMessage] = useState({
     visible: false,
     message: "",
@@ -67,26 +78,58 @@ const AdminDashboard = () => {
       }
       const data = await res.json();
 
-      setComplaints(data);
+      // setComplaints(data);
+      if (Array.isArray(data)) {
+        setComplaints(data);
+      
+        // case: backend returned plain array
+} else if (data.complaints && Array.isArray(data.complaints)) {
+        setComplaints(data.complaints); 
+        
+} else {
+        setComplaints([]); // fallback to empty array
+       
+}
     } catch (err) {
       console.error("Complaints fetch failed:", err);
     }
   };
+  const fetchComplaintStats = async () => {
+  try {
+    const res = await fetch("http://localhost:4000/api/admin/complaints/stats");
+    const data = await res.json();
+    setComplaintStats(data);
+  } catch (err) {
+    console.error("Stats fetch failed:", err);
+  }
+  };
+  useEffect(() => {
+  fetchComplaints();
+  fetchComplaintStats();   // ✅ now it loads stats
+}, [activeSection]);
+
 
   const fetchEngineers = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/admin/engineers", {
-        withCredentials: true,
-      });
-      setEngineers(res.data);
-    } catch (err) {
-      console.error("Failed to fetch engineers:", err);
-    }
+    const res = await axios.get("http://localhost:4000/api/admin/engineers", {
+      params: engineerFilters,
+      withCredentials: true,
+    });
+    setEngineers(res.data.engineers || []);
+    setEngineerTotal(res.data.total || 0);
+  } catch (err) {
+    console.error("Failed to fetch engineers:", err);
+    setEngineers([]);
+    setEngineerTotal(0);
+  }
   };
 
   useEffect(() => {
     fetchComplaints();
-    fetchEngineers();
+    // fetchEngineers();
+     if (activeSection === "engineers") {
+    fetchEngineers(); // fetch with default filters
+  }
     fetch(`${API_BASE}/admin/engineers`)
       .then((res) => res.json())
       .then(setEngineers)
@@ -95,6 +138,13 @@ const AdminDashboard = () => {
         setEngineers([]);
       });
   }, [activeSection]);
+//   useEffect(() => {
+//   fetchComplaints();
+//   if (activeSection === "engineers") {
+//     fetchEngineers(); // ✅ only this, no duplicate fetch
+//   }
+// }, [activeSection, engineerFilters]);
+
 
   const handleAddEngineer = async (engineerData) => {
     try {
@@ -349,6 +399,7 @@ const AdminDashboard = () => {
               handleAssignEngineer={(id) =>
                 setAssignEngineerModal({ visible: true, complaintId: id })
               }
+              stats={complaintStats} 
             />
           )}
 
@@ -364,11 +415,19 @@ const AdminDashboard = () => {
 
           {activeSection === "engineers" && (
             <EngineersList
-              handleEngineerDetails={handleViewEngineerDetails}
-              handleDeleteEngineer={handleDeleteEngineer}
-              showToast={showToast}
-              refreshEngineers={fetchEngineers}
-              engineers={engineers}
+              // handleEngineerDetails={handleViewEngineerDetails}
+              // handleDeleteEngineer={handleDeleteEngineer}
+              // showToast={showToast}
+              // refreshEngineers={fetchEngineers}
+              // engineers={engineers}
+               engineers={engineers}
+    total={engineerTotal}
+    filters={engineerFilters}
+    setFilters={setEngineerFilters}
+    refreshEngineers={fetchEngineers}
+    handleEngineerDetails={handleViewEngineerDetails}
+    handleDeleteEngineer={handleDeleteEngineer}
+    showToast={showToast}
             />
           )}
           {engineerDetailsModal.visible && (
