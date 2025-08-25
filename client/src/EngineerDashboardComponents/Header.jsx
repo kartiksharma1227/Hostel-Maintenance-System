@@ -162,7 +162,7 @@ const Header = () => {
 
       <header className="engineer-dashboard-header">
         <div className="engineer-logo">
-          <h1>Maintenance Portal</h1>
+          <h1>Hostel Maintenance System</h1>
         </div>
         {isLoading ? (
           <div>Loading profile…</div>

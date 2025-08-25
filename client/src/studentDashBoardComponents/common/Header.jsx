@@ -124,7 +124,7 @@ const Header = () => {
   return (
     <header className="dashboard-header enhanced">
       <div className="logo">
-        <h1>Maintenance Portal</h1>
+        <h1>Hostel Maintenance System</h1>
       </div>
 
       <div className="header-controls">
