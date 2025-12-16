@@ -4,6 +4,12 @@ require("dotenv").config();
 const mailSender = async (email, title, body) => {
   try {
     console.log("📧 Attempting to send email to:", email);
+    console.log(
+      "API Key:",
+      process.env.RESEND_API_KEY
+        ? "Set (length: " + process.env.RESEND_API_KEY.length + ")"
+        : "NOT SET"
+    );
 
     if (!process.env.RESEND_API_KEY) {
       throw new Error(
@@ -13,14 +19,21 @@ const mailSender = async (email, title, body) => {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "Hostel Maintenance System <onboarding@resend.dev>",
       to: email,
       subject: title,
       html: body,
     });
 
-    console.log("✅ Email sent successfully:", data.id);
+    if (error) {
+      console.error("❌ Resend API error:", error);
+      throw new Error(
+        `Email send failed: ${error.message || JSON.stringify(error)}`
+      );
+    }
+
+    console.log("✅ Email sent successfully. Response:", data);
     return data;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
