@@ -24,7 +24,7 @@ const DashboardOverview = ({
   // Filter out past scheduled visits - only show upcoming ones
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to start of today
-  
+
   const upcomingVisits = scheduledVisits.filter((visit) => {
     const visitDate = new Date(visit.date);
     visitDate.setHours(0, 0, 0, 0); // Set to start of day for fair comparison
@@ -223,11 +223,8 @@ const DashboardOverview = ({
               ))}
             </div>
           )}
-     
         </div>
       </div>
-
-     
     </div>
   );
 };
