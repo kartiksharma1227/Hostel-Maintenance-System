@@ -73,8 +73,8 @@ const AdminDashboard = () => {
     try {
       const url =
         activeSection === "Complaints"
-          ? `${API_BASE_URL}/admin/complaints/with-assignees/${adminId}`
-          : `${API_BASE_URL}/admin/complaints`;
+          ? `${API_BASE_URL}/api/admin/complaints/with-assignees/${adminId}`
+          : `${API_BASE_URL}/api/admin/complaints`;
 
       const res = await fetch(url);
       if (!res.ok) {
@@ -132,7 +132,7 @@ const AdminDashboard = () => {
     if (activeSection === "engineers") {
       fetchEngineers(); // fetch with default filters
     }
-    fetch(`${API_BASE_URL}/admin/engineers`)
+    fetch(`${API_BASE_URL}/api/admin/engineers`)
       .then((res) => res.json())
       .then(setEngineers)
       .catch((err) => {
@@ -149,7 +149,7 @@ const AdminDashboard = () => {
 
   const handleAddEngineer = async (engineerData) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/engineer`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/engineer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(engineerData),
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
     const decoded = jwtDecode(token);
     const adminId = decoded.user_PK; // 👈 admin's user ID
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/assignments`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/assignments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ complaintId, engineerId, note, adminId }),
@@ -236,7 +236,7 @@ const AdminDashboard = () => {
 
   const handleViewEngineerDetails = async (engineerId) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/engineers/${engineerId}`);
+      const res = await fetch(`${API_BASE_URL}/api/admin/engineers/${engineerId}`);
       if (!res.ok) throw new Error("Failed to fetch engineer");
       const data = await res.json();
       setEngineerDetailsModal({ visible: true, engineer: data });
@@ -292,7 +292,7 @@ const AdminDashboard = () => {
   const handleViewComplaintDetails = async (c) => {
     try {
       const res = await fetch(
-        `${API_BASE_URL}/admin/complaints/with-assignees/${c.id}`
+        `${API_BASE_URL}/api/admin/complaints/with-assignees/${c.id}`
       );
       if (!res.ok) throw new Error("Failed to fetch complaint details");
       const detailedComplaint = await res.json();
