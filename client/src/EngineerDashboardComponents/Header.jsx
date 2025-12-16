@@ -34,7 +34,7 @@ const Header = () => {
       }
 
       axios
-        .get(`/api/engineer/profile/${userPk}`)
+        .get(`${API_BASE_URL}/api/engineer/profile/${userPk}`)
         .then((res) => {
           setEngineerProfile(res.data.profile);
         })

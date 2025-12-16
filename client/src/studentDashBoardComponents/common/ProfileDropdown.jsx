@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { FaUser, FaSignOutAlt } from "react-icons/fa";
+import { API_BASE_URL } from "../../utils/constants";
 
 const ProfileDropdown = ({ onClose }) => {
   const [profile, setProfile] = useState(null);
@@ -25,14 +26,14 @@ const ProfileDropdown = ({ onClose }) => {
       return;
     }
 
-    const userPk = decodedToken.user_PK;  // 👈 assuming your token payload has user_PK
+    const userPk = decodedToken.user_PK; // 👈 assuming your token payload has user_PK
     if (!userPk) {
       setError("User ID not found in token");
       return;
     }
 
     axios
-      .get(`/api/student/profile/${userPk}`, {
+      .get(`${API_BASE_URL}/api/student/profile/${userPk}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setProfile(res.data.profile))
