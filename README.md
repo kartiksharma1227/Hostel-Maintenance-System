@@ -104,7 +104,7 @@ Covers complaint overview, assigning engineers, managing priorities, and monitor
 - Express.js
 - MySQL database
 - JWT for authentication
-- Nodemailer for email notifications
+- Brevo (formerly Sendinblue) for email notifications
 
 ## 🚀 Installation and Setup
 
@@ -139,8 +139,8 @@ Covers complaint overview, assigning engineers, managing priorities, and monitor
    DB_USER=root
    DB_PASSWORD=your_password
    DB_NAME=hostel_maintenance
-   MAIL_USER=your_email@gmail.com
-   MAIL_PASS=your_email_app_password
+   BREVO_API_KEY=your_brevo_api_key
+   BREVO_SENDER_EMAIL=noreply@example.com
    ```
 
 4. Start the server:
@@ -270,12 +270,26 @@ The database consists of several interconnected tables:
 
 ## 📧 Email Notifications
 
-The system sends email notifications for important events:
+The system uses **Brevo** (formerly Sendinblue) for sending email notifications. Brevo provides:
 
-- Complaint submission confirmation
-- Complaint is marked as completed
-- Feedback requests
-- New Engineer Credentials
+- **300 emails/day** on the free tier
+- No domain verification needed for getting started
+- Works seamlessly with Render and other cloud platforms
+
+### Email Events:
+
+- **Complaint submission confirmation** - Sent to students when they file a complaint
+- **Engineer assignment notification** - Sent to engineers when assigned a complaint
+- **Complaint status updates** - Sent to students when complaint status changes
+- **Complaint completion** - Sent when an engineer marks a complaint as resolved
+- **Feedback requests** - Sent to students to provide feedback on resolved complaints
+- **New Engineer credentials** - Sent to newly registered engineers with login details
+
+### Brevo Setup:
+
+1. Sign up at [Brevo](https://app.brevo.com/account/register)
+2. Get your API key from [Settings > API Keys](https://app.brevo.com/settings/keys/api)
+3. Add `BREVO_API_KEY` and `BREVO_SENDER_EMAIL` to your environment variables
 
 ## 👥 Contributors
 
