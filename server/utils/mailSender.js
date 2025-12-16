@@ -1,40 +1,34 @@
-const { Resend } = require("resend");
+const brevo = require("@getbrevo/brevo");
 require("dotenv").config();
 
 const mailSender = async (email, title, body) => {
   try {
     console.log("📧 Attempting to send email to:", email);
-    console.log(
-      "API Key:",
-      process.env.RESEND_API_KEY
-        ? "Set (length: " + process.env.RESEND_API_KEY.length + ")"
-        : "NOT SET"
+
+    if (!process.env.BREVO_API_KEY) {
+      throw new Error(
+        "Brevo API key not configured. Please set BREVO_API_KEY environment variable."
+      );
+    }
+
+    const apiInstance = new brevo.TransactionalEmailsApi();
+    apiInstance.setApiKey(
+      brevo.TransactionalEmailsApiApiKeys.apiKey,
+      process.env.BREVO_API_KEY
     );
 
-    if (!process.env.RESEND_API_KEY) {
-      throw new Error(
-        "Resend API key not configured. Please set RESEND_API_KEY environment variable."
-      );
-    }
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = {
+      name: "Hostel Maintenance System",
+      email: process.env.BREVO_SENDER_EMAIL || "noreply@example.com",
+    };
+    sendSmtpEmail.to = [{ email: email }];
+    sendSmtpEmail.subject = title;
+    sendSmtpEmail.htmlContent = body;
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    const { data, error } = await resend.emails.send({
-      from: "Hostel Maintenance System <onboarding@resend.dev>",
-      to: email,
-      subject: title,
-      html: body,
-    });
-
-    if (error) {
-      console.error("❌ Resend API error:", error);
-      throw new Error(
-        `Email send failed: ${error.message || JSON.stringify(error)}`
-      );
-    }
-
-    console.log("✅ Email sent successfully. Response:", data);
-    return data;
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log("✅ Email sent successfully. Message ID:", result.messageId);
+    return result;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
     console.error("Full error:", error);
