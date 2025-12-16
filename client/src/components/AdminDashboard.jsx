@@ -236,7 +236,9 @@ const AdminDashboard = () => {
 
   const handleViewEngineerDetails = async (engineerId) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/admin/engineers/${engineerId}`);
+      const res = await fetch(
+        `${API_BASE_URL}/api/admin/engineers/${engineerId}`
+      );
       if (!res.ok) throw new Error("Failed to fetch engineer");
       const data = await res.json();
       setEngineerDetailsModal({ visible: true, engineer: data });
