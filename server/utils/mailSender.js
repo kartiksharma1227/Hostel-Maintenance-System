@@ -1,44 +1,31 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 require("dotenv").config();
 
 const mailSender = async (email, title, body) => {
   try {
     console.log("📧 Attempting to send email to:", email);
-    console.log("Email config:", {
-      user: process.env.EMAIL_USER,
-      hasPassword: !!process.env.EMAIL_PASS,
-      from: process.env.EMAIL,
-    });
 
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    if (!process.env.RESEND_API_KEY) {
       throw new Error(
-        "Email credentials not configured. Please set EMAIL_USER and EMAIL_PASS environment variables."
+        "Resend API key not configured. Please set RESEND_API_KEY environment variable."
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail", // since we're using Gmail's App Password
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const mailOptions = {
-      from: `"Hostel Maintenance System" <${process.env.EMAIL}>`,
+    const data = await resend.emails.send({
+      from: "Hostel Maintenance System <onboarding@resend.dev>",
       to: email,
       subject: title,
       html: body,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully:", info.messageId);
-
-    return info;
+    console.log("✅ Email sent successfully:", data.id);
+    return data;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
     console.error("Full error:", error);
-    throw error; // Re-throw so caller knows it failed
+    throw error;
   }
 };
 
