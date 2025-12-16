@@ -1,18 +1,19 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-
 const mailSender = async (email, title, body) => {
   try {
     console.log("📧 Attempting to send email to:", email);
     console.log("Email config:", {
       user: process.env.EMAIL_USER,
       hasPassword: !!process.env.EMAIL_PASS,
-      from: process.env.EMAIL
+      from: process.env.EMAIL,
     });
 
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      throw new Error("Email credentials not configured. Please set EMAIL_USER and EMAIL_PASS environment variables.");
+      throw new Error(
+        "Email credentials not configured. Please set EMAIL_USER and EMAIL_PASS environment variables."
+      );
     }
 
     const transporter = nodemailer.createTransport({
@@ -20,12 +21,11 @@ const mailSender = async (email, title, body) => {
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
-        
       },
     });
 
     const mailOptions = {
-      from: `"Hostel Maintenance System" <${process.env.EMAIL}>`, 
+      from: `"Hostel Maintenance System" <${process.env.EMAIL}>`,
       to: email,
       subject: title,
       html: body,

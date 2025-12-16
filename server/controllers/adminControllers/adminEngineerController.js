@@ -1,8 +1,7 @@
-const db = require('../../db/connection');
+const db = require("../../db/connection");
 const mailSender = require("../../utils/mailSender");
 const getAllEngineers = async (req, res, next) => {
   try {
-
     const [rows] = await db.execute(`
       SELECT u.name, u.mail_UN AS email, u.role,
              e.phone_number AS phone, e.availability AS status, 
@@ -14,10 +13,11 @@ const getAllEngineers = async (req, res, next) => {
     res.json(rows);
   } catch (err) {
     console.error("❌ Error fetching engineers:", err);
-    res.status(500).json({ error: "Internal Server Error", details: err.message });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: err.message });
   }
 };
-
 
 const addEngineer = async (req, res, next) => {
   const conn = await db.getConnection();
@@ -32,15 +32,19 @@ const addEngineer = async (req, res, next) => {
       specialization,
       years_of_experience,
       address,
-      password
+      password,
     } = req.body;
 
     if (!name || !mail_UN || !phone_number || !specialization) {
       await conn.rollback();
-      return res.status(400).json({ error: 'Name, mail_UN, phone_number, and specialization are required' });
+      return res
+        .status(400)
+        .json({
+          error: "Name, mail_UN, phone_number, and specialization are required",
+        });
     }
 
-    let role = 'engineer';
+    let role = "engineer";
     let availability = 1;
 
     if (!user_FK) {
@@ -55,7 +59,7 @@ const addEngineer = async (req, res, next) => {
 
     if (!user_FK) {
       await conn.rollback();
-      return res.status(400).json({ error: 'user_FK is required' });
+      return res.status(400).json({ error: "user_FK is required" });
     }
 
     availability = Number(availability) || 0;
@@ -65,7 +69,14 @@ const addEngineer = async (req, res, next) => {
       `INSERT INTO Engineers
        (user_FK, phone_number, availability, specialization, years_of_experience, address)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [user_FK, phone_number, availability, specialization, expYears, address || null]
+      [
+        user_FK,
+        phone_number,
+        availability,
+        specialization,
+        expYears,
+        address || null,
+      ]
     );
 
     await conn.commit();
@@ -87,31 +98,31 @@ const addEngineer = async (req, res, next) => {
       );
       console.log(`✅ Welcome email sent to ${mail_UN}`);
     } catch (emailError) {
-      console.error(`❌ Failed to send email to ${mail_UN}:`, emailError.message);
+      console.error(
+        `❌ Failed to send email to ${mail_UN}:`,
+        emailError.message
+      );
       // Don't fail the whole request if email fails
     }
 
     res.status(201).json({
-      message: 'Engineer (and user if created) added',
+      message: "Engineer (and user if created) added",
       engineerId: engResult.insertId,
-      user_FK
+      user_FK,
     });
-
   } catch (err) {
     await conn.rollback();
-    console.error('❌ Error in POST /api/admin/engineer:', err);
+    console.error("❌ Error in POST /api/admin/engineer:", err);
     next(err);
   } finally {
     conn.release();
   }
 };
 
-
 const getEngineerById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-
     const [rows] = await db.execute(
       `SELECT u.user_PK AS userFk, u.name AS fullName, u.mail_UN AS email,
               e.phone_number AS phoneNumber, e.availability AS isAvailable,
@@ -130,7 +141,9 @@ const getEngineerById = async (req, res, next) => {
     res.json(rows[0]);
   } catch (err) {
     console.error(`❌ Error in GET /api/admin/engineers/${id}:`, err);
-    res.status(500).json({ error: "Internal Server Error", details: err.message });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: err.message });
   }
 };
 const deactivateEngineer = async (req, res) => {
@@ -141,7 +154,6 @@ const deactivateEngineer = async (req, res) => {
       `UPDATE Engineers SET isWorking = 0 WHERE user_FK = ?`,
       [user_FK]
     );
-
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Engineer not found" });
@@ -157,7 +169,13 @@ const deactivateEngineer = async (req, res) => {
 
 const getFilteredEngineers = async (req, res) => {
   try {
-    const { search = "", specialization = "", status = "", page = 1, limit = 25 } = req.query;
+    const {
+      search = "",
+      specialization = "",
+      status = "",
+      page = 1,
+      limit = 25,
+    } = req.query;
 
     const offset = (page - 1) * limit;
     let whereClause = "WHERE 1=1";
@@ -268,10 +286,11 @@ const getFilteredEngineers = async (req, res) => {
 //   }
 // };
 
-
-
 // 👇 All exports at the end
 module.exports = {
   getAllEngineers,
-  addEngineer,getEngineerById,deactivateEngineer,getFilteredEngineers
+  addEngineer,
+  getEngineerById,
+  deactivateEngineer,
+  getFilteredEngineers,
 };
