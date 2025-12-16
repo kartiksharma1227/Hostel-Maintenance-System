@@ -149,15 +149,21 @@ const AdminDashboard = () => {
 
   const handleAddEngineer = async (engineerData) => {
     try {
+      console.log("Submitting engineer data:", engineerData);
       const res = await fetch(`${API_BASE_URL}/api/admin/engineer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(engineerData),
       });
 
-      if (!res.ok) throw new Error("Add engineer failed");
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Add engineer failed:", errorText);
+        throw new Error(`Add engineer failed: ${errorText}`);
+      }
 
       const saved = await res.json();
+      console.log("Engineer added successfully:", saved);
 
       const newEngineer = {
         id: saved.engineerId || Math.random(),
@@ -182,7 +188,8 @@ const AdminDashboard = () => {
         3000
       );
     } catch (err) {
-      alert(err.message);
+      console.error("Error adding engineer:", err);
+      alert(`Error: ${err.message}`);
     }
   };
 
