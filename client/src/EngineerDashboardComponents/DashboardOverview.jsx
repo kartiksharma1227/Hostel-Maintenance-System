@@ -21,7 +21,15 @@ const DashboardOverview = ({
   handleViewDetails,
   handleOpenUpdateModal,
 }) => {
-
+  // Filter out past scheduled visits - only show upcoming ones
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of today
+  
+  const upcomingVisits = scheduledVisits.filter((visit) => {
+    const visitDate = new Date(visit.date);
+    visitDate.setHours(0, 0, 0, 0); // Set to start of day for fair comparison
+    return visitDate >= today; // Only include today and future dates
+  });
 
   return (
     <div className="engineer-dashboard-overview">
@@ -60,7 +68,7 @@ const DashboardOverview = ({
             <span className="Upcoming-Scheduled-Visits-header-icon">📅</span>
             Upcoming Scheduled Visits
           </h3>
-          {scheduledVisits.length === 0 ? (
+          {upcomingVisits.length === 0 ? (
             <div className="Upcoming-Scheduled-Visits-no-results">
               <div className="Upcoming-Scheduled-Visits-no-results-icon">
                 📅
@@ -69,7 +77,7 @@ const DashboardOverview = ({
             </div>
           ) : (
             <div className="Upcoming-Scheduled-Visits-list">
-              {scheduledVisits.map((visit) => (
+              {upcomingVisits.map((visit) => (
                 <div className="Upcoming-Scheduled-Visits-card" key={visit.id}>
                   <div className="Upcoming-Scheduled-Visits-date">
                     <div className="Upcoming-Scheduled-Visits-date-box">

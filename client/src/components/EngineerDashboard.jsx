@@ -102,7 +102,7 @@ const EngineerDashboard = () => {
   const fetchPendingComplaints = async () => {
     try {
       const response = await axios.get(
-        `/api/engineer/complaints/pending/${engineerId}`
+        `${API_BASE_URL}/api/engineer/complaints/pending/${engineerId}`
       );
       setPendingComplaints(response.data.pendingAssignments);
     } catch (err) {
@@ -113,7 +113,7 @@ const EngineerDashboard = () => {
   const fetchAssignedComplaints = async () => {
     try {
       const response = await axios.get(
-        `/api/engineer/complaints/assigned/${engineerId}`
+        `${API_BASE_URL}/api/engineer/complaints/assigned/${engineerId}`
       );
       setAssignedComplaints(response.data);
     } catch (err) {
@@ -124,7 +124,7 @@ const EngineerDashboard = () => {
   const fetchCompletedComplaints = async () => {
     try {
       const response = await axios.get(
-        `/api/engineer/complaints/completed/${engineerId}`
+        `${API_BASE_URL}/api/engineer/complaints/completed/${engineerId}`
       );
       setCompletedComplaints(response.data);
     } catch (err) {
