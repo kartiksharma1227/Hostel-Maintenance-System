@@ -71,19 +71,25 @@ const addEngineer = async (req, res, next) => {
     await conn.commit();
 
     // ✅ Send welcome email
-    await mailSender(
-      mail_UN,
-      "Welcome to Hostel Maintenance System",
-      `<div style="font-family:Arial,sans-serif;font-size:14px;">
-         <h3 style="color:#333;">Hi ${name},</h3>
-         <p>Your engineer account has been successfully created.</p>
-         <p><strong>Username:</strong> ${user_FK}</p>
-         <p><strong>Password:</strong> ${password}</p>
-         <p>You can now login to the Hostel Maintenance System to handle maintenance complaints.</p>
-         <br/>
-         <p style="color:gray;">Regards,<br/>Hostel Maintenance System</p>
-       </div>`
-    );
+    try {
+      await mailSender(
+        mail_UN,
+        "Welcome to Hostel Maintenance System",
+        `<div style="font-family:Arial,sans-serif;font-size:14px;">
+           <h3 style="color:#333;">Hi ${name},</h3>
+           <p>Your engineer account has been successfully created.</p>
+           <p><strong>Username:</strong> ${user_FK}</p>
+           <p><strong>Password:</strong> ${password}</p>
+           <p>You can now login to the Hostel Maintenance System to handle maintenance complaints.</p>
+           <br/>
+           <p style="color:gray;">Regards,<br/>Hostel Maintenance System</p>
+         </div>`
+      );
+      console.log(`✅ Welcome email sent to ${mail_UN}`);
+    } catch (emailError) {
+      console.error(`❌ Failed to send email to ${mail_UN}:`, emailError.message);
+      // Don't fail the whole request if email fails
+    }
 
     res.status(201).json({
       message: 'Engineer (and user if created) added',
