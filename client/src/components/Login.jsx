@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../utils/constants";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -45,11 +46,10 @@ const Login = () => {
     try {
       const isNumeric = /^\d+$/.test(rollno);
       const normalizedRollno = rollno.toUpperCase();
-      
 
       // 👉 Case 1: Engineer/Admin Login (numeric rollno)
       if (isNumeric) {
-        const res = await axios.post("http://localhost:4000/api/login", {
+        const res = await axios.post(`${API_BASE_URL}/api/login`, {
           user_PK: rollno,
           password,
         });
@@ -76,11 +76,10 @@ const Login = () => {
       if (
         allowedPrefixes.some((prefix) => normalizedRollno.startsWith(prefix))
       ) {
-        const res = await axios.post("http://localhost:4000/api/login", {
+        const res = await axios.post(`${API_BASE_URL}/api/login`, {
           rollno,
           password,
         });
-
 
         if (res.status === 200) {
           const { token, role } = res.data;
@@ -111,7 +110,7 @@ const Login = () => {
           <h1 className="login-welcome-heading">
             Welcome to Hostel Maintenance System
           </h1>
-          
+
           <div className="login-welcome-divider"></div>
         </div>
       </header>

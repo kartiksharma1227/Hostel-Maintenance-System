@@ -161,7 +161,6 @@
 
 // export default RecentComplaints;
 
-
 // import React from "react";
 
 // const RecentComplaints = ({ handleViewDetails, handleAssignEngineer }) => {
@@ -331,6 +330,7 @@
 // export default RecentComplaints;
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 
 const RecentComplaints = ({ handleViewDetails, handleAssignEngineer }) => {
   const [complaints, setComplaints] = useState([]);
@@ -339,7 +339,7 @@ const RecentComplaints = ({ handleViewDetails, handleAssignEngineer }) => {
     const fetchRecent = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:4000/api/admin/complaints/recent"
+          `${API_BASE_URL}/api/admin/complaints/recent`
         );
         setComplaints(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
@@ -497,4 +497,3 @@ const RecentComplaints = ({ handleViewDetails, handleAssignEngineer }) => {
 };
 
 export default RecentComplaints;
-

@@ -3,10 +3,11 @@ import { FaTools } from "react-icons/fa";
 import {
   COMPLAINT_CATEGORIES,
   FILE_UPLOAD_CONFIG,
+  API_BASE_URL,
 } from "../../utils/constants";
 import "../../styles/ComplaintForm.css";
-import {jwtDecode} from "jwt-decode";
-import SuccessToast,{SuccessToastComponent} from "../common/SuccessToast";
+import { jwtDecode } from "jwt-decode";
+import SuccessToast, { SuccessToastComponent } from "../common/SuccessToast";
 
 export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -125,14 +126,12 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
       user_PK: userPK,
     };
 
-
-
     try {
-      const res = await fetch("http://localhost:4000/api/complaints", {
+      const res = await fetch(`${API_BASE_URL}/api/complaints`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,  // include token if backend requires auth header
+          Authorization: `Bearer ${token}`, // include token if backend requires auth header
         },
         body: JSON.stringify(payload),
       });
@@ -141,12 +140,14 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
 
       const result = await res.json();
 
-
       // Notify other parts of app about update
       window.dispatchEvent(new Event("notificationsUpdated"));
 
- // Show success toast
-      SuccessToast.show("Complaint Submitted", "Your complaint has been successfully filed.");
+      // Show success toast
+      SuccessToast.show(
+        "Complaint Submitted",
+        "Your complaint has been successfully filed."
+      );
 
       // success callback
       onSubmitSuccess && onSubmitSuccess(result);
@@ -223,8 +224,6 @@ export default function ComplaintForm({ onSubmitSuccess, onCancel }) {
             <span className="error-message">{errors.category}</span>
           )}
         </div>
-
-    
 
         <div className="form-divider">
           <span className="divider-text">Priority & Description</span>

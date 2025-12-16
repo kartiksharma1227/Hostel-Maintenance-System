@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../utils/constants";
 import NotificationsPanel from "./NotificationPanel";
 import { FaBell } from "react-icons/fa"; // ✅ ADD THIS LINE
 import "../styles/EngineerHeaderFixes.css"; // Import the header fixes CSS
@@ -18,14 +19,12 @@ const Header = () => {
     try {
       const token = localStorage.getItem("token");
 
-
       if (!token) {
         console.warn("No token found in localStorage.");
         return;
       }
 
       const decoded = jwtDecode(token);
-
 
       const userPk = decoded?.user_PK;
 
@@ -37,7 +36,6 @@ const Header = () => {
       axios
         .get(`/api/engineer/profile/${userPk}`)
         .then((res) => {
-
           setEngineerProfile(res.data.profile);
         })
         .catch((err) => {
@@ -48,7 +46,6 @@ const Header = () => {
     }
   }, []);
 
-
   const isLoading = !engineerProfile;
 
   const fetchNotifications = async () => {
@@ -57,9 +54,7 @@ const Header = () => {
       const decodedToken = jwtDecode(token);
       const user_PK = decodedToken.user_PK;
 
-      const res = await fetch(
-        `http://localhost:4000/api/notifications/${user_PK}`
-      );
+      const res = await fetch(`${API_BASE_URL}/api/notifications/${user_PK}`);
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
       setNotifications(data);
@@ -74,7 +69,7 @@ const Header = () => {
       const user_PK = decodedToken.user_PK;
 
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        `${API_BASE_URL}/api/notifications/markAllAsRead/${user_PK}`,
         {
           method: "PUT",
         }
@@ -91,7 +86,7 @@ const Header = () => {
   const markNotificationAsRead = async (notification_PK) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
+        `${API_BASE_URL}/api/notifications/markAsRead/${notification_PK}`,
         { method: "PUT" }
       );
       if (!res.ok) throw new Error("Failed to mark as read");

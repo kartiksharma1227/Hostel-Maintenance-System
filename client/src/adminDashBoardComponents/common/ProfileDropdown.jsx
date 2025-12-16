@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 
 const ProfileDropdown = forwardRef(
   ({ adminProfile, visible, onLogout }, ref) => {
@@ -32,16 +33,13 @@ const ProfileDropdown = forwardRef(
 
           // Use the user_PK from token to fetch admin details
           const userPk = decodedToken.user_PK;
-         
 
           // If not, fetch from server (your API endpoint might be different)
           const response = await axios.get(
-            `http://localhost:4000/api/admin/profile/${userPk}`
+            `${API_BASE_URL}/api/admin/profile/${userPk}`
           );
 
-          setAdminData(
-            response.data.profile 
-          );
+          setAdminData(response.data.profile);
           setLoading(false);
         } catch (err) {
           console.error("Error fetching admin profile:", err);
@@ -104,39 +102,37 @@ const ProfileDropdown = forwardRef(
 
         <div className="admin-profile-dropdown-body">
           <div className="admin-profile-dropdown-item">
-               <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      viewBox="0 0 24 24"
-    >
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-      <polyline points="22,6 12,13 2,6" />
-    </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
             <p className="admin-profile-dropdown-email">{profile.email}</p>
-
           </div>
           <div className="admin-profile-dropdown-item">
-               <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      viewBox="0 0 24 24"
-    >
-      <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.88 19.88 0 0 1-8.63-3.11A19.5 19.5 0 0 1 3.11 10.8 19.88 19.88 0 0 1 0 2.18 2 2 0 0 1 2.18 0H6.28a2 2 0 0 1 2 1.72 12.11 12.11 0 0 0 .7 2.85 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 8 8l2.23-1.43a2 2 0 0 1 2.11-.45 12.11 12.11 0 0 0 2.85.7 2 2 0 0 1 1.72 2z"></path>
-    </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.88 19.88 0 0 1-8.63-3.11A19.5 19.5 0 0 1 3.11 10.8 19.88 19.88 0 0 1 0 2.18 2 2 0 0 1 2.18 0H6.28a2 2 0 0 1 2 1.72 12.11 12.11 0 0 0 .7 2.85 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 8 8l2.23-1.43a2 2 0 0 1 2.11-.45 12.11 12.11 0 0 0 2.85.7 2 2 0 0 1 1.72 2z"></path>
+            </svg>
             <p className="admin-profile-dropdown-email">{profile.phone}</p>
-
           </div>
           <div
             className="admin-profile-dropdown-item logout"
@@ -161,7 +157,6 @@ const ProfileDropdown = forwardRef(
           </div>
         </div>
       </div>
-      
     );
   }
 );

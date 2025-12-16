@@ -61,11 +61,11 @@
 
 // export default Complaints;
 
-
 import React, { useState, useEffect } from "react";
 import ComplaintsTable from "./ComplaintsTable";
 import ComplaintDetailsModal from "../modals/ComplaintDetailsModal";
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 
 const Complaints = ({ handleAssignEngineer }) => {
   const [complaints, setComplaints] = useState([]);
@@ -83,7 +83,7 @@ const Complaints = ({ handleAssignEngineer }) => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/admin/complaints", {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/complaints`, {
           params: {
             status: statusFilter,
             search: searchQuery,
@@ -102,7 +102,9 @@ const Complaints = ({ handleAssignEngineer }) => {
 
   const handleViewComplaintDetails = async (complaintId) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/admin/complaints/with-assignees/${complaintId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/admin/complaints/with-assignees/${complaintId}`
+      );
       setComplaintDetailsModal({
         visible: true,
         complaint: response.data,
@@ -115,7 +117,9 @@ const Complaints = ({ handleAssignEngineer }) => {
   return (
     <div className="admin-dashboard-complaints-container">
       <div className="admin-dashboard-section-header">
-        <h2 className="admin-dashboard-section-title">Maintenance Complaints</h2>
+        <h2 className="admin-dashboard-section-title">
+          Maintenance Complaints
+        </h2>
         <p className="admin-dashboard-section-subtitle">
           Manage and track all maintenance requests from students
         </p>
@@ -142,7 +146,9 @@ const Complaints = ({ handleAssignEngineer }) => {
         <div className="admin-dashboard-modal-overlay">
           <ComplaintDetailsModal
             complaint={complaintDetailsModal.complaint}
-            onClose={() => setComplaintDetailsModal({ visible: false, complaint: null })}
+            onClose={() =>
+              setComplaintDetailsModal({ visible: false, complaint: null })
+            }
           />
         </div>
       )}

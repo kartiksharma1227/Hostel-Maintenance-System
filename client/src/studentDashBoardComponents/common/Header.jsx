@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaBell, FaUserCircle, FaQuestionCircle } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../../utils/constants";
 import NotificationsPanel from "./NotificationsPanel";
 import ProfileDropdown from "./ProfileDropdown";
 
@@ -52,9 +53,7 @@ const Header = () => {
       const decodedToken = jwtDecode(token);
       const user_PK = decodedToken.user_PK;
 
-      const res = await fetch(
-        `http://localhost:4000/api/notifications/${user_PK}`
-      );
+      const res = await fetch(`${API_BASE_URL}/api/notifications/${user_PK}`);
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
       setNotifications(data);
@@ -70,7 +69,7 @@ const Header = () => {
       const user_PK = decodedToken.user_PK;
 
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        `${API_BASE_URL}/api/notifications/markAllAsRead/${user_PK}`,
         {
           method: "PUT",
         }
@@ -88,7 +87,7 @@ const Header = () => {
   const markNotificationAsRead = async (notification_PK) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
+        `${API_BASE_URL}/api/notifications/markAsRead/${notification_PK}`,
         { method: "PUT" }
       );
       if (!res.ok) throw new Error("Failed to mark as read");

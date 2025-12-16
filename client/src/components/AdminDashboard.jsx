@@ -16,7 +16,7 @@ import "../styles/AdminDashboardComplaints.css";
 import "../styles/SuccessToast.css";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-const API_BASE = "http://localhost:4000/api";
+import { API_BASE_URL } from "../utils/constants";
 
 const AdminDashboard = () => {
   const [adminProfile] = useState({
@@ -34,18 +34,23 @@ const AdminDashboard = () => {
   const [toastVisible, setToastVisible] = useState(false);
 
   const [complaints, setComplaints] = useState([]);
-  
-  const [complaintStats, setComplaintStats] = useState({ total: 0, pending: 0, inProgress: 0, completed: 0 });
+
+  const [complaintStats, setComplaintStats] = useState({
+    total: 0,
+    pending: 0,
+    inProgress: 0,
+    completed: 0,
+  });
 
   const [engineers, setEngineers] = useState([]);
   const [engineerTotal, setEngineerTotal] = useState(0);
-const [engineerFilters, setEngineerFilters] = useState({
-  search: "",
-  specialization: "",
-  status: "Available", // default
-  page: 1,
-  limit: 25
-});
+  const [engineerFilters, setEngineerFilters] = useState({
+    search: "",
+    specialization: "",
+    status: "Available", // default
+    page: 1,
+    limit: 25,
+  });
   const [successMessage, setSuccessMessage] = useState({
     visible: false,
     message: "",
@@ -81,55 +86,52 @@ const [engineerFilters, setEngineerFilters] = useState({
       // setComplaints(data);
       if (Array.isArray(data)) {
         setComplaints(data);
-      
+
         // case: backend returned plain array
-} else if (data.complaints && Array.isArray(data.complaints)) {
-        setComplaints(data.complaints); 
-        
-} else {
+      } else if (data.complaints && Array.isArray(data.complaints)) {
+        setComplaints(data.complaints);
+      } else {
         setComplaints([]); // fallback to empty array
-       
-}
+      }
     } catch (err) {
       console.error("Complaints fetch failed:", err);
     }
   };
   const fetchComplaintStats = async () => {
-  try {
-    const res = await fetch("http://localhost:4000/api/admin/complaints/stats");
-    const data = await res.json();
-    setComplaintStats(data);
-  } catch (err) {
-    console.error("Stats fetch failed:", err);
-  }
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/complaints/stats`);
+      const data = await res.json();
+      setComplaintStats(data);
+    } catch (err) {
+      console.error("Stats fetch failed:", err);
+    }
   };
   useEffect(() => {
-  fetchComplaints();
-  fetchComplaintStats();   // ✅ now it loads stats
-}, [activeSection]);
-
+    fetchComplaints();
+    fetchComplaintStats(); // ✅ now it loads stats
+  }, [activeSection]);
 
   const fetchEngineers = async () => {
     try {
-    const res = await axios.get("http://localhost:4000/api/admin/engineers", {
-      params: engineerFilters,
-      withCredentials: true,
-    });
-    setEngineers(res.data.engineers || []);
-    setEngineerTotal(res.data.total || 0);
-  } catch (err) {
-    console.error("Failed to fetch engineers:", err);
-    setEngineers([]);
-    setEngineerTotal(0);
-  }
+      const res = await axios.get(`${API_BASE_URL}/api/admin/engineers`, {
+        params: engineerFilters,
+        withCredentials: true,
+      });
+      setEngineers(res.data.engineers || []);
+      setEngineerTotal(res.data.total || 0);
+    } catch (err) {
+      console.error("Failed to fetch engineers:", err);
+      setEngineers([]);
+      setEngineerTotal(0);
+    }
   };
 
   useEffect(() => {
     fetchComplaints();
     // fetchEngineers();
-     if (activeSection === "engineers") {
-    fetchEngineers(); // fetch with default filters
-  }
+    if (activeSection === "engineers") {
+      fetchEngineers(); // fetch with default filters
+    }
     fetch(`${API_BASE}/admin/engineers`)
       .then((res) => res.json())
       .then(setEngineers)
@@ -138,13 +140,12 @@ const [engineerFilters, setEngineerFilters] = useState({
         setEngineers([]);
       });
   }, [activeSection]);
-//   useEffect(() => {
-//   fetchComplaints();
-//   if (activeSection === "engineers") {
-//     fetchEngineers(); // ✅ only this, no duplicate fetch
-//   }
-// }, [activeSection, engineerFilters]);
-
+  //   useEffect(() => {
+  //   fetchComplaints();
+  //   if (activeSection === "engineers") {
+  //     fetchEngineers(); // ✅ only this, no duplicate fetch
+  //   }
+  // }, [activeSection, engineerFilters]);
 
   const handleAddEngineer = async (engineerData) => {
     try {
@@ -249,7 +250,7 @@ const [engineerFilters, setEngineerFilters] = useState({
 
     try {
       await axios.patch(
-        `http://localhost:4000/api/admin/engineers/${user_FK}/deactivate`
+        `${API_BASE_URL}/api/admin/engineers/${user_FK}/deactivate`
       );
 
       // Immediately fetch the updated list
@@ -307,9 +308,7 @@ const [engineerFilters, setEngineerFilters] = useState({
       const decodedToken = jwtDecode(token);
       const user_PK = decodedToken.user_PK;
 
-      const res = await fetch(
-        `http://localhost:4000/api/notifications/${user_PK}`
-      );
+      const res = await fetch(`${API_BASE_URL}/api/notifications/${user_PK}`);
 
       if (!res.ok) throw new Error("Failed to fetch notifications");
       const data = await res.json();
@@ -325,7 +324,7 @@ const [engineerFilters, setEngineerFilters] = useState({
       const user_PK = decodedToken.user_PK;
 
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAllAsRead/${user_PK}`,
+        `${API_BASE_URL}/api/notifications/markAllAsRead/${user_PK}`,
         {
           method: "PUT",
         }
@@ -342,7 +341,7 @@ const [engineerFilters, setEngineerFilters] = useState({
   const markNotificationAsRead = async (notification_PK) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/notifications/markAsRead/${notification_PK}`,
+        `${API_BASE_URL}/api/notifications/markAsRead/${notification_PK}`,
         { method: "PUT" }
       );
       if (!res.ok) throw new Error("Failed to mark as read");
@@ -399,7 +398,7 @@ const [engineerFilters, setEngineerFilters] = useState({
               handleAssignEngineer={(id) =>
                 setAssignEngineerModal({ visible: true, complaintId: id })
               }
-              stats={complaintStats} 
+              stats={complaintStats}
             />
           )}
 
@@ -420,14 +419,14 @@ const [engineerFilters, setEngineerFilters] = useState({
               // showToast={showToast}
               // refreshEngineers={fetchEngineers}
               // engineers={engineers}
-               engineers={engineers}
-    total={engineerTotal}
-    filters={engineerFilters}
-    setFilters={setEngineerFilters}
-    refreshEngineers={fetchEngineers}
-    handleEngineerDetails={handleViewEngineerDetails}
-    handleDeleteEngineer={handleDeleteEngineer}
-    showToast={showToast}
+              engineers={engineers}
+              total={engineerTotal}
+              filters={engineerFilters}
+              setFilters={setEngineerFilters}
+              refreshEngineers={fetchEngineers}
+              handleEngineerDetails={handleViewEngineerDetails}
+              handleDeleteEngineer={handleDeleteEngineer}
+              showToast={showToast}
             />
           )}
           {engineerDetailsModal.visible && (
