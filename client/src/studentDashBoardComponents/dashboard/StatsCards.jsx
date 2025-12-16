@@ -1,15 +1,13 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 import {
   FaClipboardList,
   FaClock,
   FaSpinner,
   FaCheckCircle,
 } from "react-icons/fa";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const StatsCards = () => {
   const [stats, setStats] = useState({
@@ -45,7 +43,7 @@ const StatsCards = () => {
 
         const roll_number = decodedToken.roll_number;
 
-        const res = await axios.get("/api/complaint-history", {
+        const res = await axios.get(`${API_BASE_URL}/api/complaint-history`, {
           params: { roll_number },
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -64,7 +62,9 @@ const StatsCards = () => {
 
         const total = normalized.length;
         const pending = normalized.filter((c) => c.status === "pending").length;
-        const resolved = normalized.filter((c) => c.status === "completed").length;
+        const resolved = normalized.filter(
+          (c) => c.status === "completed"
+        ).length;
         const inProgress = total - pending - resolved;
 
         setStats({ total, pending, inProgress, resolved });

@@ -8,12 +8,12 @@ import ComplaintHistory from "../studentDashBoardComponents/complaints/Complaint
 import FeedbackModal from "../studentDashBoardComponents/modals/FeedbackModal";
 import DeleteConfirmationModal from "../studentDashBoardComponents/modals/DeleteConfirmationModal";
 import ComplaintDetailsModal from "../studentDashBoardComponents/modals/ComplaintDetailsModal";
-import SuccessToast,{SuccessToastComponent} from "../studentDashBoardComponents/common/SuccessToast";
+import SuccessToast, {
+  SuccessToastComponent,
+} from "../studentDashBoardComponents/common/SuccessToast";
 import "../styles/StudentDashboard.css";
-import axios from 'axios';
-
-
-
+import axios from "axios";
+import { API_BASE_URL } from "../utils/constants";
 
 const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -34,26 +34,19 @@ const StudentDashboard = () => {
   // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {
-     
       setIsLoading(false);
     }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  
-
-  
-
-
-  
   //   try {
   //     await axios.post('/api/feedback', {
   //       complaint_FK: complaintId,
   //       rating,
   //       text: feedback,
   //     });
-  
+
   //     const updatedComplaints = complaints.map((c) =>
   //       c.id === complaintId ? { ...c, feedback, rating } : c
   //     );
@@ -73,31 +66,26 @@ const StudentDashboard = () => {
   //   }
   // };
   const handleFeedbackSubmit = async ({ complaintId, rating, feedback }) => {
-  try {
-    await axios.post('/api/feedback', {
-      complaintId,
-      rating,
-      text: feedback,
-    });
-    setComplaints(cs =>
-      cs.map(c =>
-        c.id === complaintId
-          ? { ...c, rating: rating, feedback: feedback }
-          : c
-      )
-    );
-    setShowFeedbackModal(false);
-    SuccessToast.show("Feedback Submitted", "Thank you!");
-  } catch (err) {
-    console.error(err);
-    SuccessToast.show("Error", "Unable to submit feedback.");
-  }
-};
-
-
-
-
-
+    try {
+      await axios.post(`${API_BASE_URL}/api/feedback`, {
+        complaintId,
+        rating,
+        text: feedback,
+      });
+      setComplaints((cs) =>
+        cs.map((c) =>
+          c.id === complaintId
+            ? { ...c, rating: rating, feedback: feedback }
+            : c
+        )
+      );
+      setShowFeedbackModal(false);
+      SuccessToast.show("Feedback Submitted", "Thank you!");
+    } catch (err) {
+      console.error(err);
+      SuccessToast.show("Error", "Unable to submit feedback.");
+    }
+  };
 
   //   const updatedComplaints = complaints.filter(
   //     (complaint) => complaint.id !== complaintId
@@ -143,34 +131,28 @@ const StudentDashboard = () => {
           <div className="dashboard-overview">
             <h2>Dashboard Overview</h2>
             <StatsCards stats={stats} />
-            
-           <RecentComplaints
-  complaints={complaints.slice(0, 6)}
-  onComplaintClick={(complaint) => {
-    setSelectedComplaint(complaint);
-    setShowDetailsModal(true);
-  }}
-  onFeedback={(complaint) => {
-    setSelectedComplaint(complaint);
-    setShowFeedbackModal(true);
-  }}
-/>
 
-
+            <RecentComplaints
+              complaints={complaints.slice(0, 6)}
+              onComplaintClick={(complaint) => {
+                setSelectedComplaint(complaint);
+                setShowDetailsModal(true);
+              }}
+              onFeedback={(complaint) => {
+                setSelectedComplaint(complaint);
+                setShowFeedbackModal(true);
+              }}
+            />
           </div>
         );
       case "new-complaint":
         return (
           <div className="file-complaint">
             <h2>File a New Complaint</h2>
-            
-             <ComplaintForm/>
+
+            <ComplaintForm />
           </div>
         );
-
-      
-
-
 
       case "history":
         return (
@@ -271,7 +253,6 @@ const StudentDashboard = () => {
         }}
       />
       <SuccessToastComponent />
-
 
       {/* Add any additional modals or components here */}
     </div>

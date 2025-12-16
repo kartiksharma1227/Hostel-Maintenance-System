@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 import {
   FaSearch,
   FaEye,
@@ -31,15 +32,17 @@ const ComplaintHistory = ({ onViewDetails, onFeedback, onDelete }) => {
         const decoded = jwtDecode(token);
         const roll_number = decoded.roll_number;
 
-
-        const response = await axios.get("/api/complaint-history", {
-          params: {
-            status: "all",
-            category: "all",
-            search: "",
-            roll_number,
-          },
-        });
+        const response = await axios.get(
+          `${API_BASE_URL}/api/complaint-history`,
+          {
+            params: {
+              status: "all",
+              category: "all",
+              search: "",
+              roll_number,
+            },
+          }
+        );
 
         setComplaints(response.data);
       } catch (error) {

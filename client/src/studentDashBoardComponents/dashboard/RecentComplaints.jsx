@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaMapMarkerAlt, FaClock, FaChevronRight, FaEye,FaStar } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaClock,
+  FaChevronRight,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../../utils/constants";
 
-const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
+const RecentComplaints = ({ onComplaintClick, onFeedback }) => {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,8 +40,7 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
 
         const roll_number = decodedToken.roll_number;
 
-
-        const res = await axios.get("/api/recent-complaints", {
+        const res = await axios.get(`${API_BASE_URL}/api/recent-complaints`, {
           params: { roll_number },
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -144,34 +150,33 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
                 <button className="view-details-btn">
                   <FaEye /> View Details
                 </button>
-{complaint.status?.toLowerCase() === "completed" && (
-  <div className="action-buttons" style={{ marginTop: "6px" }}>
-    {complaint.rating ? (
-      <div className="submitted-feedback">
-        {[...Array(5)].map((_, index) => (
-          <span key={index}>
-            <FaStar
-              color={index < complaint.rating ? "gold" : "#ccc"}
-              size={16}
-              style={{ marginRight: "2px" }}
-            />
-          </span>
-        ))}
-      </div>
-    ) : (
-      <button
-        className="action-btn feedback-btn"
-        onClick={(e) => {
-          e.stopPropagation(); // Prevent card click
-          onFeedback(complaint); // Trigger feedback modal
-        }}
-      >
-        📝 Give Feedback
-      </button>
-    )}
-  </div>
-)}
-
+                {complaint.status?.toLowerCase() === "completed" && (
+                  <div className="action-buttons" style={{ marginTop: "6px" }}>
+                    {complaint.rating ? (
+                      <div className="submitted-feedback">
+                        {[...Array(5)].map((_, index) => (
+                          <span key={index}>
+                            <FaStar
+                              color={index < complaint.rating ? "gold" : "#ccc"}
+                              size={16}
+                              style={{ marginRight: "2px" }}
+                            />
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <button
+                        className="action-btn feedback-btn"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent card click
+                          onFeedback(complaint); // Trigger feedback modal
+                        }}
+                      >
+                        📝 Give Feedback
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -183,10 +188,7 @@ const RecentComplaints = ({ onComplaintClick, onFeedback}) => {
           <button className="new-complaint-btn">File a New Complaint</button>
         </div>
       )}
-      
     </div>
-   
-
   );
 };
 

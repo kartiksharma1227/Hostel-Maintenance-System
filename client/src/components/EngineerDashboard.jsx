@@ -83,7 +83,9 @@ const EngineerDashboard = () => {
   useEffect(() => {
     const fetchEngineerProfile = async () => {
       try {
-        const response = await axios.get(`/api/engineer/profile/${engineerId}`);
+        const response = await axios.get(
+          `${API_BASE_URL}/api/engineer/profile/${engineerId}`
+        );
         setEngineerProfile(response.data.profile);
       } catch (err) {
         console.error("Error fetching engineer profile:", err);
@@ -132,7 +134,9 @@ const EngineerDashboard = () => {
   // Fetch notifications
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`/api/notifications/${engineerId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/notifications/${engineerId}`
+      );
       setNotifications(response.data);
     } catch (err) {
       console.error("Error fetching notifications:", err);
@@ -142,7 +146,7 @@ const EngineerDashboard = () => {
   const fetchScheduledVisits = async () => {
     try {
       const response = await axios.get(
-        `/api/engineer/scheduled-visits/${engineerId}`
+        `${API_BASE_URL}/api/engineer/scheduled-visits/${engineerId}`
       );
       setScheduledVisits(response.data);
     } catch (err) {
@@ -363,7 +367,9 @@ const EngineerDashboard = () => {
       });
 
       // Refresh data
-      const response = await axios.get(`/api/notifications/${engineerId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/notifications/${engineerId}`
+      );
       setNotifications(response.data);
 
       setTimeout(
@@ -452,7 +458,9 @@ const EngineerDashboard = () => {
       setPendingComplaints((prev) => prev.filter((c) => c.id !== complaint.id));
 
       // Refresh notifications
-      const response = await axios.get(`/api/notifications/${engineerId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/notifications/${engineerId}`
+      );
       setNotifications(response.data);
 
       setSuccessMessage({
@@ -489,7 +497,9 @@ const EngineerDashboard = () => {
       setPendingComplaints((prev) => prev.filter((c) => c.id !== complaint.id));
 
       // Refresh notifications
-      const response = await axios.get(`/api/notifications/${engineerId}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/notifications/${engineerId}`
+      );
       setNotifications(response.data);
 
       setSuccessMessage({

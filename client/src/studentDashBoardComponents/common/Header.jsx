@@ -36,7 +36,7 @@ const Header = () => {
 
     // Fetch student profile using userPk from token
     axios
-      .get(`/api/student/profile/${userPk}`, {
+      .get(`${API_BASE_URL}/api/student/profile/${userPk}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
